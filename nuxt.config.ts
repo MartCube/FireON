@@ -1,0 +1,69 @@
+import { defineNuxtConfig } from 'nuxt/config'
+
+
+export default defineNuxtConfig({
+
+	srcDir: 'src',
+	components: {
+		"dirs": [
+			{ "path": "~/components", "global": true },
+			{ "path": "~/components/icon", "global": true },
+			// { "path": "~/components/block", "global": true },
+		]
+	},
+	typescript: { strict: true, typeCheck: true, shim: false },
+	app: {
+		pageTransition: { name: 'page', mode: 'out-in' },
+		head: {
+			link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }]
+		}
+	},
+	css: [
+		"@/assets/css/app.scss"
+	],
+
+	modules: [
+		'nuxt-icon',
+		'@nuxtjs/sanity',
+		'@pinia/nuxt',
+		'@nuxt/image-edge',
+		// '@nuxtjs/i18n',
+		'~/modules/style-inlining'
+	],
+
+	icon: {
+		// https://icones.js.org/collection/ri
+		size: '24px',
+		class: 'icon',
+	},
+
+	sanity: {
+		projectId: process.env.SANITY_ID,
+		dataset: process.env.SANITY_DATASET,
+		minimal: true,
+		apiVersion: '2022-11-21'
+	},
+
+	image: {
+		sanity: {
+			projectId: process.env.SANITY_ID,
+		}
+	},
+
+
+
+	vite: {
+		css: {
+			preprocessorOptions: {
+				scss: {
+					additionalData: '@import "@/assets/css/colors.scss";',
+				},
+			},
+		},
+	},
+	// nitro: {},
+	// hooks: {},
+	// webpack: {},
+
+
+})
