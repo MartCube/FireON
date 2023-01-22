@@ -1,7 +1,7 @@
 <template>
-	<div class="logo">
+	<NuxtLink class="logo" to="/">
 		<nuxt-img v-if="src" :src="src" provider="sanity" width="280" height="48" loading="lazy" />
-	</div>
+	</NuxtLink>
 </template>
 
 <script setup lang="ts">

@@ -25,7 +25,7 @@ const { smedias, logo, links } = storeToRefs(useAppStore())
 footer {
 	width: 100%;
 	height: 4rem;
-	padding: 0 5%;
+	padding: 0 9%;
 	background: $dark;
 
 	display: flex;
@@ -84,7 +84,7 @@ footer {
 				width: 1.5rem;
 				height: 1.5rem;
 				fill: $white2;
-				transition: fill 0.2s ease;
+				transition: fill 0.15s ease;
 
 				&:hover {
 					fill: $white;

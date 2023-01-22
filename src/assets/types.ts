@@ -8,10 +8,16 @@ interface SocialMedia {
 	icon: string,
 	link: string,
 }
+
 export interface MetaTags {
 	title: string,
 	description: string,
 	image: string,
+}
+
+export enum ColorWord {
+	first = 'first',
+	last = 'last',
 }
 
 export interface App {

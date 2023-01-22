@@ -27,7 +27,7 @@ const [menuValue, menuToggle] = useToggle()
 header {
 	width: 100%;
 	height: 4rem;
-	padding: 0 5%;
+	padding: 0 9%;
 	background: $dark;
 
 	display: flex;
@@ -90,7 +90,7 @@ header {
 		border: 1px solid $white2;
 		transform: skew(-15deg);
 		cursor: pointer;
-		transition: all 0.2s ease;
+		transition: all 0.15s ease;
 
 		.icon {
 			transform: skew(15deg);

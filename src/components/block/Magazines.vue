@@ -1,3 +1,3 @@
 <template>
-	<div>magazines</div>
+	<section>magazines</section>
 </template>

@@ -1,15 +1,6 @@
-<template>
-	<section class="intro">
-
-		<div class="wrap">
-			<p class="title">{{ title }}</p>
-			<Btn>{{ button }}</Btn>
-		</div>
-		<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />
-	</section>
-</template>
-
 <script setup lang="ts">
+import { ColorWord } from "~/assets/types"
+
 defineProps<{
 	title: string,
 	button: string,
@@ -17,22 +8,28 @@ defineProps<{
 }>()
 </script>
 
+<template>
+	<section class="intro">
+		<div class="wrap">
+			<MyTitle :src="title" :mode="ColorWord.first" />
+			<Btn>{{ button }}</Btn>
+		</div>
+		<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />
+	</section>
+</template>
+
 <style lang="scss" scoped>
 .intro {
-	height: 26rem;
-
+	height: 25rem;
 	justify-content: space-between;
 	align-items: center;
 
 	.wrap {
-		.title {
-			font-size: 2.875rem;
-			line-height: 68.5px;
-			font-weight: 400;
+		width: 50%;
 
-			&::first-letter {
-				color: $primary;
-			}
+		.title {
+			font-size: 3rem;
+			line-height: 150%;
 		}
 
 		.btn {

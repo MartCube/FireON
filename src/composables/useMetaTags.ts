@@ -15,7 +15,7 @@ export default (data: MetaTags) => {
 	const url = domain + fullPath
 
 	useHead({
-		title: data.title,
+		title: "FireON",
 		htmlAttrs: { lang: 'en' },
 
 		meta: [
