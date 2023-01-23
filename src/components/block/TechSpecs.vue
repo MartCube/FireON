@@ -15,7 +15,7 @@ defineProps<{
 
 <template>
 	<section class="techSpecs">
-		<MyTitle :src="title" :mode="ColorWord.last" />
+		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="grid">
 			<div v-for="item in list" class="spec">
 				<h3>
@@ -26,21 +26,13 @@ defineProps<{
 		</div>
 	</section>
 </template>
+
 <style lang="scss" scoped>
 .techSpecs {
 
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-
-
-	.title {
-		text-transform: uppercase;
-		text-align: center;
-		font-size: 29px;
-		line-height: 49px;
-	}
-
 
 	.grid {
 		display: flex;

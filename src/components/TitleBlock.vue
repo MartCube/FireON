@@ -30,13 +30,17 @@ const rest = props.src.replace(word, '')
 .title {
 	width: 100%;
 	margin-bottom: 4rem;
+
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 29px;
 	font-weight: 400;
+	line-height: 49px;
 	color: $white;
 
 	span {
 		color: $primary;
 	}
-
 
 }
 </style>

@@ -11,7 +11,7 @@ export const AppQuery = groq`*[ _type == 'app'][0]{
 		_type == 'about' => { ..., 'image':image.asset._ref },
 		_type == 'gallery' => { ..., "list": list[].asset._ref },
 		_type == 'partners' => { ..., list[]{ name, link, 'image': image.asset._ref } },
-		_type == 'contact' => { ..., title,  form{ button, name{ label, placeholder }, phone{ label, placeholder }, message{ label, placeholder }, }, 'image': image.asset._ref },
+		_type == 'contact' => { ..., 'image': image.asset._ref, form{ title, button, name{ name, label, placeholder }, phone{ name, label, placeholder }, message{ name, label, placeholder }, }, },
 	},
 	metaTags {
 		title,

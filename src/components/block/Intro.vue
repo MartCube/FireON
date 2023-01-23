@@ -11,7 +11,7 @@ defineProps<{
 <template>
 	<section class="intro">
 		<div class="wrap">
-			<MyTitle :src="title" :mode="ColorWord.first" />
+			<TitleBlock :src="title" :mode="ColorWord.first" />
 			<Btn>{{ button }}</Btn>
 		</div>
 		<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />

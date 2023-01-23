@@ -1,3 +1,7 @@
+export enum ColorWord {
+	first = 'first',
+	last = 'last',
+}
 
 interface Link {
 	title: string,
@@ -15,9 +19,18 @@ export interface MetaTags {
 	image: string,
 }
 
-export enum ColorWord {
-	first = 'first',
-	last = 'last',
+export interface TextField {
+	name: string,
+	label: string,
+	placeholder: string,
+}
+
+export interface ContactForm {
+	title: string,
+	name: TextField,
+	phone: TextField,
+	message: TextField,
+	button: string,
 }
 
 export interface App {

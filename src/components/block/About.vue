@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
 	<section class="about">
-		<MyTitle :src="title" :mode="ColorWord.last" />
+		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="image">
 			<nuxt-img :src="image" provider="sanity" loading="lazy" />
 		</div>
@@ -28,13 +28,6 @@ defineProps<{
 	justify-content: center;
 	align-items: center;
 
-	.title {
-		text-transform: uppercase;
-		text-align: center;
-		font-size: 29px;
-		line-height: 49px;
-	}
-
 	.image {
 		width: 40%;
 
@@ -48,7 +41,7 @@ defineProps<{
 		width: 40%;
 
 		p {
-			width: 32rem;
+			max-width: 32rem;
 			margin-bottom: 2rem;
 			color: $white50;
 
@@ -56,9 +49,5 @@ defineProps<{
 			line-height: 1.8125rem;
 		}
 	}
-
-
-
-
 }
 </style>

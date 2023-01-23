@@ -16,7 +16,7 @@ defineProps<{
 
 <template>
 	<section class="partners">
-		<MyTitle :src="title" :mode="ColorWord.last" />
+		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="grid">
 			<nuxt-img v-for="partner in list" class="image" :src="partner.image" provider="sanity" loading="lazy" />
 		</div>
@@ -30,15 +30,6 @@ defineProps<{
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-
-	.title {
-		text-transform: uppercase;
-		text-align: center;
-		font-size: 29px;
-		line-height: 49px;
-	}
-
-
 
 	.grid {
 		margin-top: 2rem;

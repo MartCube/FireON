@@ -12,7 +12,7 @@ defineProps<{
 	<section class="cta">
 		<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />
 		<div class="wrap">
-			<MyTitle :src="title" :mode="ColorWord.last" />
+			<TitleBlock :src="title" :mode="ColorWord.last" />
 			<Btn>{{ button }}</Btn>
 		</div>
 	</section>
