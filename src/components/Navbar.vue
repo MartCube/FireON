@@ -87,7 +87,7 @@ header {
 		justify-content: center;
 		align-items: center;
 
-		border: 1px solid $white2;
+		border: 1px solid $white10;
 		transform: skew(-15deg);
 		cursor: pointer;
 		transition: all 0.15s ease;

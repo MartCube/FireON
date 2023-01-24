@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { ColorWord } from "~/assets/types"
+import type { Partner } from "~/assets/types"
 
-interface partner {
-	name: string,
-	link: string,
-	image: string,
 
-}
 
 defineProps<{
 	title: string,
-	list: partner[],
+	list: Partner[],
 }>()
 </script>
 
@@ -25,8 +21,8 @@ defineProps<{
 
 <style lang="scss" scoped>
 .partners {
-	height: 25rem;
-
+	width: 100%;
+	padding: 4rem 0;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -48,6 +44,30 @@ defineProps<{
 				opacity: 1;
 			}
 		}
+	}
+
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0%;
+		width: 40%;
+		height: 1px;
+		opacity: 0.25;
+		background: linear-gradient(90deg, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		right: 0%;
+		width: 40%;
+		height: 1px;
+		opacity: 0.25;
+		background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, );
 	}
 }
 </style>

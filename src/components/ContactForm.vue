@@ -20,6 +20,7 @@ const validationSchema = toFormValidator(
 const { handleSubmit, isSubmitting, } = useForm<ContactForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, actions) => {
 	console.log('sending data', values)
+	// emailjs or something else
 	showMsg.value = true
 	actions.resetForm()
 })
@@ -27,7 +28,7 @@ const onSubmit = handleSubmit(async (values, actions) => {
 
 <template>
 	<form ref="form" id="form" @submit="onSubmit" autocomplete="off">
-		<TitleBlock :src="data.title" :mode="ColorWord.first" />
+		<TitleBlock :src="data.title" :mode="ColorWord.first" noline />
 		<VeeInput :data="data.name" />
 		<VeeInput :data="data.phone" />
 		<VeeInput :data="data.message" />
@@ -52,7 +53,7 @@ form {
 	position: relative;
 
 	.title {
-		text-align: left;
+		align-items: flex-start;
 	}
 
 	button {

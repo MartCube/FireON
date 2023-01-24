@@ -83,7 +83,7 @@ footer {
 			.icon {
 				width: 1.5rem;
 				height: 1.5rem;
-				fill: $white2;
+				fill: $white10;
 				transition: fill 0.15s ease;
 
 				&:hover {
@@ -97,7 +97,17 @@ footer {
 			}
 
 		}
+	}
 
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 25%;
+		width: 50%;
+		height: 1px;
+		opacity: 0.8;
+		background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
 	}
 }
 </style>

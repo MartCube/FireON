@@ -11,14 +11,14 @@ defineProps<{
 <template>
 	<section class="intro">
 		<div class="wrap">
-			<TitleBlock :src="title" :mode="ColorWord.first" />
+			<TitleBlock :src="title" :mode="ColorWord.first" noline />
 			<Btn>{{ button }}</Btn>
 		</div>
 		<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />
 	</section>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .intro {
 	height: 25rem;
 	justify-content: space-between;
@@ -27,9 +27,10 @@ defineProps<{
 	.wrap {
 		width: 50%;
 
-		.title {
-			font-size: 3rem;
-			line-height: 150%;
+		.title h2 {
+			font-size: 46px;
+			line-height: 69px;
+			text-align: left;
 		}
 
 		.btn {

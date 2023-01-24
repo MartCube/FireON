@@ -1,46 +1,61 @@
 <script setup lang="ts">
-enum ColorWord {
-	first = 'first',
-	last = 'last',
-}
+import { ColorWord } from "~/assets/types"
 
 const props = defineProps<{
 	src: string,
-	mode: ColorWord,	// first or last
+	mode: ColorWord,
+	noline?: boolean,
 }>()
 
 const word = props.mode == 'first' ? props.src.split(" ")[0] : props.src.split(" ").reverse()[0]
 const rest = props.src.replace(word, '')
 
-// write render function with option of h1 and h2 and if logic from template
-
 </script>
 
 <template>
-	<h2 class="title">
+	<div :class="['title', { line: !noline }]">
 		<template v-if="mode == 'first'">
-			<span>{{ word }}</span>{{ rest }}
+			<h2><span>{{ word }}</span>{{ rest }}</h2>
 		</template>
-		<template v-else-if="mode == 'last'">
-			{{ rest }}<span>{{ word }}</span>
+		<template v-else>
+			<h2>{{ rest }}<span>{{ word }}</span></h2>
 		</template>
-	</h2>
+	</div>
 </template>
+
 <style lang="scss" scoped>
 .title {
 	width: 100%;
 	margin-bottom: 4rem;
 
-	text-transform: uppercase;
-	text-align: center;
-	font-size: 29px;
-	font-weight: 400;
-	line-height: 49px;
-	color: $white;
+	display: flex;
+	flex-direction: column;
+	justify-items: center;
+	align-items: center;
 
-	span {
-		color: $primary;
+	h2 {
+		text-transform: uppercase;
+		font-size: 29px;
+		font-weight: 400;
+		line-height: 49px;
+		color: $white;
+
+		span {
+			color: $primary;
+		}
 	}
 
+
+	&.line {
+		&::after {
+			content: '';
+			margin-top: 1.25rem;
+			width: 100%;
+			max-width: 15rem;
+			height: 1px;
+			opacity: 0.8;
+			background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
+		}
+	}
 }
 </style>

@@ -12,7 +12,9 @@ defineProps<{
 <template>
 	<section class="contact">
 		<ContactForm :data="form" />
-		<nuxt-img :src="image" provider="sanity" loading="lazy" />
+		<div class="image">
+			<nuxt-img :src="image" provider="sanity" loading="lazy" />
+		</div>
 	</section>
 </template>
 
@@ -24,10 +26,13 @@ defineProps<{
 
 
 	.image {
-		width: 20rem;
+		width: 540px;
+		height: 580px;
 
 		img {
 			width: 100%;
+			height: 100%;
+
 		}
 	}
 }

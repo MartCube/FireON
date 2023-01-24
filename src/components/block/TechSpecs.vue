@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { ColorWord } from "~/assets/types"
+import type { TechSpec } from "~/assets/types"
 
-interface techSpec {
-	title: string,
-	icon: string,
-	description: string,
-}
+
 
 defineProps<{
 	title: string,
-	list: techSpec[],
+	list: TechSpec[],
 }>()
 </script>
 
@@ -66,9 +63,6 @@ defineProps<{
 			}
 		}
 	}
-
-
-
 
 }
 </style>

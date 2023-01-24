@@ -11,11 +11,13 @@ defineProps<{
 <template>
 	<section class="about">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
-		<div class="image">
-			<nuxt-img :src="image" provider="sanity" loading="lazy" />
-		</div>
-		<div class="content">
-			<SanityContent :blocks="content" />
+		<div class="wrap">
+			<div class="image">
+				<nuxt-img :src="image" format="png" provider="sanity" loading="lazy" />
+			</div>
+			<div class="content">
+				<SanityContent :blocks="content" />
+			</div>
 		</div>
 	</section>
 </template>
@@ -23,30 +25,37 @@ defineProps<{
 <style lang="scss" >
 .about {
 
-	// flex-direction: column;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
 
-	.image {
-		width: 40%;
+	.wrap {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
 
+		.image {
+			width: 453px;
 
-		img {
-			width: 15rem;
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				display: block;
+			}
 		}
-	}
 
-	.content {
-		width: 40%;
+		.content {
+			width: 45%;
 
-		p {
-			max-width: 32rem;
-			margin-bottom: 2rem;
-			color: $white50;
+			p {
+				max-width: 32rem;
+				margin-bottom: 2rem;
+				color: $white50;
 
-			font-size: .875rem;
-			line-height: 1.8125rem;
+				font-size: .875rem;
+				line-height: 1.8125rem;
+			}
 		}
 	}
 }
