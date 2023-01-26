@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCycleList, onKeyStroke, useSwipe } from '@vueuse/core'
-import { ColorWord } from '~~/src/assets/types';
+import { useCycleList, onKeyStroke, onClickOutside, useSwipe } from '@vueuse/core'
+import { ColorWord } from '~~/src/types'
 
 const props = defineProps<{
 	title: string,
@@ -8,14 +8,20 @@ const props = defineProps<{
 	button: string,
 }>()
 
-
-const isOpen = ref(false) // open & close lightbox
+const img = ref(null)	// image ref
+const isOpen = ref(false) // toggle lightbox
 const { state, next, prev, index } = useCycleList(props.list)
 
+// open lightbox
 function Open(value: number) {
 	isOpen.value = true
 	index.value = value
 }
+
+// close lightbox
+onClickOutside(img, (event) => {
+	isOpen.value = false
+})
 
 // onKeyStroke
 onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
@@ -33,11 +39,12 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 	}
 })
 
-
+// TODO
 // add swipe
-// const img = ref(null)
 // const { isSwiping, direction } = useSwipe(img)
 
+
+// TODO
 // add loading animation
 
 </script>
@@ -50,14 +57,17 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 				<nuxt-img :src="image" width="740" height="526" provider="sanity" loading="lazy" />
 			</div>
 		</div>
-		<div v-if="isOpen" :class="['lightbox']">
-			<nuxt-img ref="img" :src="state" width="740" height="526" provider="sanity" loading="lazy" />
-			<Icon @click="prev()" class="prev" name="IconArrow" />
-			<Icon @click="next()" class="next" name="IconArrow" />
-			<Icon @click="isOpen = false" class="close" name="IconClose" />
+		<div v-if="isOpen" class="lightbox">
+			<div class="image" ref="img">
+				<nuxt-img :src="state" width="1280" height="720" provider="sanity" loading="lazy" />
+				<Icon class="prev" @click="prev()" name="IconArrow" />
+				<Icon class="next" @click="next()" name="IconArrow" />
+				<Icon class="close" @click="isOpen = false" name="IconClose" />
+			</div>
 		</div>
 	</section>
 </template>
+
 <style lang="scss" scoped>
 .gallery {
 
@@ -72,62 +82,51 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: $dark30;
-
+		background-color: $dark80;
 
 		display: flex;
 		justify-content: center;
 		align-items: center;
 
-		.prev {
+		.image {
+			height: 90%;
+			user-select: none;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+			}
+		}
+
+		.icon {
 			position: absolute;
-			top: 50%;
-			left: 1rem;
-			border: 1px solid $dark50;
+			width: 3rem;
+			height: 3rem;
 			stroke: $white50;
+			fill: none;
+			transition: all 0.2s ease;
 
 			&:hover {
 				cursor: pointer;
-				stroke: $white;
+				stroke: $primary;
 			}
+		}
 
+		.prev {
+			top: 50%;
+			left: 1rem;
 			transform: rotate(180deg);
-			width: 3rem;
-			height: 3rem;
 		}
 
 		.next {
-			position: absolute;
 			top: 50%;
 			right: 1rem;
-			border: 1px solid $dark50;
-
-			&:hover {
-				cursor: pointer;
-				stroke: $white;
-			}
-
-			stroke: $white50;
-
-			width: 3em;
-			height: 3rem;
 		}
 
 		.close {
-			position: absolute;
 			top: 1rem;
 			right: 1rem;
-			border: 1px solid $dark50;
-
-			&:hover {
-				cursor: pointer;
-				stroke: $white;
-			}
-
-			stroke: $white50;
-
-			width: 3em;
-			height: 3rem;
 		}
 	}
 

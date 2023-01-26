@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useField } from 'vee-validate'
 import { toRef } from 'vue'
-import type { TextField } from "~/assets/types";
+import type { TextField } from "~~/src/types";
 
 const props = defineProps<{ data: TextField }>()
 const nameRef = toRef(props.data, 'name')

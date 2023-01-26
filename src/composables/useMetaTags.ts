@@ -1,4 +1,4 @@
-import type { MetaTags } from "~~/src/assets/types";
+import type { MetaTags } from "~~/src/types";
 import imageUrlBuilder from '@sanity/image-url'
 
 export default (data: MetaTags) => {

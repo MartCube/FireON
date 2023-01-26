@@ -1,23 +1,22 @@
-<template>
-	<NuxtLink class="btn" :to="link">
-		<span>
-			<slot></slot>
-
-		</span>
-	</NuxtLink>
-</template>
-
-
 <script setup lang="ts">
 defineProps<{
 	link?: string | "/",
 }>()
 </script>
 
+<template>
+	<NuxtLink class="btn" :to="link">
+		<span>
+			<slot></slot>
+		</span>
+	</NuxtLink>
+</template>
+
 <style lang="scss" scoped>
 .btn {
 	width: fit-content;
-	padding: 12px 56px;
+	height: 50px;
+	padding: 0 56px;
 	border: 1px solid $primary;
 	background: transparent;
 	transform: skew(-15deg);
@@ -25,6 +24,8 @@ defineProps<{
 	user-select: none;
 
 	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	span {
 		z-index: 2;

@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { storeToRefs } from 'pinia'
+
+const { smedias, logo, links } = storeToRefs(useAppStore())
+</script>
+
 <template>
 	<footer>
 		<div class="links">
@@ -14,12 +20,6 @@
 		</div>
 	</footer>
 </template>
-
-<script setup lang="ts">
-import { storeToRefs } from 'pinia'
-
-const { smedias, logo, links } = storeToRefs(useAppStore())
-</script>
 
 <style lang="scss" scoped>
 footer {

@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import type { ContactForm } from "~/assets/types"
+import type { ContactForm } from "~~/src/types"
 
 
 defineProps<{
@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-	<section class="contact">
+	<section id="contact">
 		<ContactForm :data="form" />
 		<div class="image">
 			<nuxt-img :src="image" provider="sanity" loading="lazy" />
@@ -20,19 +20,17 @@ defineProps<{
 
 
 <style lang="scss" scoped>
-.contact {
+#contact {
 	justify-content: space-between;
 	align-items: center;
 
 
 	.image {
-		width: 540px;
-		height: 580px;
+		width: 500px;
 
 		img {
 			width: 100%;
 			height: 100%;
-
 		}
 	}
 }

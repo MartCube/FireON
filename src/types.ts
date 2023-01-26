@@ -2,6 +2,7 @@ export enum ColorWord {
 	first = 'first',
 	last = 'last',
 }
+
 // app
 export interface Link {
 	title: string,
@@ -25,21 +26,33 @@ export interface App {
 	metaTags: MetaTags,
 }
 
-
-// contact form
-export interface TextField {
+// Magazine
+export interface MagazineCard {
 	name: string,
-	label: string,
-	placeholder: string,
+	uid: string,
+	info: {
+		size: string,
+		rem: string,
+		blk: string,
+	},
+	image: string,
 }
-export interface ContactForm {
-	title: string,
-	name: TextField,
-	phone: TextField,
-	message: TextField,
-	button: string,
+export interface Magazine {
+	name: string,
+	uid: string,
+	info: {
+		size: string,
+		rem: string,
+		blk: string,
+	},
+	price: string,
+	colors: {
+		name: string,
+		hexcode: string,
+	},
+	description: any[],
+	gallery: string[],
 }
-
 
 // blocks 
 export interface TechSpec {
@@ -56,4 +69,18 @@ export interface Feature {
 	title: string,
 	image: string,
 	description: string,
+}
+
+// contact form
+export interface TextField {
+	name: string,
+	label: string,
+	placeholder: string,
+}
+export interface ContactForm {
+	title: string,
+	name: TextField,
+	phone: TextField,
+	message: TextField,
+	button: string,
 }

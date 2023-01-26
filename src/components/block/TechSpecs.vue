@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ColorWord } from "~/assets/types"
-import type { TechSpec } from "~/assets/types"
-
-
+import { ColorWord } from "~~/src/types"
+import type { TechSpec } from "~~/src/types"
 
 defineProps<{
 	title: string,

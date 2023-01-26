@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ColorWord } from "~/assets/types"
+import { ColorWord } from "~~/src/types"
 
 defineProps<{
 	title: string,
@@ -12,7 +12,7 @@ defineProps<{
 	<section class="intro">
 		<div class="wrap">
 			<TitleBlock :src="title" :mode="ColorWord.first" noline />
-			<Btn>{{ button }}</Btn>
+			<LinkBtn>{{ button }}</LinkBtn>
 		</div>
 		<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />
 	</section>
@@ -20,9 +20,10 @@ defineProps<{
 
 <style lang="scss" >
 .intro {
-	height: 25rem;
+	height: 26rem;
 	justify-content: space-between;
 	align-items: center;
+	background: url('/bg.png');
 
 	.wrap {
 		width: 50%;

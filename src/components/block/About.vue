@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ColorWord } from "~/assets/types"
+import { ColorWord } from "~~/src/types"
 
 defineProps<{
 	title: string,
@@ -9,21 +9,19 @@ defineProps<{
 </script>
 
 <template>
-	<section class="about">
+	<section id="about">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="wrap">
 			<div class="image">
 				<nuxt-img :src="image" format="png" provider="sanity" loading="lazy" />
 			</div>
-			<div class="content">
-				<SanityContent :blocks="content" />
-			</div>
+			<RichText :blocks="content" />
 		</div>
 	</section>
 </template>
 
 <style lang="scss" >
-.about {
+#about {
 
 	flex-wrap: wrap;
 	justify-content: center;
@@ -45,7 +43,7 @@ defineProps<{
 			}
 		}
 
-		.content {
+		.rich_text {
 			width: 45%;
 
 			p {

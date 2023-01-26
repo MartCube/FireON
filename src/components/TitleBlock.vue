@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ColorWord } from "~/assets/types"
+import { ColorWord } from "~~/src/types"
 
 const props = defineProps<{
 	src: string,

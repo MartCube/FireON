@@ -5,7 +5,7 @@ export const AppQuery = groq`*[ _type == 'app'][0]{
 	content[]{
 		_type == 'intro' => { ..., 'image':image.asset._ref },
 		_type == 'features' => { ..., list[]{ title, description, "image":image.asset._ref } },
-		_type == 'magazines' => { ... },
+		_type == 'magazines' => { ..., list[]->{ name, "uid": uid.current, info, "image": gallery[0].asset._ref, } },
 		_type == 'cta' => { ..., "image": image.asset._ref },
 		_type == 'techSpecs' => { ..., list[]{ title, icon, description } },
 		_type == 'about' => { ..., 'image':image.asset._ref },
@@ -18,4 +18,14 @@ export const AppQuery = groq`*[ _type == 'app'][0]{
 		description,
 		"image": image.asset._ref,
 	},
+}`
+
+export const MagazineQuery = groq`*[ _type == 'magazine' && uid.current == $uid][0]{
+	name,
+	"uid": uid.current,
+	info,
+	price,
+	description[],
+	colors[]->{ name, hexcode },
+	"gallery": gallery[].asset._ref,
 }`

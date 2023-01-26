@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ColorWord } from "~/assets/types"
-import type { Feature } from "~/assets/types"
+import { ColorWord } from "~~/src/types"
+import type { Feature } from "~~/src/types"
 
 const props = defineProps<{
 	title: string,
@@ -20,7 +20,7 @@ const activeTab = ref(props.list[0])
 		</div>
 		<div class="active_tab">
 			<div class="image">
-				<nuxt-img :src="activeTab.image" provider="sanity" loading="lazy" />
+				<nuxt-img :src="activeTab.image" format="png" provider="sanity" loading="lazy" />
 			</div>
 			<div class="content">
 				<h3>{{ activeTab.title }}</h3>
@@ -81,13 +81,18 @@ const activeTab = ref(props.list[0])
 	}
 
 	.active_tab {
+		width: 100%;
+		margin-top: 4rem;
+
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 
+
 		.image {
-			width: 374px;
-			height: 388px;
+			margin: 0 4rem;
+			width: 240;
+			height: 340px;
 
 			img {
 				width: 100%;
@@ -97,7 +102,6 @@ const activeTab = ref(props.list[0])
 
 		.content {
 			width: 49%;
-			margin-top: 4rem;
 
 			h3 {
 				text-transform: uppercase;

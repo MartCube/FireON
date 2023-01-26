@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ColorWord } from "~/assets/types"
-import type { Partner } from "~/assets/types"
+import { ColorWord } from "~~/src/types"
+import type { Partner } from "~~/src/types"
 
 
 

@@ -4,23 +4,19 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
 
 	srcDir: 'src',
+	css: ["@/assets/css/app.scss"],
+	typescript: { strict: true, typeCheck: true, shim: false },
 	components: {
 		"dirs": [
 			{ "path": "~/components", "global": true },
-			{ "path": "~/components/icon", "global": true },
-			// { "path": "~/components/block", "global": true },
-		]
+		],
 	},
-	typescript: { strict: true, typeCheck: true, shim: false },
 	app: {
 		pageTransition: { name: 'page', mode: 'out-in' },
 		head: {
 			link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }]
 		}
 	},
-	css: [
-		"@/assets/css/app.scss"
-	],
 
 	modules: [
 		'nuxt-icon',
@@ -28,11 +24,11 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 		'@nuxt/image-edge',
 		// '@nuxtjs/i18n',
+		// '~/modules/purge-comments'
 		'~/modules/style-inlining'
 	],
 
 	icon: {
-		// https://icones.js.org/collection/ri
 		size: '24px',
 		class: 'icon',
 	},
@@ -41,7 +37,7 @@ export default defineNuxtConfig({
 		projectId: process.env.SANITY_ID,
 		dataset: process.env.SANITY_DATASET,
 		minimal: true,
-		apiVersion: '2022-11-21'
+		apiVersion: '2022-10-21'
 	},
 
 	image: {
@@ -49,8 +45,6 @@ export default defineNuxtConfig({
 			projectId: process.env.SANITY_ID,
 		}
 	},
-
-
 
 	vite: {
 		css: {
@@ -64,6 +58,4 @@ export default defineNuxtConfig({
 	// nitro: {},
 	// hooks: {},
 	// webpack: {},
-
-
 })

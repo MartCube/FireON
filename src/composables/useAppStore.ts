@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import type { App } from "~/assets/types"
-import { AppQuery } from "~/assets/queries"
+import type { App } from "~~/src/types"
+import { AppQuery } from "~~/src/queries"
 
 export default defineStore('AppStore', () => {
 

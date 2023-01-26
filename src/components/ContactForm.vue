@@ -2,15 +2,15 @@
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
 import { z } from 'zod';
-import type { ContactForm } from "~/assets/types";
-import { ColorWord } from "~/assets/types";
+import type { ContactForm } from "~~/src/types";
+import { ColorWord } from "~~/src/types";
 
 defineProps<{ data: ContactForm }>()
-const showMsg = ref(false)
-const form = ref<HTMLFormElement | null>(null)
+
+const showMsg = ref(false) // toggle msg
+const form = ref<HTMLFormElement | null>(null) // form ref
 const validationSchema = toFormValidator(
 	z.object({
-		// email: z.string().min(1, 'Required').email(),
 		name: z.string().min(1, 'Required'),
 		phone: z.string().min(1, 'Required'),
 		message: z.string().min(1, 'Required').max(120),
@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(async (values, actions) => {
 
 		<div v-if="showMsg" class="msg">
 			<TitleBlock src="message send" :mode="ColorWord.first" />
-			<Btn @click="showMsg = false">write new message</Btn>
+			<LinkBtn @click="showMsg = false">write new message</LinkBtn>
 		</div>
 	</form>
 </template>
