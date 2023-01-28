@@ -37,6 +37,10 @@ export interface MagazineCard {
 	},
 	image: string,
 }
+export interface Color {
+	name: string,
+	hexcode: string,
+}
 export interface Magazine {
 	name: string,
 	uid: string,
@@ -46,10 +50,7 @@ export interface Magazine {
 		blk: string,
 	},
 	price: string,
-	colors: {
-		name: string,
-		hexcode: string,
-	},
+	colors: Color[],
 	description: any[],
 	gallery: string[],
 }
