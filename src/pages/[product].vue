@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { MagazineQuery } from "~~/src/queries"
-import type { Magazine } from "~~/src/types"
-
+import type { Magazine, Product } from "~~/src/types"
 
 // fetch data
 const { params } = useRoute()
@@ -17,6 +16,42 @@ if (!data.value) throw createError({
 	statusMessage: `Magazine - ${params.product} Not Found`,
 	fatal: true
 })
+
+
+let product: Product = {
+	name: data.value!.name,
+	image: data.value!.gallery[0],
+	price: data.value!.price,
+	color: data.value!.colors[0].name,
+	count: 1,
+}
+function GetColor(value: string) {
+	product.color = value
+}
+function GetCount(value: number) {
+	product.count = value
+}
+// component refs to call exposed reset()
+const colors = ref()
+const counter = ref()
+function AddToBasket() {
+	// add to BasketStore
+	const { addProduct } = useBasketStore()
+	addProduct(product)
+
+
+	// reset values
+	product = {
+		name: data.value!.name,
+		image: data.value!.gallery[0],
+		price: data.value!.price,
+		color: data.value!.colors[0].name,
+		count: 1,
+	}
+	colors.value.reset()
+	counter.value.reset()
+}
+
 
 // write metatags
 </script>
@@ -38,15 +73,17 @@ if (!data.value) throw createError({
 					<span class="price">
 						<Icon name="IconMoney" />
 						{{ data.price }}
-						ГРН <!-- get currency from store -->
+						ГРН <!-- i18n -->
 					</span>
 				</div>
-
-				<BoxColors :data="data.colors" />
-
+				<BoxColors ref="colors" :data="data.colors" @color="GetColor" />
 				<div class="description">
-					<h3>Характеристики</h3>
+					<h4>Характеристики</h4> <!-- i18n const -->
 					<RichText :blocks="data.description" />
+				</div>
+				<div class="btn_group">
+					<CounterBtn ref="counter" :data="1" @count="GetCount" />
+					<AppBtn value="у кошик" @click="AddToBasket()" /><!--  i18n const -->
 				</div>
 			</div>
 		</template>
@@ -108,6 +145,13 @@ if (!data.value) throw createError({
 
 		.description {
 			width: 100%;
+		}
+
+		.btn_group {
+			width: 25rem;
+			margin-top: 2rem;
+			display: flex;
+			justify-content: space-between;
 		}
 	}
 }

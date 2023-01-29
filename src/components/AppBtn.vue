@@ -1,15 +1,13 @@
 <script setup lang="ts">
 defineProps<{
-	link?: string | "/",
+	value: string,
 }>()
 </script>
 
 <template>
-	<NuxtLink class="btn" :to="link">
-		<span>
-			<slot></slot>
-		</span>
-	</NuxtLink>
+	<button class="btn">
+		<span>{{ value }}</span>
+	</button>
 </template>
 
 <style lang="scss" scoped>
@@ -17,8 +15,8 @@ defineProps<{
 	width: fit-content;
 	height: 50px;
 	padding: 0 56px;
-	border: 1px solid $primary;
-	background: transparent;
+	border: none;
+	background: $primary;
 	transform: skew(-15deg);
 	cursor: pointer;
 	user-select: none;
@@ -32,18 +30,19 @@ defineProps<{
 		transform: skew(15deg);
 
 		text-transform: uppercase;
-		color: $primary;
+		color: $dark;
 		font-weight: 400;
-		font-size: .875rem;
-		line-height: 1.5rem;
+		font-size: 1rem;
+		line-height: 1.7rem;
 	}
 
 	&:hover {
-		background: $primary30;
+		background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #D6AE21;
+		;
 	}
 
 	&:active {
-		background: $primary50;
+		background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), #D6AE21;
 	}
 
 }

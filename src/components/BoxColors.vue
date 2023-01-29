@@ -2,15 +2,22 @@
 import type { Color } from "~~/src/types"
 
 const props = defineProps<{ data: Color[] }>()
-
 const activeColor = ref(props.data[0].name) // first color as default
+
+defineEmits<{ (e: 'color', color: string): void }>()
+
+function reset() {
+	activeColor.value = props.data[0].name
+}
+
+defineExpose({ reset })
 </script>
 
 <template>
 	<div class="colors">
-		<h3>Виберіть колір</h3>
-		<label v-for="(color, i) in data" :key="color.name" class="color">
-			<input v-model="activeColor" :value="color.name" :name="color.name" :style="{ background: `#${color.hexcode}` }" type="radio" :checked="i == 0" />
+		<h4>Виберіть колір</h4> <!-- i18n const -->
+		<label v-for="(color, i) in data" :key="color.name" @click="$emit('color', color.name)" class="color">
+			<input v-model="activeColor" :value="color.name" :style="{ background: `#${color.hexcode}` }" name="color" type="radio" />
 			{{ color.name }}
 		</label>
 	</div>

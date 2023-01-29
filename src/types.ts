@@ -49,11 +49,21 @@ export interface Magazine {
 		rem: string,
 		blk: string,
 	},
-	price: string,
+	price: number,
 	colors: Color[],
 	description: any[],
 	gallery: string[],
 }
+// Product
+export interface Product {
+	name: string,
+	image: string,
+	color: string,
+	price: number,
+	count: number,
+}
+
+
 
 // blocks 
 export interface TechSpec {
