@@ -4,20 +4,23 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
 
 	srcDir: 'src',
+
 	css: ["@/assets/css/app.scss"],
+
 	typescript: { strict: true, typeCheck: true, shim: false },
+
 	components: {
 		"dirs": [
 			{ "path": "~/components", "global": true },
 		],
 	},
+
 	app: {
 		pageTransition: { name: 'page', mode: 'out-in' },
 		head: {
 			link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }]
 		}
 	},
-
 
 	modules: [
 		'nuxt-icon',

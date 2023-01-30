@@ -24,9 +24,9 @@ onClickOutside(basketRef, () => toggleModal())
 				<span class="price">{{ product.price * product.count }}</span>
 			</div>
 		</div>
-		<div class="total_price">
-			Сума: {{ totalPrice }} ГРН <!-- i18n  -->
-		</div>
+		<p class="total_price">
+			Сума: <span>{{ totalPrice }} ГРН</span><!-- i18n  -->
+		</p>
 	</div>
 </template>
 
@@ -46,6 +46,10 @@ onClickOutside(basketRef, () => toggleModal())
 
 	display: flex;
 	flex-direction: column;
+
+	h2 {
+		margin-bottom: 1rem;
+	}
 
 	.products {
 		width: 100%;
@@ -90,8 +94,30 @@ onClickOutside(basketRef, () => toggleModal())
 			}
 
 			.price {
+				text-align: right;
+				min-width: 3rem;
 				height: min-content;
 			}
+
+			&:last-of-type {
+				border: none;
+			}
+		}
+	}
+
+	.total_price {
+		margin-top: 1rem;
+		align-self: flex-end;
+
+		color: $white50;
+		text-transform: uppercase;
+		font-size: .75rem;
+		line-height: 1.25rem;
+
+		span {
+			color: $primary;
+			font-size: 1rem;
+			line-height: 1.7rem;
 		}
 	}
 

@@ -33,17 +33,15 @@ defineExpose({ reset })
 	align-items: center;
 
 
-	*> {
-		z-index: 2;
-		transform: skew(15deg);
-	}
+
 
 	.dec,
 	.inc,
 	.count {
+		padding: 0.5rem 1.5rem;
+		transform: skew(15deg);
 		border: none;
 		background: transparent;
-		padding: 0.5rem 1.5rem;
 
 		text-transform: uppercase;
 		color: $white30;
