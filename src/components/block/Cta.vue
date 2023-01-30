@@ -17,6 +17,7 @@ defineProps<{
 			<TitleBlock :src="title" :mode="ColorWord.last" noline />
 			<LinkBtn>{{ button }}</LinkBtn>
 		</div>
+		<nuxt-img class="bg" src="/bg.png" loading="lazy" />
 	</section>
 </template>
 
@@ -29,16 +30,20 @@ defineProps<{
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
-	background: url('/bg.png');
-
 	position: relative;
 
-
+	.bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
 
 	.wrap {
 		width: 50%;
 		margin-bottom: 4rem;
-
+		z-index: 2;
 
 		.title {
 			margin: 0;
@@ -60,6 +65,7 @@ defineProps<{
 		width: 25rem;
 		height: 18.75rem;
 		display: flex;
+		z-index: 2;
 
 		img {
 			width: 100%;

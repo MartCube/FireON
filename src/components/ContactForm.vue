@@ -37,7 +37,7 @@ const onSubmit = handleSubmit(async (values, actions) => {
 		</button>
 
 		<div v-if="showMsg" class="msg">
-			<TitleBlock src="message send" :mode="ColorWord.first" />
+			<h4>message send</h4> <!-- i18n -->
 			<LinkBtn @click="showMsg = false">write new message</LinkBtn>
 		</div>
 	</form>

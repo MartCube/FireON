@@ -10,135 +10,146 @@ onClickOutside(basketRef, () => toggleModal())
 </script>
 
 <template>
-	<div v-if="showModal" id="basket" ref="basketRef">
-		<IconClose class="close" @click="toggleModal()" />
-		<h2>кошик</h2> <!-- i18n  -->
-
-
-		<template v-if="products.length">
-			<div class="products">
-				<div class="product" v-for="product in products" :key="product.name">
-					<SanityImage :src="product.image" :width="200" />
-					<div class="info">
-						<span>{{ product.name }}</span>
-						<div class="color" :style="{ background: `#${product.color.hexcode}` }" />
+	<div class="overlay" v-if="showModal">
+		<div id="basket" ref="basketRef">
+			<IconClose class="close" @click="toggleModal()" />
+			<h2>кошик</h2> <!-- i18n  -->
+			<template v-if="products.length">
+				<div class="products">
+					<div class="product" v-for="product in products" :key="product.name">
+						<SanityImage :src="product.image" :width="200" />
+						<div class="info">
+							<span>{{ product.name }}</span>
+							<div class="color" :style="{ background: `#${product.color.hexcode}` }" />
+						</div>
+						<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" />
+						<span class="price">{{ product.price * product.count }}</span>
 					</div>
-					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" />
-					<span class="price">{{ product.price * product.count }}</span>
 				</div>
-			</div>
-			<p class="total_price">
-				Сума: <span>{{ totalPrice }} ГРН</span><!-- i18n  -->
-			</p>
-		</template>
-
-		<template v-else>
-			<p>There are no items in your basket.</p> <!-- i18n  -->
-		</template>
+				<p class="total_price">
+					Сума: <span>{{ totalPrice }} ГРН</span><!-- i18n  -->
+				</p>
+			</template>
+			<template v-else>
+				<p>There are no items in your basket.</p> <!-- i18n  -->
+			</template>
+		</div>
 	</div>
 </template>
 
 <style lang="scss" scoped>
-#basket {
-	width: 34.5rem;
-	min-height: 20rem;
-	padding: 2.6rem;
-	border: 1px solid $white10;
-	background: $dark;
-
+.overlay {
+	z-index: 3;
 	position: fixed;
-	z-index: 5;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: $dark30;
 
-	display: flex;
-	flex-direction: column;
+	#basket {
+		width: 34.5rem;
+		min-height: 20rem;
+		padding: 2.6rem;
+		border: 1px solid $white10;
+		background: $dark;
 
-	h2 {
-		margin-bottom: 1rem;
-	}
+		position: fixed;
+		z-index: 5;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 
-	.products {
-		width: 100%;
 		display: flex;
 		flex-direction: column;
 
-		.product {
+		h2 {
+			margin-bottom: 1rem;
+		}
+
+		.products {
 			width: 100%;
 			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 1.5rem 0;
-			border-bottom: 1px solid $white10;
+			flex-direction: column;
 
-			.image {
-				width: 4.5rem;
-			}
-
-			.info {
+			.product {
+				width: 100%;
 				display: flex;
-				// flex-direction: column;
+				justify-content: space-between;
 				align-items: center;
+				padding: 1.5rem 0;
+				border-bottom: 1px solid $white10;
 
-				span {
-					font-size: 14px;
-					font-weight: 400;
-					line-height: 1.5rem;
+				.image {
+					width: 4.5rem;
 				}
 
-				.color {
-					margin-left: 1rem;
-					width: 1rem;
-					height: 1rem;
-					border: 1px solid $white20;
-					transform: skew(-15deg);
+				.info {
+					display: flex;
+					// flex-direction: column;
+					align-items: center;
 
+					span {
+						font-size: 14px;
+						font-weight: 400;
+						line-height: 1.5rem;
+					}
+
+					.color {
+						margin-left: 1rem;
+						width: 1rem;
+						height: 1rem;
+						border: 1px solid $white20;
+						transform: skew(-15deg);
+
+					}
+				}
+
+				.counter_btn {
+					max-width: 7.5rem;
+				}
+
+				.price {
+					text-align: right;
+					min-width: 3rem;
+					height: min-content;
+				}
+
+				&:last-of-type {
+					border: none;
 				}
 			}
+		}
 
-			.counter_btn {
-				max-width: 7.5rem;
-			}
+		.total_price {
+			margin-top: 1rem;
+			align-self: flex-end;
 
-			.price {
-				text-align: right;
-				min-width: 3rem;
-				height: min-content;
-			}
+			color: $white50;
+			text-transform: uppercase;
+			font-size: .75rem;
+			line-height: 1.25rem;
 
-			&:last-of-type {
-				border: none;
+			span {
+				color: $primary;
+				font-size: 1rem;
+				line-height: 1.7rem;
 			}
 		}
-	}
 
-	.total_price {
-		margin-top: 1rem;
-		align-self: flex-end;
+		.close {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+			stroke: $white30;
 
-		color: $white50;
-		text-transform: uppercase;
-		font-size: .75rem;
-		line-height: 1.25rem;
-
-		span {
-			color: $primary;
-			font-size: 1rem;
-			line-height: 1.7rem;
+			&:hover {
+				cursor: pointer;
+				stroke: $primary;
+			}
 		}
-	}
 
-	.close {
-		position: absolute;
-		top: 1rem;
-		right: 1rem;
-		stroke: $white30;
 
-		&:hover {
-			cursor: pointer;
-			stroke: $primary;
-		}
 	}
 }
 </style>
