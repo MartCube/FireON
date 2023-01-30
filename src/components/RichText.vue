@@ -16,5 +16,14 @@ defineProps<{ blocks: any[] }>()
 		color: $white30;
 		margin-bottom: 0.35rem;
 	}
+
+	p {
+		max-width: 32rem;
+		margin-bottom: 2rem;
+		color: $white50;
+
+		font-size: .875rem;
+		line-height: 1.8125rem;
+	}
 }
 </style>

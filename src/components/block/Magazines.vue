@@ -19,7 +19,7 @@ defineProps<{
 </template>
 
 
-<style lang="scss" >
+<style lang="scss" scoped>
 #magazines {
 
 	display: flex;
@@ -32,7 +32,16 @@ defineProps<{
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
+		flex-wrap: wrap;
 
+
+		.magazine_card {
+			margin-bottom: 8rem;
+
+			&:nth-last-child(-n + 2) {
+				margin: 0;
+			}
+		}
 	}
 }
 </style>

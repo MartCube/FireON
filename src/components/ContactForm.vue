@@ -54,10 +54,12 @@ form {
 
 	.title {
 		align-items: flex-start;
+		margin-bottom: 2rem;
 	}
 
 	button {
 		width: fit-content;
+		margin-top: 2rem;
 		margin-left: 0.5rem;
 		padding: 12px 56px;
 		border: 1px solid $primary;

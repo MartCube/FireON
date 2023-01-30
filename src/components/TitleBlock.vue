@@ -26,7 +26,7 @@ const rest = props.src.replace(word, '')
 <style lang="scss" scoped>
 .title {
 	width: 100%;
-	margin-bottom: 4rem;
+	margin-bottom: 8rem;
 
 	display: flex;
 	flex-direction: column;

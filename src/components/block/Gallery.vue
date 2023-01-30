@@ -50,7 +50,7 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 </script>
 
 <template>
-	<section class="gallery">
+	<section id="gallery">
 		<TitleBlock :src="title" :mode="ColorWord.first" />
 		<div class="grid">
 			<div v-for="(image, index) in list" :key="index" @click="Open(index)" class="placeholder">
@@ -69,8 +69,8 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 </template>
 
 <style lang="scss" scoped>
-.gallery {
-
+#gallery {
+	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -139,7 +139,9 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 		.placeholder {
 			width: 370px;
 			height: 263px;
-			margin-bottom: 5%;
+			margin-bottom: 4rem;
+
+
 
 			img {
 				width: 100%;

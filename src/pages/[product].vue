@@ -54,8 +54,12 @@ function AddToBasket() {
 </script>
 
 <template>
-	<div class="product">
+	<div id="product">
 		<template v-if="data && !pending">
+			<NuxtLink class="go_back" to="/#magazines">
+				<Icon name="IconArrow" />
+			</NuxtLink>
+
 			<div class="gallery">
 				<SanityImage :src="data.gallery[0]" :width="300" />
 			</div>
@@ -90,7 +94,7 @@ function AddToBasket() {
 
 
 <style lang="scss" scoped>
-.product {
+#product {
 	width: 100%;
 	height: 100%;
 	min-height: 100vh;
@@ -100,6 +104,29 @@ function AddToBasket() {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	position: relative;
+
+	.go_back {
+		z-index: 2;
+		position: absolute;
+		top: 5rem;
+		left: 10%;
+
+		.icon {
+			width: 3rem;
+			height: 3rem;
+			stroke: $primary30;
+			transform: rotate(180deg);
+
+
+		}
+
+		&:hover .icon {
+			stroke: $primary;
+		}
+
+	}
 
 	.gallery {
 		width: 45%;

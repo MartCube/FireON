@@ -11,7 +11,7 @@ defineProps<{
 </script>
 
 <template>
-	<section class="partners">
+	<section id="partners">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="grid">
 			<nuxt-img v-for="partner in list" class="image" :src="partner.image" provider="sanity" loading="lazy" />
@@ -20,9 +20,11 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-.partners {
+#partners {
 	width: 100%;
 	padding: 4rem 0;
+
+	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;

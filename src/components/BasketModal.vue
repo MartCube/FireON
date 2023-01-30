@@ -13,20 +13,28 @@ onClickOutside(basketRef, () => toggleModal())
 	<div v-if="showModal" id="basket" ref="basketRef">
 		<IconClose class="close" @click="toggleModal()" />
 		<h2>кошик</h2> <!-- i18n  -->
-		<div class="products">
-			<div class="product" v-for="product in products" :key="product.name">
-				<SanityImage :src="product.image" :width="200" />
-				<div class="info">
-					<span>{{ product.name }}</span>
-					<div class="color" :style="{ background: `#${product.color.hexcode}` }" />
+
+
+		<template v-if="products.length">
+			<div class="products">
+				<div class="product" v-for="product in products" :key="product.name">
+					<SanityImage :src="product.image" :width="200" />
+					<div class="info">
+						<span>{{ product.name }}</span>
+						<div class="color" :style="{ background: `#${product.color.hexcode}` }" />
+					</div>
+					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" />
+					<span class="price">{{ product.price * product.count }}</span>
 				</div>
-				<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" />
-				<span class="price">{{ product.price * product.count }}</span>
 			</div>
-		</div>
-		<p class="total_price">
-			Сума: <span>{{ totalPrice }} ГРН</span><!-- i18n  -->
-		</p>
+			<p class="total_price">
+				Сума: <span>{{ totalPrice }} ГРН</span><!-- i18n  -->
+			</p>
+		</template>
+
+		<template v-else>
+			<p>There are no items in your basket.</p> <!-- i18n  -->
+		</template>
 	</div>
 </template>
 

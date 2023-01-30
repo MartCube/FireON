@@ -9,29 +9,47 @@ defineProps<{
 </script>
 
 <template>
-	<section class="intro">
+	<section id="intro">
 		<div class="wrap">
 			<TitleBlock :src="title" :mode="ColorWord.first" noline />
 			<LinkBtn>{{ button }}</LinkBtn>
 		</div>
-		<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />
+		<SanityImage :src="image" :width="640" />
+		<nuxt-img class="bg" src="/bg.png" loading="lazy" />
 	</section>
 </template>
 
 <style lang="scss" >
-.intro {
+#intro {
 	height: 26rem;
+	margin-bottom: 4rem;
+
+	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: url('/bg.png');
+	position: relative;
+
+	.bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
 
 	.wrap {
 		width: 50%;
+		z-index: 2;
 
-		.title h2 {
-			font-size: 46px;
-			line-height: 69px;
-			text-align: left;
+		.title {
+			margin: 0;
+
+			h2 {
+
+				font-size: 46px;
+				line-height: 69px;
+				text-align: left;
+			}
 		}
 
 		.btn {
@@ -41,10 +59,7 @@ defineProps<{
 
 	.image {
 		width: 20rem;
-
-		img {
-			width: 100%;
-		}
+		z-index: 2;
 	}
 }
 </style>

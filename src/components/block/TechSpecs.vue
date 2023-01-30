@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-	<section class="techSpecs">
+	<section id="techSpecs">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="grid">
 			<div v-for="item in list" class="spec">
@@ -23,8 +23,8 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-.techSpecs {
-
+#techSpecs {
+	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -33,6 +33,7 @@ defineProps<{
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
+
 
 		.spec {
 			width: 30%;
@@ -58,6 +59,10 @@ defineProps<{
 				font-size: .75rem;
 				line-height: 1.375rem;
 				color: $white30;
+			}
+
+			&:nth-last-child(-n + 3) {
+				margin: 0;
 			}
 		}
 	}

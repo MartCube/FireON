@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-	<div class="magazine-card">
+	<div class="magazine_card">
 		<SanityImage :src="data.image" :width="600" />
 		<div class="wrap">
 			<h3 class="title">{{ data.name }}</h3>
@@ -17,15 +17,16 @@ defineProps<{
 				<li>{{ data.info.rem }}REM</li>
 				<li>{{ data.info.blk }}BLK</li>
 			</ul>
-			<LinkBtn :link="`/${data.uid}/`">{{ button }}</LinkBtn>
+			<LinkBtn :link="`/${data.uid}/#product`">{{ button }}</LinkBtn>
 		</div>
 	</div>
 </template>
 
 
 <style lang="scss" scoped>
-.magazine-card {
-	width: 47.5%;
+.magazine_card {
+	width: 45%;
+
 	height: 14rem;
 	border: 1px solid $primary;
 	transform: skew(-15deg);

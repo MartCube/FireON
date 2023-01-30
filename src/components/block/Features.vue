@@ -11,7 +11,7 @@ const activeTab = ref(props.list[0])
 </script>
 
 <template>
-	<section class="features">
+	<section id="features">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="tabs">
 			<h3 v-for="item in list" :class="['tab', { active: item == activeTab }]" @click="activeTab = item">
@@ -19,9 +19,7 @@ const activeTab = ref(props.list[0])
 			</h3>
 		</div>
 		<div class="active_tab">
-			<div class="image">
-				<nuxt-img :src="activeTab.image" format="png" provider="sanity" loading="lazy" />
-			</div>
+			<SanityImage :src="activeTab.image" :width="640" />
 			<div class="content">
 				<h3>{{ activeTab.title }}</h3>
 				<p>{{ activeTab.description }}</p>
@@ -30,7 +28,8 @@ const activeTab = ref(props.list[0])
 	</section>
 </template>
 <style lang="scss" scoped>
-.features {
+#features {
+	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -90,14 +89,7 @@ const activeTab = ref(props.list[0])
 
 
 		.image {
-			margin: 0 4rem;
-			width: 240;
-			height: 340px;
-
-			img {
-				width: 100%;
-				height: 100%;
-			}
+			width: 20rem;
 		}
 
 		.content {

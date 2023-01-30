@@ -12,17 +12,15 @@ defineProps<{
 	<section id="about">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="wrap">
-			<div class="image">
-				<nuxt-img :src="image" format="png" provider="sanity" loading="lazy" />
-			</div>
+			<SanityImage :src="image" :width="640" />
 			<RichText :blocks="content" />
 		</div>
 	</section>
 </template>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 #about {
-
+	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -30,30 +28,15 @@ defineProps<{
 	.wrap {
 		width: 100%;
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-around;
+
 
 		.image {
-			width: 453px;
-
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: contain;
-				display: block;
-			}
+			width: 25rem;
 		}
 
 		.rich_text {
 			width: 45%;
-
-			p {
-				max-width: 32rem;
-				margin-bottom: 2rem;
-				color: $white50;
-
-				font-size: .875rem;
-				line-height: 1.8125rem;
-			}
 		}
 	}
 }

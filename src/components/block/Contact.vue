@@ -12,26 +12,20 @@ defineProps<{
 <template>
 	<section id="contact">
 		<ContactForm :data="form" />
-		<div class="image">
-			<nuxt-img :src="image" provider="sanity" loading="lazy" />
-		</div>
+		<SanityImage :src="image" :width="640" />
 	</section>
 </template>
 
 
 <style lang="scss" scoped>
 #contact {
+	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
 
 	.image {
-		width: 500px;
-
-		img {
-			width: 100%;
-			height: 100%;
-		}
+		width: 20rem;
 	}
 }
 </style>

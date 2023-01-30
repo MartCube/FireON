@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-	<section class="cta">
+	<section id="cta">
 		<div class="image">
 			<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />
 		</div>
@@ -21,9 +21,12 @@ defineProps<{
 </template>
 
 <style lang="scss">
-.cta {
+#cta {
 	width: 100%;
 	height: 23rem;
+	margin: 4rem 0;
+
+	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
 	background: url('/bg.png');
@@ -36,10 +39,16 @@ defineProps<{
 		width: 50%;
 		margin-bottom: 4rem;
 
-		.title h2 {
-			font-size: 38px;
-			line-height: 57px;
-			text-align: left;
+
+		.title {
+			margin: 0;
+
+
+			h2 {
+				font-size: 38px;
+				line-height: 57px;
+				text-align: left;
+			}
 		}
 
 		.btn {
