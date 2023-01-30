@@ -58,7 +58,7 @@ export interface Magazine {
 export interface Product {
 	name: string,
 	image: string,
-	color: string,
+	color: Color,
 	price: number,
 	count: number,
 }

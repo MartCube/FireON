@@ -4,36 +4,46 @@ import { useCounter } from '@vueuse/core'
 const props = defineProps<{ data: number }>()
 const { count, inc, dec, reset } = useCounter(props.data, { min: 1, max: 100 })
 
-defineEmits<{ (e: 'count', count: number): void }>()
+defineEmits<{
+	(e: 'dec', count: number): void,
+	(e: 'inc', count: number): void,
+}>()
 defineExpose({ reset })
 </script>
 
 <template>
-	<button class="btn">
-		<span class="dec" @click="$emit('count', dec())">-</span>
+	<div class="counter_btn">
+		<button class="dec" @click="$emit('dec', dec())" :disabled="count <= 1">-</button>
 		<span class="count">{{ count }}</span>
-		<span class="inc" @click="$emit('count', inc())">+</span>
-	</button>
+		<button class="inc" @click="$emit('inc', inc())" :disabled="count >= 99">+</button>
+	</div>
 </template>
 
 <style lang="scss" scoped>
-.btn {
+.counter_btn {
 	width: 100%;
-	max-width: 120px;
+	max-width: 200px;
 	height: 50px;
 	border: 1px solid $white30;
-	background: transparent;
 	transform: skew(-15deg);
-	cursor: pointer;
 	user-select: none;
 
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 
-	span {
+
+	*> {
 		z-index: 2;
 		transform: skew(15deg);
+	}
+
+	.dec,
+	.inc,
+	.count {
+		border: none;
+		background: transparent;
+		padding: 0.5rem 1.5rem;
 
 		text-transform: uppercase;
 		color: $white30;
@@ -43,24 +53,24 @@ defineExpose({ reset })
 
 		&.count {
 			color: $white;
-		}
-
-		&.dec,
-		&.inc {
-			padding: 0.5rem 1.5rem;
-			font-size: 1rem;
-
+			padding: 0;
 		}
 
 		&:hover {
+			cursor: pointer;
 			color: $primary;
+
+			&.count {
+				cursor: initial;
+				color: $white;
+			}
+
+			&:disabled {
+				cursor: initial;
+				color: $white30;
+			}
 		}
-
-
 	}
-
-
-
 
 
 }

@@ -1,17 +1,15 @@
 <script setup lang="ts">
-defineProps<{
-	value: string,
-}>()
+defineProps<{ value: string }>()
 </script>
 
 <template>
-	<button class="btn">
+	<button class="AppBtn">
 		<span>{{ value }}</span>
 	</button>
 </template>
 
 <style lang="scss" scoped>
-.btn {
+.AppBtn {
 	width: fit-content;
 	height: 50px;
 	padding: 0 56px;

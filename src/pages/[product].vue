@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MagazineQuery } from "~~/src/queries"
-import type { Magazine, Product } from "~~/src/types"
+import type { Magazine, Product, Color } from "~~/src/types"
 
 // fetch data
 const { params } = useRoute()
@@ -17,42 +17,39 @@ if (!data.value) throw createError({
 	fatal: true
 })
 
-
+// initial product
 let product: Product = {
 	name: data.value!.name,
 	image: data.value!.gallery[0],
 	price: data.value!.price,
-	color: data.value!.colors[0].name,
+	color: data.value!.colors[0],
 	count: 1,
 }
-function GetColor(value: string) {
+// component refs to call exposed reset()
+const ColorPanelRef = ref()
+const CounterBtnRef = ref()
+const { toggleModal } = useBasketStore()
+// Get selected color from Color Panel
+function GetColor(value: Color) {
 	product.color = value
 }
-function GetCount(value: number) {
-	product.count = value
-}
-// component refs to call exposed reset()
-const colors = ref()
-const counter = ref()
+// add to Basket Store
 function AddToBasket() {
-	// add to BasketStore
 	const { addProduct } = useBasketStore()
-	addProduct(product)
-
+	addProduct(product)	// add to Basket Store
+	toggleModal()	// open Basket Modal
 
 	// reset values
 	product = {
 		name: data.value!.name,
 		image: data.value!.gallery[0],
 		price: data.value!.price,
-		color: data.value!.colors[0].name,
+		color: data.value!.colors[0],
 		count: 1,
 	}
-	colors.value.reset()
-	counter.value.reset()
+	ColorPanelRef.value.reset()
+	CounterBtnRef.value.reset()
 }
-
-
 // write metatags
 </script>
 
@@ -76,14 +73,15 @@ function AddToBasket() {
 						ГРН <!-- i18n -->
 					</span>
 				</div>
-				<BoxColors ref="colors" :data="data.colors" @color="GetColor" />
+				<ColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
 				<div class="description">
 					<h4>Характеристики</h4> <!-- i18n const -->
 					<RichText :blocks="data.description" />
 				</div>
 				<div class="btn_group">
-					<CounterBtn ref="counter" :data="1" @count="GetCount" />
-					<AppBtn value="у кошик" @click="AddToBasket()" /><!--  i18n const -->
+					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="CounterBtnRef" />
+					<!--  i18n const -->
+					<AppBtn value="у кошик" @click="AddToBasket()" />
 				</div>
 			</div>
 		</template>
@@ -137,11 +135,7 @@ function AddToBasket() {
 			}
 		}
 
-		.colors {
-			display: flex;
-			flex-direction: column;
 
-		}
 
 		.description {
 			width: 100%;

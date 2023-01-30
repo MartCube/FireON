@@ -3,6 +3,8 @@ import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 
 const { logo, links } = storeToRefs(useAppStore())
+const { toggleModal } = useBasketStore()
+
 const [menuValue, menuToggle] = useToggle()
 </script>
 
@@ -17,7 +19,7 @@ const [menuValue, menuToggle] = useToggle()
 			<Icon name="IconMenu" />
 		</div>
 		<Logo :src="logo" />
-		<div class="basket">
+		<div class="basket" @click="toggleModal()">
 			<Icon name="IconBasket" />
 		</div>
 	</header>

@@ -20,12 +20,11 @@ export default defineStore('BasketStore', () => {
 		showModal.value = !showModal.value
 	}
 	function addProduct(product: Product) {
-
-		// check if product is in basket
-		if (products.value.some(p => p.name === product.name)) {
+		// check if product is in basket with same color
+		if (products.value.some(p => p.name === product.name && p.color === product.color)) {
 			// update counter
 			products.value.forEach(p => {
-				if (p.name === product.name)
+				if (p.name === product.name && p.color === product.color)
 					p.count += product.count
 			})
 		}
