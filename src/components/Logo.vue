@@ -1,11 +1,11 @@
 <template>
 	<NuxtLink class="logo" to="/">
-		<nuxt-img v-if="src" :src="src" provider="sanity" width="280" height="48" loading="lazy" />
+		<AppImg class="magazine" :src="src" :width="280" :height="48" />
 	</NuxtLink>
 </template>
 
 <script setup lang="ts">
-defineProps<{ src: string | null }>()
+defineProps<{ src: string }>()
 </script>
 
 <style lang="scss" scoped>
@@ -13,6 +13,7 @@ defineProps<{ src: string | null }>()
 	width: 140px;
 	height: 24px;
 	display: flex;
+	cursor: pointer;
 
 	img {
 		width: 100%;

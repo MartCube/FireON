@@ -61,11 +61,14 @@ function AddToBasket() {
 			</NuxtLink>
 
 			<div class="gallery">
-				<SanityImage :src="data.gallery[0]" :width="300" />
+				<AppImg :src="data.gallery[0]" :width="300" :height="300" />
 			</div>
+
 			<div class="wrap">
+
 				<div class="details">
-					<h1 class="name">{{ data.name }}</h1>
+					<AppImg class="name" :src="data.svg" :width="110" :height="32" />
+
 					<ul class="info">
 						<li>{{ data.info.size }}</li>
 						<li>{{ data.info.rem }}REM</li>
@@ -98,13 +101,11 @@ function AddToBasket() {
 	width: 100%;
 	height: 100%;
 	min-height: 100vh;
-	// height: calc(100vh - 8rem); // minus Navbar and Footer
 	padding: 2rem 10%;
 
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-
 	position: relative;
 
 	.go_back {
@@ -152,8 +153,7 @@ function AddToBasket() {
 			align-items: center;
 
 			.name {
-				font-size: 100px;
-				line-height: 7rem;
+				height: 4.5rem;
 			}
 
 			.info {
@@ -161,8 +161,6 @@ function AddToBasket() {
 
 			}
 		}
-
-
 
 		.description {
 			width: 100%;

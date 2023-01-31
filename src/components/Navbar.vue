@@ -19,6 +19,7 @@ const [menuValue, menuToggle] = useToggle()
 			<Icon name="IconMenu" />
 		</div>
 		<Logo :src="logo" />
+
 		<div class="basket" @click="toggleModal()">
 			<Icon name="IconBasket" />
 		</div>
@@ -29,7 +30,7 @@ const [menuValue, menuToggle] = useToggle()
 header {
 	width: 100%;
 	height: 4rem;
-	padding: 0 9%;
+	padding: 0 10%;
 	background: $dark;
 
 	display: flex;
@@ -78,7 +79,6 @@ header {
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		width: 8.75rem;
 	}
 
 	.basket {

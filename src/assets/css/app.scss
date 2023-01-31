@@ -1,4 +1,10 @@
-@import '~/assets/css/fonts.scss';
+@font-face {
+	font-family: 'eUkraine';
+	src: url('~/assets/fonts/eUkraine-Regular.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
 
 * {
 	margin: 0;
@@ -38,6 +44,8 @@ body {
 }
 
 
+
+
 // Block sections
 section {
 	width: 100%;
@@ -46,24 +54,7 @@ section {
 }
 
 
-// image transition
-img {
-	outline: none;
-	border: none;
 
-	&[lazy=loading] {
-		opacity: 0;
-	}
-
-	&[lazy=error] {
-		opacity: 0;
-	}
-
-	&[lazy=loaded] {
-		opacity: 1;
-		transition: all 2s cubic-bezier(0.215, 0.61, 0.355, 1);
-	}
-}
 
 // page transition
 .page-enter-active,

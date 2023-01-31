@@ -5,19 +5,19 @@ defineProps<{
 	title: string,
 	button: string,
 	image: string,
+	bg: string,
 }>()
 </script>
 
 <template>
 	<section id="cta">
-		<div class="image">
-			<nuxt-img class="image" :src="image" provider="sanity" loading="lazy" />
-		</div>
+		<AppImg class="magazine" :src="image" :width="460" :height="420" />
+
 		<div class="wrap">
 			<TitleBlock :src="title" :mode="ColorWord.last" noline />
-			<LinkBtn>{{ button }}</LinkBtn>
+			<LinkBtn link="/#magazines">{{ button }}</LinkBtn>
 		</div>
-		<nuxt-img class="bg" src="/bg.png" loading="lazy" />
+		<AppImg class="bg" :src="bg" :width="1440" :height="420" />
 	</section>
 </template>
 
@@ -61,18 +61,10 @@ defineProps<{
 		}
 	}
 
-	.image {
+	.magazine {
 		width: 25rem;
 		height: 18.75rem;
-		display: flex;
 		z-index: 2;
-
-		img {
-			width: 100%;
-			height: 100%;
-			object-fit: contain;
-		}
-
 	}
 
 	&::before {

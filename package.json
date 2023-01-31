@@ -10,7 +10,6 @@
 	"devDependencies": {
 		"@antfu/eslint-config": "^0.31.1",
 		"@emailjs/browser": "^3.7.0",
-		"@nuxt/image-edge": "^1.0.0-27809804.194d2d6",
 		"@nuxtjs/i18n": "8.0.0-beta.7",
 		"@nuxtjs/sanity": "1.5.0",
 		"@pinia/nuxt": "^0.4.3",
@@ -30,6 +29,7 @@
 		"vue": "^3.2.45",
 		"vue-easy-lightbox": "^1.11.0",
 		"vue-tsc": "^1.0.24",
+		"vue3-lazyload": "^0.3.6",
 		"webpack": "^5.75.0",
 		"zod": "^3.17.3"
 	}

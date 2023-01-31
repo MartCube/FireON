@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(async (values, actions) => {
 
 		<div v-if="showMsg" class="msg">
 			<h4>message send</h4> <!-- i18n -->
-			<LinkBtn @click="showMsg = false">write new message</LinkBtn>
+			<LinkBtn @click="showMsg = false" link="/#contact">write new message</LinkBtn>
 		</div>
 	</form>
 </template>

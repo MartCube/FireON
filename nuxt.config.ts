@@ -26,7 +26,6 @@ export default defineNuxtConfig({
 		'nuxt-icon',
 		'@nuxtjs/sanity',
 		'@pinia/nuxt',
-		'@nuxt/image-edge',
 		// '@nuxtjs/i18n',
 		// '~/modules/purge-comments'
 		'~/modules/style-inlining'
@@ -44,11 +43,7 @@ export default defineNuxtConfig({
 		apiVersion: '2022-10-21'
 	},
 
-	image: {
-		sanity: {
-			projectId: process.env.SANITY_ID,
-		}
-	},
+
 
 	vite: {
 		css: {

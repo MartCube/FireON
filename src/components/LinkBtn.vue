@@ -1,7 +1,5 @@
 <script setup lang="ts">
-defineProps<{
-	link?: string | "/",
-}>()
+defineProps<{ link: string }>()
 </script>
 
 <template>

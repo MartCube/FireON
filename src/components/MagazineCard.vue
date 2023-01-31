@@ -1,23 +1,19 @@
 <script setup lang="ts">
 import type { MagazineCard } from "~~/src/types"
-
-defineProps<{
-	data: MagazineCard,
-	button: string,
-}>()
+defineProps<{ data: MagazineCard }>()
 </script>
 
 <template>
 	<div class="magazine_card">
-		<SanityImage :src="data.image" :width="600" />
+		<AppImg class="magazine" :src="data.image" :width="320" :height="320" />
 		<div class="wrap">
-			<h3 class="title">{{ data.name }}</h3>
+			<AppImg class="name" :src="data.svg" :width="207" :height="72" />
 			<ul class="info">
 				<li>{{ data.info.size }}</li>
 				<li>{{ data.info.rem }}REM</li>
 				<li>{{ data.info.blk }}BLK</li>
 			</ul>
-			<LinkBtn :link="`/${data.uid}/#product`">{{ button }}</LinkBtn>
+			<LinkBtn :link="`/${data.uid}/#product`">Детальнiше</LinkBtn><!-- i18n -->
 		</div>
 	</div>
 </template>
@@ -36,28 +32,26 @@ defineProps<{
 
 	position: relative;
 
-	.image {
-		width: 300px;
-
-		position: absolute;
-		top: -3rem;
-		left: 0;
-		transform: skew(15deg);
-	}
+	// .magazine {
+	// 	position: absolute;
+	// 	top: -3.5rem;
+	// 	left: -2rem;
+	// 	transform: skew(15deg);
+	// }
 
 	.wrap {
 		width: 50%;
 		height: 100%;
-		transform: skew(15deg);
+		// transform: skew(15deg);
 
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
 
-		.title {
-			font-family: 'Legend';
-			font-size: 2rem;
+		.name {
+			height: 4.5rem;
 		}
+
 
 		.info {
 			list-style: none;

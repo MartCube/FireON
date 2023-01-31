@@ -12,7 +12,7 @@ defineProps<{
 <template>
 	<section id="contact">
 		<ContactForm :data="form" />
-		<SanityImage :src="image" :width="640" />
+		<AppImg :src="image" :width="560" :height="560" />
 	</section>
 </template>
 

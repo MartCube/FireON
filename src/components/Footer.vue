@@ -12,7 +12,7 @@ const { smedias, logo, links } = storeToRefs(useAppStore())
 
 			</div>
 		</div>
-		<Logo :src="logo" />
+		<Logo :src="logo!" />
 		<div class="smedias">
 			<NuxtLink class="media" v-for="media in smedias" :to="media.link" external target="_blank">
 				<Icon :name="media.icon" />

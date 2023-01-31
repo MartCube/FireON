@@ -14,7 +14,7 @@ defineProps<{
 	<section id="partners">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="grid">
-			<nuxt-img v-for="partner in list" class="image" :src="partner.image" provider="sanity" loading="lazy" />
+			<AppImg v-for="partner in list" class="image" :src="partner.image" :width="96" :height="96" />
 		</div>
 	</section>
 </template>
@@ -30,19 +30,18 @@ defineProps<{
 	align-items: center;
 
 	.grid {
+		width: 50%;
 		margin-top: 2rem;
-		width: 60%;
 		display: flex;
 		justify-content: space-around;
+		margin-bottom: 8rem;
 
-		img {
-			width: 6rem;
-			height: 100%;
+		.image {
 			opacity: 0.1;
-			transition: opacity 0.15s ease;
+			transition: opacity 0.35s ease;
 
 			&:hover {
-				cursor: pointer;
+				// cursor: pointer;
 				opacity: 1;
 			}
 		}

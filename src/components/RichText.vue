@@ -12,7 +12,7 @@ defineProps<{ blocks: any[] }>()
 .rich_text {
 	ul li {
 		font-size: 12px;
-		font-weight: 1.25rem;
+		line-height: 1.25rem;
 		color: $white30;
 		margin-bottom: 0.35rem;
 	}

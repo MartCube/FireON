@@ -12,7 +12,7 @@ defineProps<{
 	<section id="about">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="wrap">
-			<SanityImage :src="image" :width="640" />
+			<AppImg :src="image" :width="460" :height="460" />
 			<RichText :blocks="content" />
 		</div>
 	</section>
@@ -31,9 +31,6 @@ defineProps<{
 		justify-content: space-around;
 
 
-		.image {
-			width: 25rem;
-		}
 
 		.rich_text {
 			width: 45%;

@@ -54,12 +54,12 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 		<TitleBlock :src="title" :mode="ColorWord.first" />
 		<div class="grid">
 			<div v-for="(image, index) in list" :key="index" @click="Open(index)" class="placeholder">
-				<nuxt-img :src="image" width="740" height="526" provider="sanity" loading="lazy" />
+				<AppImg :src="image" :width="740" :height="526" />
 			</div>
 		</div>
 		<div v-if="isOpen" class="lightbox">
 			<div class="image" ref="img">
-				<nuxt-img :src="state" width="1280" height="720" provider="sanity" loading="lazy" />
+				<AppImg :src="state" :width="1280" :height="720" />
 				<Icon class="prev" @click="prev()" name="IconArrow" />
 				<Icon class="next" @click="next()" name="IconArrow" />
 				<Icon class="close" @click="isOpen = false" name="IconClose" />

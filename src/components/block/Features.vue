@@ -19,7 +19,7 @@ const activeTab = ref(props.list[0])
 			</h3>
 		</div>
 		<div class="active_tab">
-			<SanityImage :src="activeTab.image" :width="640" />
+			<AppImg :src="activeTab.image" :width="640" :height="640" />
 			<div class="content">
 				<h3>{{ activeTab.title }}</h3>
 				<p>{{ activeTab.description }}</p>
@@ -81,6 +81,8 @@ const activeTab = ref(props.list[0])
 
 	.active_tab {
 		width: 100%;
+		height: 100%;
+		min-height: 25rem;
 		margin-top: 4rem;
 
 		display: flex;
