@@ -67,7 +67,7 @@ function AddToBasket() {
 			<div class="wrap">
 
 				<div class="details">
-					<AppImg class="name" :src="data.svg" :width="110" :height="32" />
+					<AppImg class="name" :src="data.svg" :width="420" :height="140" />
 
 					<ul class="info">
 						<li>{{ data.info.size }}</li>
@@ -153,7 +153,8 @@ function AddToBasket() {
 			align-items: center;
 
 			.name {
-				height: 4.5rem;
+				width: 220px;
+				height: 72px;
 			}
 
 			.info {

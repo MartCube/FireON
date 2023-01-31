@@ -1,9 +1,9 @@
 <template>
 	<div class="image">
 		<!-- format="auto" -->
-		<SanityImage :asset-id="src" :w="width" :h="height" format="auto">
+		<SanityImage :asset-id="src" :w="width" :h="height">
 			<template #default="{ src }">
-				<img v-lazy="src" />
+				<img v-lazy="src" :width="width" :height="height" />
 			</template>
 		</SanityImage>
 	</div>
@@ -20,8 +20,8 @@ defineProps<{
 <style lang="scss" scoped>
 .image {
 
-	width: v-bind(width);
-	height: v-bind(height);
+	// width: v-bind(width);
+	// height: v-bind(height);
 	display: flex;
 
 	img {

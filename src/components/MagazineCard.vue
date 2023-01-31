@@ -7,7 +7,7 @@ defineProps<{ data: MagazineCard }>()
 	<div class="magazine_card">
 		<AppImg class="magazine" :src="data.image" :width="320" :height="320" />
 		<div class="wrap">
-			<AppImg class="name" :src="data.svg" :width="207" :height="72" />
+			<AppImg class="name" :src="data.svg" :width="220" :height="72" />
 			<ul class="info">
 				<li>{{ data.info.size }}</li>
 				<li>{{ data.info.rem }}REM</li>
@@ -32,29 +32,42 @@ defineProps<{ data: MagazineCard }>()
 
 	position: relative;
 
-	// .magazine {
-	// 	position: absolute;
-	// 	top: -3.5rem;
-	// 	left: -2rem;
-	// 	transform: skew(15deg);
-	// }
+	.magazine {
+		position: absolute;
+		top: -3.5rem;
+		left: -2rem;
+		transform: skew(15deg);
+	}
 
 	.wrap {
-		width: 50%;
+		width: 55%;
 		height: 100%;
-		// transform: skew(15deg);
+		transform: skew(15deg);
 
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
 
 		.name {
-			height: 4.5rem;
+			width: 10rem;
+			height: 3rem;
 		}
 
 
 		.info {
 			list-style: none;
+
+			li {
+				text-transform: uppercase;
+				font-size: 12px;
+				line-height: 18px;
+				letter-spacing: 0.225em;
+				color: $white70;
+
+				&:first-of-type {
+					color: $primary;
+				}
+			}
 		}
 	}
 
