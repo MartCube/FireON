@@ -19,9 +19,6 @@ defineProps<{
 
 <style lang="scss" scoped>
 .image {
-
-	// width: v-bind(width);
-	// height: v-bind(height);
 	display: flex;
 
 	img {

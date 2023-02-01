@@ -88,12 +88,11 @@ function AddToBasket() {
 	</div>
 </template>
 
-
 <style lang="scss" scoped>
 #product {
 	width: 100%;
 	height: 100%;
-	min-height: 100vh;
+	min-height: 100%;
 	padding: 2rem 10%;
 
 	display: flex;
@@ -153,7 +152,7 @@ function AddToBasket() {
 					top: 0;
 					right: -2rem;
 
-					width: 2px;
+					width: 1px;
 					height: 100%;
 					opacity: 0.8;
 					background: linear-gradient(0, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);

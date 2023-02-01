@@ -96,3 +96,11 @@ export interface ContactForm {
 	message: TextField,
 	button: string,
 }
+export interface CheckoutForm {
+	title: string,
+	city: TextField,
+	name: TextField,
+	phone: TextField,
+	comment: TextField,
+	button: string,
+}

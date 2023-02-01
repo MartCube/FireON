@@ -15,9 +15,11 @@ defineExpose({ reset })
 <template>
 	<div class="panel">
 		<h4>Виберіть колір</h4> <!-- i18n const -->
-		<label v-for="color in data" :key="color.name" @click="$emit('color', color)" class="color">
+		<label class="color" v-for="color in data" :key="color.name" @click="$emit('color', color)">
 			<input v-model="activeColor" :value="color.name" :style="{ background: `#${color.hexcode}` }" name="color" type="radio" />
 			{{ color.name }}
+			<Icon name="IconCheck" />
+
 		</label>
 	</div>
 </template>
@@ -38,6 +40,17 @@ defineExpose({ reset })
 		line-height: 20px;
 		color: $white50;
 
+		display: flex;
+		align-items: center;
+
+		.icon {
+			margin-left: 8px;
+			width: 1rem;
+			height: 1rem;
+			stroke: $primary;
+			stroke-width: 2;
+			opacity: 0;
+		}
 
 		input[type="radio"] {
 			width: 1rem;
@@ -53,6 +66,10 @@ defineExpose({ reset })
 			&:checked {
 				border-color: $primary;
 			}
+		}
+
+		input[type="radio"]:checked~.icon {
+			opacity: 1;
 		}
 
 		&:hover {

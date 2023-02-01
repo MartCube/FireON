@@ -14,10 +14,12 @@ onClickOutside(basketRef, () => toggleModal())
 		<div id="basket" ref="basketRef">
 			<IconClose class="close" @click="toggleModal()" />
 			<h2>кошик</h2> <!-- i18n  -->
+
+
 			<template v-if="products.length">
 				<div class="products">
 					<div class="product" v-for="product in products" :key="product.name">
-						<AppImg :src="product.image" :width="200" :height="200" />
+						<AppImg :src="product.image" :width="150" :height="150" />
 						<div class="info">
 							<span>{{ product.name }}</span>
 							<div class="color" :style="{ background: `#${product.color.hexcode}` }" />
@@ -29,7 +31,10 @@ onClickOutside(basketRef, () => toggleModal())
 				<p class="total_price">
 					Сума: <span>{{ totalPrice }} ГРН</span><!-- i18n  -->
 				</p>
+				<CheckoutForm />
 			</template>
+
+
 			<template v-else>
 				<p>There are no items in your basket.</p> <!-- i18n  -->
 			</template>
@@ -45,14 +50,15 @@ onClickOutside(basketRef, () => toggleModal())
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: $dark30;
+	background: $dark80;
 
 	#basket {
 		width: 34.5rem;
-		min-height: 20rem;
+		max-height: 95vh;
 		padding: 2.6rem;
 		border: 1px solid $white10;
 		background: $dark;
+		overflow: auto;
 
 		position: fixed;
 		z-index: 5;
