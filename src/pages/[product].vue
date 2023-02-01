@@ -28,16 +28,15 @@ let product: Product = {
 // component refs to call exposed reset()
 const ColorPanelRef = ref()
 const CounterBtnRef = ref()
-const { toggleModal } = useBasketStore()
 // Get selected color from Color Panel
 function GetColor(value: Color) {
 	product.color = value
 }
 // add to Basket Store
 function AddToBasket() {
-	const { addProduct } = useBasketStore()
-	addProduct(product)	// add to Basket Store
-	toggleModal()	// open Basket Modal
+	const { addProduct, toggleModal } = useBasketStore()
+	addProduct(product)
+	toggleModal()	//show
 
 	// reset values
 	product = {
@@ -60,15 +59,10 @@ function AddToBasket() {
 				<Icon name="IconArrow" />
 			</NuxtLink>
 
-			<div class="gallery">
-				<AppImg :src="data.gallery[0]" :width="300" :height="300" />
-			</div>
-
+			<ImageSlider :list="data.gallery" />
 			<div class="wrap">
-
 				<div class="details">
 					<AppImg class="name" :src="data.svg" :width="420" :height="140" />
-
 					<ul class="info">
 						<li>{{ data.info.size }}</li>
 						<li>{{ data.info.rem }}REM</li>
@@ -76,16 +70,15 @@ function AddToBasket() {
 					</ul>
 					<span class="price">
 						<Icon name="IconMoney" />
-						{{ data.price }}
-						ГРН <!-- i18n -->
+						{{ data.price }} ГРН <!-- i18n -->
 					</span>
 				</div>
 				<ColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
 				<div class="description">
-					<h4>Характеристики</h4> <!-- i18n const -->
+					<h4>Характеристики</h4> <!-- i18n -->
 					<RichText :blocks="data.description" />
 				</div>
-				<div class="btn_group">
+				<div class="to_basket">
 					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="CounterBtnRef" />
 					<!--  i18n const -->
 					<AppBtn value="у кошик" @click="AddToBasket()" />
@@ -111,7 +104,7 @@ function AddToBasket() {
 	.go_back {
 		z-index: 2;
 		position: absolute;
-		top: 5rem;
+		top: 5%;
 		left: 10%;
 
 		.icon {
@@ -129,13 +122,8 @@ function AddToBasket() {
 
 	}
 
-	.gallery {
-		width: 45%;
-		max-width: 600px;
-
-		.image {
-			height: 300px;
-		}
+	.image_slider {
+		width: 31.25rem;
 	}
 
 	.wrap {
@@ -149,17 +137,53 @@ function AddToBasket() {
 
 		.details {
 			display: flex;
-			justify-content: space-between;
+			// justify-content: space-between;
 			align-items: center;
 
 			.name {
-				width: 220px;
-				height: 72px;
+				width: 330px;
+				height: 109px;
+				position: relative;
+
+				margin-right: 4rem;
+
+				&::after {
+					content: '';
+					position: absolute;
+					top: 0;
+					right: -2rem;
+
+					width: 2px;
+					height: 100%;
+					opacity: 0.8;
+					background: linear-gradient(0, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
+				}
 			}
 
 			.info {
 				list-style: none;
 
+				li {
+					text-transform: uppercase;
+					font-size: 16px;
+					line-height: 27px;
+					color: $white50;
+
+
+				}
+			}
+
+			.price {
+				flex: 1;
+
+				color: $primary;
+				text-align: end;
+				line-height: 2rem;
+
+				.icon {
+					width: 1.5rem;
+					height: 1.5rem;
+				}
 			}
 		}
 
@@ -167,7 +191,7 @@ function AddToBasket() {
 			width: 100%;
 		}
 
-		.btn_group {
+		.to_basket {
 			width: 25rem;
 			margin-top: 2rem;
 			display: flex;
