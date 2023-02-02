@@ -25,7 +25,7 @@ defineProps<{ data: MagazineCard }>()
 
 	height: 14rem;
 	border: 1px solid $primary;
-	transform: skew(-15deg);
+	transform: skew(-10deg);
 
 	display: flex;
 	justify-content: flex-end;
@@ -36,13 +36,13 @@ defineProps<{ data: MagazineCard }>()
 		position: absolute;
 		top: -3.5rem;
 		left: -2rem;
-		transform: skew(15deg);
+		transform: skew(10deg);
 	}
 
 	.wrap {
 		width: 55%;
 		height: 100%;
-		transform: skew(15deg);
+		transform: skew(10deg);
 
 		display: flex;
 		flex-direction: column;

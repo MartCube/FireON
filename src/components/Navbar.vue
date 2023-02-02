@@ -72,6 +72,26 @@ header {
 
 	.menu {
 		display: none;
+		justify-content: center;
+		align-items: center;
+
+		transform: skew(-10deg);
+		cursor: pointer;
+		transition: all 0.15s ease;
+
+		.icon {
+			transform: skew(10deg);
+
+			width: 2.8rem;
+			height: 2.7rem;
+			stroke: $white10;
+
+			&:hover {
+				stroke: $white70;
+			}
+		}
+
+
 	}
 
 	.logo {
@@ -90,12 +110,12 @@ header {
 		align-items: center;
 
 		border: 1px solid $white10;
-		transform: skew(-15deg);
+		transform: skew(-10deg);
 		cursor: pointer;
 		transition: all 0.15s ease;
 
 		.icon {
-			transform: skew(15deg);
+			transform: skew(10deg);
 
 			width: 1.5rem;
 			height: 1.5rem;
@@ -106,6 +126,17 @@ header {
 			border-color: $white;
 		}
 	}
+}
 
+@media (max-width: 1000px) {
+	header {
+		.links {
+			display: none;
+		}
+
+		.menu {
+			display: flex;
+		}
+	}
 }
 </style>

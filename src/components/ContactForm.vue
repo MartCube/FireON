@@ -64,7 +64,7 @@ form {
 		padding: 12px 56px;
 		border: 1px solid $primary;
 		background: transparent;
-		transform: skew(-15deg);
+		transform: skew(-10deg);
 		cursor: pointer;
 		user-select: none;
 
@@ -72,7 +72,7 @@ form {
 
 		span {
 			z-index: 2;
-			transform: skew(15deg);
+			transform: skew(10deg);
 
 			text-transform: uppercase;
 			color: $primary;

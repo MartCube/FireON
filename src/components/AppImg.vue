@@ -42,7 +42,7 @@ defineProps<{
 
 		&[lazy=loaded] {
 			opacity: 1;
-			transition: all 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+			transition: all 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
 		}
 	}
 }

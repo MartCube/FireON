@@ -106,13 +106,13 @@ onClickOutside(basketRef, () => toggleModal())
 						width: 1rem;
 						height: 1rem;
 						border: 1px solid $white20;
-						transform: skew(-15deg);
+						transform: skew(-10deg);
 
 					}
 				}
 
 				.counter_btn {
-					max-width: 7.5rem;
+					width: 120px;
 				}
 
 				.price {

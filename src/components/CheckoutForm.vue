@@ -86,7 +86,7 @@ form {
 		width: 70%;
 		height: 50px;
 		margin-top: 2rem;
-		transform: skew(-15deg);
+		transform: skew(-10deg);
 		border: none;
 		background: $primary;
 		user-select: none;
@@ -98,7 +98,7 @@ form {
 
 		span {
 			z-index: 2;
-			transform: skew(15deg);
+			transform: skew(10deg);
 
 			text-transform: uppercase;
 			color: $dark;

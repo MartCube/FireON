@@ -63,5 +63,8 @@ defineProps<{
 	.magazine {
 		z-index: 2;
 	}
+
+
+
 }
 </style>

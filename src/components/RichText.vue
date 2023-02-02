@@ -14,7 +14,7 @@ defineProps<{ blocks: any[] }>()
 		font-size: 12px;
 		line-height: 1.25rem;
 		color: $white30;
-		margin-bottom: 0.35rem;
+		margin: 0 0 0.35rem 1rem;
 	}
 
 	p {

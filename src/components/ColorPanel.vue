@@ -26,6 +26,7 @@ defineExpose({ reset })
 
 <style lang="scss" scoped>
 .panel {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	margin: 2rem 0;

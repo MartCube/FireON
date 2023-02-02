@@ -10,12 +10,12 @@ defineProps<{ value: string }>()
 
 <style lang="scss" scoped>
 .AppBtn {
-	width: fit-content;
+	width: 200px;
 	height: 50px;
-	padding: 0 56px;
+
 	border: none;
 	background: $primary;
-	transform: skew(-15deg);
+	transform: skew(-10deg);
 	cursor: pointer;
 	user-select: none;
 
@@ -25,7 +25,7 @@ defineProps<{ value: string }>()
 
 	span {
 		z-index: 2;
-		transform: skew(15deg);
+		transform: skew(10deg);
 
 		text-transform: uppercase;
 		color: $dark;

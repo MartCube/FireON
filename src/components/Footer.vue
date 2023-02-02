@@ -34,7 +34,6 @@ footer {
 	overflow: hidden;
 	position: relative;
 
-
 	.links {
 		width: fit-content;
 		display: flex;
@@ -108,6 +107,30 @@ footer {
 		height: 1px;
 		opacity: 0.8;
 		background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
+	}
+}
+
+
+@media (max-width: 1000px) {
+	footer {
+		height: 100%;
+		flex-direction: column;
+		justify-content: center;
+		padding: 4rem 0 2rem 0;
+
+		.logo {
+			top: 20%;
+		}
+
+		.smedias {
+			margin-top: 1rem;
+
+			.media .icon {
+				width: 2rem;
+				height: 2rem;
+			}
+		}
+
 	}
 }
 </style>

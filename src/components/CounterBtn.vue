@@ -21,11 +21,10 @@ defineExpose({ reset })
 
 <style lang="scss" scoped>
 .counter_btn {
-	width: 100%;
-	max-width: 200px;
+	width: 200px;
 	height: 50px;
 	border: 1px solid $white30;
-	transform: skew(-15deg);
+	transform: skew(-10deg);
 	user-select: none;
 
 	display: flex;
@@ -39,7 +38,7 @@ defineExpose({ reset })
 	.inc,
 	.count {
 		padding: 0.5rem 1.5rem;
-		transform: skew(15deg);
+		transform: skew(10deg);
 		border: none;
 		background: transparent;
 
