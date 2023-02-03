@@ -30,27 +30,27 @@ let data: CheckoutForm = {
 }
 
 const showMsg = ref(false) // toggle msg
-const form = ref<HTMLFormElement | null>(null) // form ref
+const CheckoutFormRef = ref<HTMLFormElement | null>(null) // form ref
 const validationSchema = toFormValidator(
 	z.object({
 		city: z.string().min(1, 'Required'),
 		name: z.string().min(1, 'Required'),
 		phone: z.string().min(1, 'Required'),
-		message: z.string(),
+		comment: z.string().min(1, 'Required'),
 	})
 )
 
 const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
-const onSubmit = handleSubmit(async (values, actions) => {
+const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	console.log('sending data', values)
 	// emailjs or something else
 	showMsg.value = true
-	actions.resetForm()
+	resetForm()
 })
 </script>
 
 <template>
-	<form ref="form" id="form" @submit="onSubmit" autocomplete="off">
+	<form ref="CheckoutFormRef" id="form" @submit="onSubmit" autocomplete="off">
 		<h3>{{ data.title }}</h3>
 		<VeeInput :data="data.city" />
 		<VeeInput :data="data.name" />
@@ -85,7 +85,7 @@ form {
 		align-self: center;
 		width: 70%;
 		height: 50px;
-		margin-top: 2rem;
+		margin: 2rem 0;
 		transform: skew(-10deg);
 		border: none;
 		background: $primary;
@@ -130,12 +130,6 @@ form {
 		justify-content: center;
 		align-items: center;
 
-		.success {
-			width: 250px;
-			height: 250px;
-
-		}
-
 		h2 {
 			text-align: center;
 			margin-bottom: 1rem;
@@ -144,6 +138,11 @@ form {
 			line-height: 2rem;
 		}
 
+		.success {
+			width: 250px;
+			height: 250px;
+
+		}
 	}
 
 }

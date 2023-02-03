@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { onClickOutside } from '@vueuse/core'
 
+
 const { showModal, products, totalPrice } = storeToRefs(useBasketStore())
 const { toggleModal } = useBasketStore()
 
@@ -14,7 +15,6 @@ onClickOutside(basketRef, () => toggleModal())
 		<div id="basket" ref="basketRef">
 			<IconClose class="close" @click="toggleModal()" />
 			<h2>кошик</h2> <!-- i18n  -->
-
 
 			<template v-if="products.length">
 				<div class="products">
@@ -33,7 +33,6 @@ onClickOutside(basketRef, () => toggleModal())
 				</p>
 				<CheckoutForm />
 			</template>
-
 
 			<template v-else>
 				<p>There are no items in your basket.</p> <!-- i18n  -->

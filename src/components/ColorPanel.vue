@@ -15,11 +15,10 @@ defineExpose({ reset })
 <template>
 	<div class="panel">
 		<h4>Виберіть колір</h4> <!-- i18n const -->
-		<label class="color" v-for="color in data" :key="color.name" @click="$emit('color', color)">
-			<input v-model="activeColor" :value="color.name" :style="{ background: `#${color.hexcode}` }" name="color" type="radio" />
-			{{ color.name }}
+		<label class="color" v-for="(color, i) in data" :key="color.name" @click="$emit('color', color)">
+			<input v-model="activeColor" :value="color.name" :style="{ background: `#${color.hexcode}` }" type="radio" />
+			<span class="name">{{ color.name }}</span>
 			<Icon name="IconCheck" />
-
 		</label>
 	</div>
 </template>
@@ -36,13 +35,9 @@ defineExpose({ reset })
 		height: 1.25rem;
 		margin-bottom: 7px;
 
-		text-transform: uppercase;
-		font-size: 12px;
-		line-height: 20px;
-		color: $white50;
-
 		display: flex;
 		align-items: center;
+		justify-content: center;
 
 		.icon {
 			margin-left: 8px;
@@ -53,24 +48,30 @@ defineExpose({ reset })
 			opacity: 0;
 		}
 
+		.name {
+			color: $white50;
+			text-transform: uppercase;
+			font-size: 12px;
+			line-height: 16px;
+		}
+
 		input[type="radio"] {
 			width: 1rem;
 			height: 1rem;
 			margin-right: 1rem;
 
 			appearance: none;
-			transform: translateY(0.2rem)skew(-10deg);
+			transform: skew(-10deg);
 
 			border: 1px solid $white10;
 
-
 			&:checked {
 				border-color: $primary;
-			}
-		}
 
-		input[type="radio"]:checked~.icon {
-			opacity: 1;
+				&~.icon {
+					opacity: 1;
+				}
+			}
 		}
 
 		&:hover {

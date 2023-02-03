@@ -8,26 +8,26 @@ import { ColorWord } from "~~/src/types";
 defineProps<{ data: ContactForm }>()
 
 const showMsg = ref(false) // toggle msg
-const form = ref<HTMLFormElement | null>(null) // form ref
+const ContactFormRef = ref<HTMLFormElement | null>(null) // form ref
 const validationSchema = toFormValidator(
 	z.object({
 		name: z.string().min(1, 'Required'),
 		phone: z.string().min(1, 'Required'),
-		message: z.string().min(1, 'Required').max(120),
+		message: z.string().min(1, 'Required').max(50),
 	})
 )
 
 const { handleSubmit, isSubmitting, } = useForm<ContactForm>({ validationSchema })
-const onSubmit = handleSubmit(async (values, actions) => {
+const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	console.log('sending data', values)
 	// emailjs or something else
 	showMsg.value = true
-	actions.resetForm()
+	resetForm()
 })
 </script>
 
 <template>
-	<form ref="form" id="form" @submit="onSubmit" autocomplete="off">
+	<form ref="ContactFormRef" id="form" @submit="onSubmit" autocomplete="off">
 		<TitleBlock :src="data.title" :mode="ColorWord.first" noline />
 		<VeeInput :data="data.name" />
 		<VeeInput :data="data.phone" />

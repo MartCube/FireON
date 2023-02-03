@@ -3,6 +3,7 @@ import { MagazineQuery } from "~~/src/queries"
 import type { Magazine, Product, Color } from "~~/src/types"
 import { useMediaQuery } from '@vueuse/core'
 
+const isLargeScreen = useMediaQuery('(min-width: 1080px)')
 
 
 // fetch data
@@ -53,7 +54,6 @@ function AddToBasket() {
 	CounterBtnRef.value.reset()
 }
 
-const isLargeScreen = useMediaQuery('(min-width: 1080px)')
 
 // write metatags
 </script>
@@ -61,12 +61,15 @@ const isLargeScreen = useMediaQuery('(min-width: 1080px)')
 <template>
 	<div id="product">
 		<template v-if="data && !pending">
-			<NuxtLink class="go_back" to="/#magazines">
-				<Icon name="IconArrow" />
-			</NuxtLink>
 
-			<template v-if="isLargeScreen">
+
+			<div class="desktop" v-show="isLargeScreen">
+				<NuxtLink class="go_back" to="/#magazines">
+					<Icon name="IconArrow" />
+				</NuxtLink>
+
 				<ImageSlider :list="data.gallery" />
+
 				<div class="wrap">
 					<div class="details">
 						<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
@@ -91,8 +94,9 @@ const isLargeScreen = useMediaQuery('(min-width: 1080px)')
 						<AppBtn value="у кошик" @click="AddToBasket()" />
 					</div>
 				</div>
-			</template>
-			<template v-else>
+			</div>
+
+			<div class="mobile" v-show="!isLargeScreen">
 				<div class="details">
 					<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
 					<ul class="info">
@@ -122,7 +126,7 @@ const isLargeScreen = useMediaQuery('(min-width: 1080px)')
 					<!--  i18n const -->
 					<AppBtn value="у кошик" @click="AddToBasket()" />
 				</div>
-			</template>
+			</div>
 		</template>
 	</div>
 </template>
@@ -134,115 +138,112 @@ const isLargeScreen = useMediaQuery('(min-width: 1080px)')
 	min-height: 100%;
 	padding: 2rem 10%;
 
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	position: relative;
-
-	.go_back {
-		z-index: 2;
-		position: absolute;
-		top: 2rem;
-		left: 10%;
-
-		.icon {
-			width: 3rem;
-			height: 3rem;
-			stroke: $primary30;
-			fill: none;
-			transform: rotate(180deg);
 
 
-		}
-
-		&:hover .icon {
-			stroke: $primary;
-		}
-
-	}
-
-
-	.image_slider {
-		max-width: 31.25rem;
-	}
-
-	.wrap {
-		width: 50%;
-		height: 100%;
-		// max-width: 600px;
-
+	.desktop {
+		width: inherit;
 		display: flex;
-		flex-direction: column;
 		justify-content: space-between;
+		align-items: center;
+		position: relative;
 
-		.details {
-			width: 100%;
-			display: flex;
-			// justify-content: space-between;
-			align-items: center;
+		.go_back {
+			z-index: 2;
+			position: absolute;
+			top: 2rem;
+			left: 0;
 
-			.name_img {
-				width: 40%;
-				margin-right: 4rem;
-				position: relative;
+			.icon {
+				width: 3rem;
+				height: 3rem;
+				stroke: $primary30;
+				fill: none;
+				transform: rotate(180deg);
 
-				&::after {
-					content: '';
-					position: absolute;
-					top: 0;
-					right: -2rem;
 
-					width: 1px;
-					height: 100%;
-					opacity: 0.35;
-					background: linear-gradient(0, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
-				}
 			}
 
-			.info {
-				list-style: none;
-
-				li {
-					text-transform: uppercase;
-					font-size: 16px;
-					line-height: 27px;
-					color: $white50;
-
-
-				}
+			&:hover .icon {
+				stroke: $primary;
 			}
 
-			.price {
-				flex: 1;
-				color: $primary;
-				text-align: end;
-				line-height: 2rem;
-
-				.icon {
-					width: 1.5rem;
-					height: 1.5rem;
-				}
-			}
 		}
 
-		.description {
-			width: 100%;
-		}
+		.wrap {
+			width: 50%;
+			height: max-content;
 
-		.to_basket {
-			width: 100%;
-			margin-top: 2rem;
 			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
 
-			.counter_btn {
-				margin-right: 2rem;
+			.details {
+				width: 100%;
+				display: flex;
+				// justify-content: space-between;
+				align-items: center;
+
+				.name_img {
+					width: 40%;
+					margin-right: 4rem;
+					position: relative;
+
+					&::after {
+						content: '';
+						position: absolute;
+						top: 0;
+						right: -2rem;
+
+						width: 1px;
+						height: 100%;
+						opacity: 0.35;
+						background: linear-gradient(0, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
+					}
+				}
+
+				.info {
+					list-style: none;
+
+					li {
+						text-transform: uppercase;
+						font-size: 16px;
+						line-height: 27px;
+						color: $white50;
+
+
+					}
+				}
+
+				.price {
+					flex: 1;
+					color: $primary;
+					text-align: end;
+					line-height: 2rem;
+
+					.icon {
+						width: 1.5rem;
+						height: 1.5rem;
+					}
+				}
+			}
+
+			.description {
+				width: 100%;
+			}
+
+			.to_basket {
+				width: 100%;
+				margin-top: 2rem;
+				display: flex;
+
+				.counter_btn {
+					margin-right: 2rem;
+				}
 			}
 		}
 	}
-}
 
-@media (max-width: 1080px) {
-	#product {
+	.mobile {
 		width: 100%;
 		padding: 1.5rem 5%;
 

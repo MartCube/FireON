@@ -15,6 +15,9 @@ const activeImg = ref(props.list[0])
 
 <style lang="scss" scoped>
 .image_slider {
+	width: 100%;
+	max-width: 500px;
+
 	.active_image {
 		width: 100%;
 		height: 100%;
@@ -23,6 +26,8 @@ const activeImg = ref(props.list[0])
 
 	.slider {
 		width: 100%;
+		height: 100%;
+		max-height: 100px;
 		display: flex;
 		justify-content: space-around;
 
