@@ -29,7 +29,7 @@ let product: Product = {
 	color: data.value!.colors[0],
 	count: 1,
 }
-// component refs to call exposed reset()
+// component refs to access expose 
 const ColorPanelRef = ref()
 const CounterBtnRef = ref()
 // Get selected color from Color Panel
@@ -38,9 +38,8 @@ function GetColor(value: Color) {
 }
 // add to Basket Store
 function AddToBasket() {
-	const { addProduct, toggleModal } = useBasketStore()
+	const { addProduct } = useBasketStore()
 	addProduct(product)
-	toggleModal()	//show
 
 	// reset values
 	product = {
@@ -61,7 +60,6 @@ function AddToBasket() {
 <template>
 	<div id="product">
 		<template v-if="data && !pending">
-
 
 			<div class="desktop" v-show="isLargeScreen">
 				<NuxtLink class="go_back" to="/#magazines">
@@ -137,8 +135,6 @@ function AddToBasket() {
 	height: 100%;
 	min-height: 100%;
 	padding: 2rem 10%;
-
-
 
 	.desktop {
 		width: inherit;
@@ -244,9 +240,7 @@ function AddToBasket() {
 	}
 
 	.mobile {
-		width: 100%;
-		padding: 1.5rem 5%;
-
+		width: inherit;
 		flex-direction: column;
 
 		.go_back {
@@ -309,8 +303,9 @@ function AddToBasket() {
 		}
 
 		.to_basket {
+			width: 100%;
+			display: flex;
 			flex-direction: column;
-			justify-content: space-between;
 			align-items: center;
 
 			.counter_btn {

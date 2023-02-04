@@ -36,7 +36,7 @@ const validationSchema = toFormValidator(
 		city: z.string().min(1, 'Required'),
 		name: z.string().min(1, 'Required'),
 		phone: z.string().min(1, 'Required'),
-		comment: z.string().min(1, 'Required'),
+		// comment: z.string().min(1, 'Required'),
 	})
 )
 

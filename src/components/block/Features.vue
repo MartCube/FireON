@@ -8,25 +8,34 @@ const props = defineProps<{
 }>()
 
 const activeTab = ref(props.list[0])
+async function SetActiveTab(value: Feature) {
+	//animation to hide and show
+	activeTab.value = value
+}
 </script>
 
 <template>
 	<section id="features">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="tabs">
-			<h3 v-for="item in list" :class="['tab', { active: item == activeTab }]" @click="activeTab = item">
+			<h3 v-for="item in list" :class="['tab', { active: item == activeTab }]" @click="SetActiveTab(item)">
 				{{ item.title }}
 			</h3>
 		</div>
-		<div class="active_tab">
-			<AppImg :src="activeTab.image" :width="640" :height="640" />
-			<div class="content">
-				<h3>{{ activeTab.title }}</h3>
-				<p>{{ activeTab.description }}</p>
-			</div>
+		<div class="content" v-for="item in list">
+			<Transition name="tab">
+				<div v-if="item == activeTab" class="activeTab">
+					<AppImg :src="activeTab.image" :width="640" :height="640" />
+					<div class="content">
+						<h3>{{ activeTab.title }}</h3>
+						<p>{{ activeTab.description }}</p>
+					</div>
+				</div>
+			</Transition>
 		</div>
 	</section>
 </template>
+
 <style lang="scss" scoped>
 #features {
 	display: flex;
@@ -79,7 +88,7 @@ const activeTab = ref(props.list[0])
 		}
 	}
 
-	.active_tab {
+	.activeTab {
 		width: 100%;
 		height: 100%;
 		min-height: 25rem;
@@ -114,6 +123,15 @@ const activeTab = ref(props.list[0])
 			}
 		}
 	}
+}
 
+.tab-enter-active,
+.tab-leave-active {
+	transition: all .35s ease-in-out;
+}
+
+.tab-enter-from,
+.tab-leave-to {
+	opacity: 0
 }
 </style>

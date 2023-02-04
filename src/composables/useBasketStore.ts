@@ -30,6 +30,9 @@ export default defineStore('BasketStore', () => {
 		}
 		else
 			products.value.push(product)
+
+
+		toggleModal()	// open
 	}
 	function deleteProduct(product: Product) {
 		// find product by name and color
