@@ -21,7 +21,8 @@ defineProps<{ data: MagazineCard }>()
 
 <style lang="scss" scoped>
 .magazine_card {
-	width: 45%;
+	width: 100%;
+	max-width: 35rem;
 
 	height: 14rem;
 	border: 1px solid $primary;
@@ -29,7 +30,6 @@ defineProps<{ data: MagazineCard }>()
 
 	display: flex;
 	justify-content: flex-end;
-
 	position: relative;
 
 	.magazine {
@@ -37,10 +37,13 @@ defineProps<{ data: MagazineCard }>()
 		top: -3.5rem;
 		left: -2rem;
 		transform: skew(10deg);
+
+		width: 20rem;
+		height: 20rem;
 	}
 
 	.wrap {
-		width: 55%;
+		width: 45%;
 		height: 100%;
 		transform: skew(10deg);
 
@@ -70,6 +73,57 @@ defineProps<{ data: MagazineCard }>()
 			}
 		}
 	}
+}
 
+
+
+@media (max-width: 700px) {
+	.magazine_card {
+		.wrap {
+			margin-right: 2rem;
+		}
+	}
+}
+
+@media (max-width: 620px) {
+	.magazine_card {
+		.magazine {
+			top: -10%;
+			left: -15%;
+
+			width: 16rem;
+			height: 16rem;
+		}
+	}
+}
+
+@media (max-width: 430px) {
+	.magazine_card {
+		.magazine {
+			top: 5%;
+			left: -15%;
+
+			width: 12rem;
+			height: 12rem;
+		}
+
+		.wrap {
+			width: 50%;
+		}
+	}
+}
+
+@media (max-width: 360px) {
+	.magazine_card {
+		.magazine {
+			top: 10%;
+			left: -20%;
+
+			width: 10rem;
+			height: 10rem;
+		}
+
+
+	}
 }
 </style>

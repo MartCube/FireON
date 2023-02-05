@@ -20,19 +20,17 @@ defineProps<{
 
 <style lang="scss" scoped>
 #magazines {
-
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-
 
 	.grid {
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
-
 
 		.magazine_card {
 			margin-bottom: 8rem;
@@ -41,6 +39,27 @@ defineProps<{
 				margin: 0;
 			}
 		}
+	}
+}
+
+
+@media (max-width: 1400px) {
+	#magazines {
+		.grid {
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: nowrap;
+
+			.magazine_card {
+				margin-bottom: 0;
+
+				&:nth-last-child(-n + 3) {
+					margin-top: 8rem;
+				}
+			}
+		}
+
 	}
 }
 </style>

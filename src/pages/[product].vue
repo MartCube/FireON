@@ -241,7 +241,9 @@ function AddToBasket() {
 
 	.mobile {
 		width: inherit;
+		display: flex;
 		flex-direction: column;
+		align-items: center;
 
 		.go_back {
 			display: none;

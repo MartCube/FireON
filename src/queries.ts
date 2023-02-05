@@ -30,3 +30,18 @@ export const MagazineQuery = groq`*[ _type == 'magazine' && uid.current == $uid]
 	"gallery": gallery[].asset._ref,
 	colors[]->{ name, hexcode },
 }`
+
+export const Sitemap_Q = groq`[
+	...*[ _type == 'magazine']{
+		"url": "/" + uid.current + "/",
+		"changefreq":"monthly",
+		"priority": 0.9,
+		"lastmod": _updatedAt,
+	},
+	...*[ _type == 'app']{
+		"url": "/",
+		"changefreq": "monthly",
+		"priority": 1,
+		"lastmod": _updatedAt,
+	},
+]`

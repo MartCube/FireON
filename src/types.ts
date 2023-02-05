@@ -104,3 +104,12 @@ export interface CheckoutForm {
 	comment: TextField,
 	button: string,
 }
+
+
+// Sitemap
+export interface Sitemap {
+	url: string,
+	changefreq: string,
+	priority: number,
+	lastmod: string,
+}

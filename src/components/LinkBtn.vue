@@ -12,9 +12,9 @@ defineProps<{ link: string }>()
 
 <style lang="scss" scoped>
 .btn {
-	width: fit-content;
+	max-width: 200px;
 	height: 50px;
-	padding: 0 56px;
+
 	border: 1px solid $primary;
 	background: transparent;
 	transform: skew(-10deg);

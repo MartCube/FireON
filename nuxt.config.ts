@@ -43,7 +43,12 @@ export default defineNuxtConfig({
 		apiVersion: '2022-10-21'
 	},
 
-
+	nitro: {
+		prerender: {
+			crawlLinks: true,
+			routes: ['/sitemap.xml']
+		}
+	},
 
 	vite: {
 		css: {
@@ -54,7 +59,5 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	// nitro: {},
-	// hooks: {},
-	// webpack: {},
+
 })
