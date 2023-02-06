@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useField } from 'vee-validate'
-import { toRef, Ref } from 'vue'
+import { toRef } from 'vue'
 import type { TextField } from "~~/src/types";
 
 const props = defineProps<{ data: TextField }>()

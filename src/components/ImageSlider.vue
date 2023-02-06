@@ -17,11 +17,16 @@ const activeImg = ref(props.list[0])
 .image_slider {
 	width: 100%;
 	max-width: 500px;
+	height: 600px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 
 	.active_image {
-		width: 100%;
-		height: 100%;
-		margin: 2rem 0;
+		width: 450px;
+		height: 450px;
 	}
 
 	.slider {
@@ -44,6 +49,12 @@ const activeImg = ref(props.list[0])
 				opacity: 1;
 			}
 		}
+	}
+}
+
+@media (max-width: 1200px) {
+	.image_slider {
+		height: auto;
 	}
 }
 </style>

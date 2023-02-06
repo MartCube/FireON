@@ -23,9 +23,22 @@ defineProps<{
 	justify-content: space-between;
 	align-items: center;
 
-
 	.image {
 		width: 20rem;
+	}
+}
+
+@media (max-width: 1200px) {
+	#contact {
+		flex-direction: column;
+
+		form {
+			align-items: center;
+		}
+
+		.image {
+			margin-top: 4rem;
+		}
 	}
 }
 </style>

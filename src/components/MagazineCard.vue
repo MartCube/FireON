@@ -5,7 +5,9 @@ defineProps<{ data: MagazineCard }>()
 
 <template>
 	<div class="magazine_card">
-		<AppImg class="magazine" :src="data.image" :width="320" :height="320" />
+		<div class="magazine">
+			<AppImg :src="data.image" :width="320" :height="320" />
+		</div>
 		<div class="wrap">
 			<AppImg class="name" :src="data.svg" :width="220" :height="72" />
 			<ul class="info">
@@ -21,32 +23,36 @@ defineProps<{ data: MagazineCard }>()
 
 <style lang="scss" scoped>
 .magazine_card {
-	width: 100%;
-	max-width: 35rem;
-
-	height: 14rem;
-	border: 1px solid $primary;
+	width: 47%;
+	height: 15rem;
+	border: 1px solid $primary20;
 	transform: skew(-10deg);
 
 	display: flex;
 	justify-content: flex-end;
-	position: relative;
+	align-items: center;
 
 	.magazine {
-		position: absolute;
-		top: -3.5rem;
-		left: -2rem;
-		transform: skew(10deg);
-
-		width: 20rem;
-		height: 20rem;
-	}
-
-	.wrap {
-		width: 45%;
+		position: relative;
+		width: 50%;
 		height: 100%;
 		transform: skew(10deg);
 
+		// position: absolute;
+		// top: -10%;
+		// left: -10%;
+		.image {
+			transform: scale(1.4);
+			object-fit: contain;
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	.wrap {
+		width: 50%;
+		height: 100%;
+		transform: skew(10deg);
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
@@ -56,11 +62,11 @@ defineProps<{ data: MagazineCard }>()
 			height: 3rem;
 		}
 
-
 		.info {
 			list-style: none;
 
 			li {
+				margin-left: 0.5rem;
 				text-transform: uppercase;
 				font-size: 12px;
 				line-height: 18px;
@@ -75,55 +81,27 @@ defineProps<{ data: MagazineCard }>()
 	}
 }
 
-
-
 @media (max-width: 700px) {
-	.magazine_card {
-		.wrap {
-			margin-right: 2rem;
-		}
-	}
+	.magazine_card {}
 }
 
 @media (max-width: 620px) {
 	.magazine_card {
-		.magazine {
-			top: -10%;
-			left: -15%;
-
-			width: 16rem;
-			height: 16rem;
-		}
+		width: 80%;
 	}
 }
 
-@media (max-width: 430px) {
+@media (max-width: 450px) {
+	.magazine_card {}
+}
+
+@media (max-width: 380px) {
 	.magazine_card {
-		.magazine {
-			top: 5%;
-			left: -15%;
-
-			width: 12rem;
-			height: 12rem;
-		}
-
-		.wrap {
-			width: 50%;
-		}
+		width: 100%;
 	}
 }
 
-@media (max-width: 360px) {
-	.magazine_card {
-		.magazine {
-			top: 10%;
-			left: -20%;
-
-			width: 10rem;
-			height: 10rem;
-		}
-
-
-	}
+@media (max-width: 350px) {
+	.magazine_card {}
 }
 </style>

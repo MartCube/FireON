@@ -8,7 +8,7 @@ const props = defineProps<{
 	button: string,
 }>()
 
-const img = ref(null)	// image ref
+const lightbox = ref(null)	// lightbox ref
 const isOpen = ref(false) // toggle lightbox
 const { state, next, prev, index } = useCycleList(props.list)
 
@@ -19,7 +19,7 @@ function Open(value: number) {
 }
 
 // close lightbox
-onClickOutside(img, (event) => {
+onClickOutside(lightbox, (event) => {
 	isOpen.value = false
 })
 
@@ -45,7 +45,7 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 
 
 // TODO
-// add loading animation
+// add loading spinner animation
 
 </script>
 
@@ -53,12 +53,10 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 	<section id="gallery">
 		<TitleBlock :src="title" :mode="ColorWord.first" />
 		<div class="grid">
-			<div v-for="(image, index) in list" :key="index" @click="Open(index)" class="placeholder">
-				<AppImg :src="image" :width="740" :height="526" />
-			</div>
+			<AppImg v-for="(image, index) in list" :key="index" @click="Open(index)" :src="image" :width="740" :height="526" />
 		</div>
 		<div v-if="isOpen" class="lightbox">
-			<div class="image" ref="img">
+			<div class="wrapper" ref="lightbox">
 				<AppImg :src="state" :width="1280" :height="720" />
 				<Icon class="prev" @click="prev()" name="IconArrow" />
 				<Icon class="next" @click="next()" name="IconArrow" />
@@ -74,6 +72,7 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
+	padding-bottom: calc(4rem - 2%);
 
 	.lightbox {
 		position: fixed;
@@ -88,64 +87,64 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 		justify-content: center;
 		align-items: center;
 
-		.image {
-			height: 90%;
-			user-select: none;
-
-			img {
+		.wrapper {
+			.image {
 				width: 100%;
-				height: 100%;
-				object-fit: contain;
+				max-width: 1280px;
+				user-select: none;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: contain;
+				}
 			}
-		}
 
-		.icon {
-			position: absolute;
-			width: 3rem;
-			height: 3rem;
-			stroke: $white50;
-			fill: none;
-			transition: all 0.2s ease;
+			.icon {
+				position: absolute;
+				width: 3rem;
+				height: 3rem;
+				stroke: $white50;
+				fill: none;
+				transition: all 0.2s ease;
 
-			&:hover {
-				cursor: pointer;
-				stroke: $primary;
+				&:hover {
+					cursor: pointer;
+					stroke: $primary;
+				}
 			}
-		}
 
-		.prev {
-			top: 50%;
-			left: 1rem;
-			transform: rotate(180deg);
-		}
+			.prev {
+				top: 50%;
+				left: 1rem;
+				transform: rotate(180deg);
+			}
 
-		.next {
-			top: 50%;
-			right: 1rem;
-		}
+			.next {
+				top: 50%;
+				right: 1rem;
+			}
 
-		.close {
-			top: 1rem;
-			right: 1rem;
+			.close {
+				top: 1rem;
+				right: 1rem;
+			}
 		}
 	}
 
 	.grid {
-		width: 100%;
+		width: inherit;
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
 
-		.placeholder {
-			width: 370px;
-			height: 263px;
-			margin-bottom: 4rem;
+		.image {
+			width: 32%;
+			margin-right: 2%;
+			margin-bottom: 2%;
 
-
-
-			img {
-				width: 100%;
-				height: 100%;
+			&:nth-child(n+3) {
+				margin-right: 0;
 			}
 
 			&:hover {
@@ -153,9 +152,34 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 			}
 		}
 	}
+}
 
 
+@media (max-width: 800px) {
+	#gallery {
+		.grid {
+			justify-content: space-between;
 
+			.image {
+				width: 48%;
+				margin-right: 0;
+			}
+		}
+	}
+}
 
+@media (max-width: 600px) {
+	#gallery {
+		padding-bottom: 2rem;
+
+		.grid {
+
+			.image {
+				width: 100%;
+				margin-bottom: 2rem;
+
+			}
+		}
+	}
 }
 </style>

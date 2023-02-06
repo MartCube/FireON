@@ -1,6 +1,5 @@
 <template>
 	<div class="image">
-		<!-- format="auto" -->
 		<SanityImage :asset-id="src" :w="width" :h="height">
 			<template #default="{ src }">
 				<img v-lazy="src" :width="width" :height="height" />
@@ -24,7 +23,7 @@ defineProps<{
 	img {
 		width: 100%;
 		height: 100%;
-		object-fit: contain;
+		object-fit: inherit;
 		display: block;
 
 		outline: none;

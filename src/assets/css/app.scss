@@ -60,7 +60,11 @@ section {
 	padding: 4rem 10%;
 }
 
-
+@media (max-width: 1200px) {
+	section {
+		padding-top: 0;
+	}
+}
 
 
 // page transition

@@ -28,16 +28,22 @@ defineProps<{
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
+	padding-bottom: calc(4rem - 2%);
 
 	.grid {
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
 
-
 		.spec {
-			width: 30%;
-			margin-bottom: 5%;
+			width: 32%;
+			margin-right: 2%;
+			margin-bottom: 2%;
+
+			&:nth-child(n+3) {
+				margin-right: 0;
+			}
+
 
 			h3 {
 				margin-bottom: 0.5rem;
@@ -60,12 +66,33 @@ defineProps<{
 				line-height: 1.375rem;
 				color: $white30;
 			}
+		}
+	}
+}
 
-			&:nth-last-child(-n + 3) {
-				margin: 0;
+@media (max-width: 1116px) {
+	#techSpecs {
+		padding-bottom: 2rem;
+
+		.grid {
+			.spec {
+				width: 48%;
+				margin-right: 0;
+				margin-bottom: 2rem;
+
+
 			}
 		}
 	}
+}
 
+@media (max-width: 800px) {
+	#techSpecs {
+		.grid {
+			.spec {
+				width: 100%;
+			}
+		}
+	}
 }
 </style>

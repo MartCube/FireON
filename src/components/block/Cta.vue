@@ -6,6 +6,7 @@ defineProps<{
 	button: string,
 	image: string,
 	bg: string,
+	bgMobile: string,
 }>()
 </script>
 
@@ -87,6 +88,12 @@ defineProps<{
 		height: 1px;
 		opacity: 0.25;
 		background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, );
+	}
+}
+
+@media (max-width: 1200px) {
+	#cta {
+		display: none;
 	}
 }
 </style>

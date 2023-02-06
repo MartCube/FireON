@@ -21,19 +21,34 @@ defineProps<{
 <style lang="scss" scoped>
 #about {
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
+	flex-direction: column;
 
 	.wrap {
-		width: 100%;
+		width: inherit;
 		display: flex;
 		justify-content: space-around;
-
-
+		align-items: center;
 
 		.rich_text {
 			width: 45%;
+		}
+	}
+}
+
+@media (max-width: 1200px) {
+	#about {
+		.image {
+			margin-bottom: 2rem;
+		}
+
+		.wrap {
+			flex-direction: column;
+			justify-content: center;
+
+			.rich_text {
+				width: 100%;
+				max-width: 32rem;
+			}
 		}
 	}
 }

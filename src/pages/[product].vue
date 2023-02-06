@@ -133,13 +133,13 @@ function AddToBasket() {
 #product {
 	width: 100%;
 	height: 100%;
-	min-height: 100%;
+	min-height: 100vh;
 	padding: 2rem 10%;
 
 	.desktop {
 		width: inherit;
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-around;
 		align-items: center;
 		position: relative;
 

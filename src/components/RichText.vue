@@ -24,6 +24,10 @@ defineProps<{ blocks: any[] }>()
 
 		font-size: .875rem;
 		line-height: 1.8125rem;
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
 	}
 }
 </style>

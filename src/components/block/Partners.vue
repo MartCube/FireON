@@ -14,7 +14,7 @@ defineProps<{
 	<section id="partners">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="grid">
-			<AppImg v-for="partner in list" class="image" :src="partner.image" :width="96" :height="96" />
+			<AppImg v-for="partner in list" class="image" :src="partner.image" :width="96" :height="81" />
 		</div>
 	</section>
 </template>
@@ -22,7 +22,8 @@ defineProps<{
 <style lang="scss" scoped>
 #partners {
 	width: 100%;
-	padding: 4rem 0;
+	padding: 4rem 10%;
+	position: relative;
 
 	display: flex;
 	flex-direction: column;
@@ -30,8 +31,7 @@ defineProps<{
 	align-items: center;
 
 	.grid {
-		width: 50%;
-		margin-top: 2rem;
+		width: inherit;
 		display: flex;
 		justify-content: space-around;
 		margin-bottom: 8rem;
@@ -47,7 +47,6 @@ defineProps<{
 		}
 	}
 
-	position: relative;
 
 	&::before {
 		content: '';
@@ -69,6 +68,25 @@ defineProps<{
 		height: 1px;
 		opacity: 0.25;
 		background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, );
+	}
+}
+
+@media (max-width: 600px) {
+	#partners {
+		.grid {
+			width: 100%;
+			justify-content: space-around;
+			flex-wrap: wrap;
+
+			.image {
+				width: 34%;
+				opacity: 0.8;
+
+				&:nth-last-child(-n + 2) {
+					margin-top: 3rem;
+				}
+			}
+		}
 	}
 }
 </style>

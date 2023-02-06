@@ -8,7 +8,7 @@ import { ColorWord } from "~~/src/types";
 defineProps<{ data: ContactForm }>()
 
 const showMsg = ref(false) // toggle msg
-const ContactFormRef = ref<HTMLFormElement | null>(null) // form ref
+// const ContactFormRef = ref<HTMLFormElement | null>(null) // form ref
 const validationSchema = toFormValidator(
 	z.object({
 		name: z.string().min(1, 'Required'),
@@ -27,7 +27,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 </script>
 
 <template>
-	<form ref="ContactFormRef" id="form" @submit="onSubmit" autocomplete="off">
+	<form id="form" @submit="onSubmit" autocomplete="off">
 		<TitleBlock :src="data.title" :mode="ColorWord.first" noline />
 		<VeeInput :data="data.name" />
 		<VeeInput :data="data.phone" />
@@ -107,6 +107,11 @@ form {
 		.title {
 			text-align: center;
 			margin-bottom: 1rem;
+		}
+
+		a {
+			width: 100%;
+			max-width: 15rem;
 		}
 
 	}

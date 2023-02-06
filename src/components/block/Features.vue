@@ -22,16 +22,17 @@ async function SetActiveTab(value: Feature) {
 				{{ item.title }}
 			</h3>
 		</div>
-		<div class="content" v-for="item in list">
-			<Transition name="tab">
-				<div v-if="item == activeTab" class="activeTab">
+		<div class="list">
+			<div class="tab" v-for="item in list" :class="{ active: item == activeTab }">
+				<div class="magazine">
 					<AppImg :src="activeTab.image" :width="640" :height="640" />
-					<div class="content">
-						<h3>{{ activeTab.title }}</h3>
-						<p>{{ activeTab.description }}</p>
-					</div>
+					<CirclePulse />
 				</div>
-			</Transition>
+				<div class="content">
+					<h3>{{ activeTab.title }}</h3>
+					<p>{{ activeTab.description }}</p>
+				</div>
+			</div>
 		</div>
 	</section>
 </template>
@@ -88,50 +89,167 @@ async function SetActiveTab(value: Feature) {
 		}
 	}
 
-	.activeTab {
+
+	.list {
+		position: relative;
 		width: 100%;
-		height: 100%;
-		min-height: 25rem;
-		margin-top: 4rem;
+		height: 25rem;
 
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		.tab {
+			z-index: 1;
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 25rem;
+			margin-top: 4rem;
+
+			display: flex;
+			align-items: center;
+			justify-content: space-evenly;
+
+			transition: all 1s ease;
 
 
-		.image {
-			width: 20rem;
-		}
-
-		.content {
-			width: 49%;
-
-			h3 {
-				text-transform: uppercase;
-				font-size: 20px;
-				line-height: 34px;
-				font-weight: 400;
-				color: $white70;
-				margin-bottom: 14px;
+			&.active {
+				animation: fadeIn 1s ease-in forwards;
 			}
 
-			p {
-				font-size: 14px;
-				line-height: 29px;
-				font-weight: 400;
-				color: $white50;
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+
+				100% {
+					opacity: 1;
+					z-index: 10;
+				}
+			}
+
+			.magazine {
+				width: 20rem;
+				height: 20rem;
+				position: relative;
+
+				.image {
+					width: inherit;
+					height: inherit;
+					z-index: 3;
+					position: absolute;
+					top: 0;
+					left: 0;
+					object-fit: contain;
+
+				}
+
+				.pulse {
+					width: 100%;
+					z-index: 1;
+					position: absolute;
+					top: 0;
+					left: 0;
+				}
+			}
+
+			.content {
+				width: 49%;
+
+				h3 {
+					text-transform: uppercase;
+					font-size: 20px;
+					line-height: 34px;
+					font-weight: 400;
+					color: $white70;
+					margin-bottom: 14px;
+				}
+
+				p {
+					font-size: 14px;
+					line-height: 29px;
+					font-weight: 400;
+					color: $white50;
+				}
 			}
 		}
 	}
+
+
 }
 
 .tab-enter-active,
 .tab-leave-active {
 	transition: all .35s ease-in-out;
+	transition-delay: 0.35s;
 }
 
 .tab-enter-from,
 .tab-leave-to {
 	opacity: 0
+}
+
+@media (max-width: 1200px) {
+	#features {
+		display: flex;
+	}
+}
+
+@media (max-width: 950px) {
+	#features .list {
+		height: 37rem;
+
+		.tab {
+			height: 30rem;
+		}
+	}
+}
+
+@media (max-width: 800px) {
+	#features {
+		padding: 0;
+
+		.tabs {
+			display: inline-block;
+			white-space: nowrap;
+			overflow-x: auto;
+			text-align: center;
+			padding-bottom: 1rem;
+
+			.tab {
+				display: inline-block;
+				width: fit-content;
+				margin: 0 2rem;
+
+				&.active {
+					&::after {
+						height: 1px;
+					}
+				}
+			}
+		}
+
+		.list {
+			height: 55rem;
+
+			.tab {
+				height: auto;
+				flex-direction: column;
+
+				.content {
+					margin-top: 4rem;
+					width: 100%;
+					padding: 0 2rem;
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 500px) {
+	#features {
+		.list {
+			height: 65rem;
+		}
+	}
 }
 </style>

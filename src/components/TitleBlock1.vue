@@ -15,10 +15,10 @@ const rest = props.src.replace(word, '')
 <template>
 	<div :class="['title', { line: !noline }]">
 		<template v-if="mode == 'first'">
-			<h2><span>{{ word }}</span>{{ rest }}</h2>
+			<h1><span>{{ word }}</span>{{ rest }}</h1>
 		</template>
 		<template v-else>
-			<h2>{{ rest }}<span>{{ word }}</span></h2>
+			<h1>{{ rest }}<span>{{ word }}</span></h1>
 		</template>
 	</div>
 </template>
@@ -34,7 +34,7 @@ const rest = props.src.replace(word, '')
 	align-items: center;
 	text-align: center;
 
-	h2 {
+	h1 {
 		text-transform: uppercase;
 		font-size: 29px;
 		font-weight: 400;
@@ -56,17 +56,6 @@ const rest = props.src.replace(word, '')
 			height: 1px;
 			opacity: 0.8;
 			background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
-		}
-	}
-}
-
-@media (max-width: 1200px) {
-	.title {
-		margin-bottom: 4rem;
-
-		h2 {
-			font-size: 22px;
-			line-height: 38px;
 		}
 	}
 }

@@ -30,7 +30,7 @@ let data: CheckoutForm = {
 }
 
 const showMsg = ref(false) // toggle msg
-const CheckoutFormRef = ref<HTMLFormElement | null>(null) // form ref
+// const CheckoutFormRef = ref<HTMLFormElement | null>(null) // form ref
 const validationSchema = toFormValidator(
 	z.object({
 		city: z.string().min(1, 'Required'),
@@ -50,7 +50,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 </script>
 
 <template>
-	<form ref="CheckoutFormRef" id="form" @submit="onSubmit" autocomplete="off">
+	<form id="form" @submit="onSubmit" autocomplete="off">
 		<h3>{{ data.title }}</h3>
 		<VeeInput :data="data.city" />
 		<VeeInput :data="data.name" />
