@@ -71,7 +71,11 @@ function toHome() {
 			margin: 2rem 0;
 			width: 250px;
 			height: 250px;
+		}
 
+		.AppBtn {
+			width: 100%;
+			max-width: 300px;
 		}
 	}
 }
