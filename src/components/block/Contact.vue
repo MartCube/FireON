@@ -57,7 +57,7 @@ defineProps<{
 
 			// margin-top: 4rem;
 			.light {
-				ight: -13%;
+				right: -13%;
 				top: -8.65%;
 			}
 		}
