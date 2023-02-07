@@ -3,6 +3,7 @@ import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
 import { z } from 'zod';
 import type { CheckoutForm } from "~~/src/types";
+import { storeToRefs } from 'pinia'
 
 let data: CheckoutForm = {
 	title: "Доставка",
@@ -44,7 +45,13 @@ const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	console.log('sending data', values)
 	// emailjs or something else
-	showMsg.value = true
+	const { resetStore, toggleResponse } = useBasketStore()
+	const { products } = storeToRefs(useBasketStore())
+
+	console.log('sending data', products.value)
+
+	resetStore()	// clear all products
+	toggleResponse()	// show response msg
 	resetForm()
 })
 </script>
@@ -59,12 +66,6 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		<button type="submit" :disabled="isSubmitting">
 			<span>{{ data.button }}</span>
 		</button>
-
-		<div v-if="showMsg" class="msg">
-			<h2>замовлення оформлене!</h2> <!-- i18n -->
-			<Icon class="success" name="SvgSuccess" />
-			<AppBtn @click="showMsg = false" value="у головну" />
-		</div>
 	</form>
 </template>
 
@@ -115,35 +116,5 @@ form {
 			background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), #D6AE21;
 		}
 	}
-
-	.msg {
-		z-index: 2;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: $dark;
-
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-
-		h2 {
-			text-align: center;
-			margin-bottom: 1rem;
-
-			font-size: 2rem;
-			line-height: 2rem;
-		}
-
-		.success {
-			width: 250px;
-			height: 250px;
-
-		}
-	}
-
 }
 </style>

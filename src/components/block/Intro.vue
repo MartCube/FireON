@@ -20,7 +20,6 @@ defineProps<{
 			</div>
 			<AppImg class="magazine" :src="image" :width="640" :height="640" />
 			<AppImg class="bg" :src="bg" :width="1440" :height="420" />
-
 		</div>
 
 		<div class="mobile">
@@ -37,11 +36,9 @@ defineProps<{
 #intro {
 	width: 100%;
 	height: 26rem;
+	padding: 0;
 	margin-bottom: 4rem;
 	overflow: hidden;
-	padding-left: 0;
-	padding-right: 0;
-
 
 	.desktop {
 		width: 100%;

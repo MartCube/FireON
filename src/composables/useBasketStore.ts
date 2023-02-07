@@ -5,7 +5,8 @@ import type { Product } from "~~/src/types"
 export default defineStore('BasketStore', () => {
 
 	// state
-	const showModal: Ref<boolean> = ref(false)
+	const showModal: Ref<boolean> = ref(false)	// show basket modal
+	const showResponse: Ref<boolean> = ref(false) // show response msg from checkout form
 	const products: Ref<Product[]> = ref([])
 
 	// computed
@@ -19,6 +20,9 @@ export default defineStore('BasketStore', () => {
 	function toggleModal() {
 		showModal.value = !showModal.value
 	}
+	function toggleResponse() {
+		showResponse.value = !showResponse.value
+	}
 	function addProduct(product: Product) {
 		// check if product is in basket with same color
 		if (products.value.some(p => p.name === product.name && p.color === product.color)) {
@@ -31,22 +35,30 @@ export default defineStore('BasketStore', () => {
 		else
 			products.value.push(product)
 
-
-		toggleModal()	// open
+		showModal.value = true
 	}
-	function deleteProduct(product: Product) {
-		// find product by name and color
-		// delete product from array
+	function removeProduct(product: Product) {
+		const index = products.value.indexOf(product);
+		if (index > -1) {
+			products.value.splice(index, 1);
+		}
 	}
-
+	function resetStore() {
+		products.value = []
+	}
 
 	return {
+		// state
 		showModal,
+		showResponse,
 		products,
+		//computed
 		totalPrice,
-
+		// actions
 		toggleModal,
+		toggleResponse,
 		addProduct,
-		deleteProduct,
+		removeProduct,
+		resetStore,
 	}
 })

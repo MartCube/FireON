@@ -4,6 +4,7 @@
 		<NuxtPage />
 		<Footer />
 		<BasketModal />
+		<ResponseModal />
 	</div>
 </template>
 

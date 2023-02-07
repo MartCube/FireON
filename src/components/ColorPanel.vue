@@ -7,6 +7,8 @@ const activeColor = ref(props.data[0].name) // first color as default
 defineEmits<{ (e: 'color', color: Color): void }>() // emit selected color
 
 function reset() {
+	console.log('resetcolor');
+
 	activeColor.value = props.data[0].name
 }
 defineExpose({ reset })

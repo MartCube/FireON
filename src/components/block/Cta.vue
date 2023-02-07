@@ -60,7 +60,7 @@ defineProps<{
 
 		.title {
 			margin: 0;
-
+			max-width: 30rem;
 
 			h1 {
 				text-align: left;

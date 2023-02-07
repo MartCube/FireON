@@ -36,6 +36,7 @@ defineProps<{
 		justify-content: space-around;
 
 		.image {
+			margin-bottom: 4rem;
 			opacity: 0.1;
 			transition: opacity 0.35s ease;
 
@@ -67,6 +68,16 @@ defineProps<{
 		height: 1px;
 		opacity: 0.25;
 		background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 213, 0, 1) 50%, );
+	}
+}
+
+@media (max-width: 1200px) {
+	#partners {
+		.grid {
+			.image {
+				margin-bottom: 2rem;
+			}
+		}
 	}
 }
 

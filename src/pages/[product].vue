@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { MagazineQuery } from "~~/src/queries"
 import type { Magazine, Product, Color } from "~~/src/types"
-import { useMediaQuery } from '@vueuse/core'
-
-const isLargeScreen = useMediaQuery('(min-width: 1080px)')
 
 
 // fetch data
@@ -32,13 +29,16 @@ let product: Product = {
 // component refs to access expose 
 const ColorPanelRef = ref()
 const CounterBtnRef = ref()
+const mobileColorPanelRef = ref()
+const mobileCounterBtnRef = ref()
+const { addProduct } = useBasketStore()
+
 // Get selected color from Color Panel
 function GetColor(value: Color) {
 	product.color = value
 }
 // add to Basket Store
 function AddToBasket() {
-	const { addProduct } = useBasketStore()
 	addProduct(product)
 
 	// reset values
@@ -52,7 +52,19 @@ function AddToBasket() {
 	ColorPanelRef.value.reset()
 	CounterBtnRef.value.reset()
 }
-
+function AddToBasketMobile() {
+	addProduct(product)
+	// reset values
+	product = {
+		name: data.value!.name,
+		image: data.value!.gallery[0],
+		price: data.value!.price,
+		color: data.value!.colors[0],
+		count: 1,
+	}
+	mobileColorPanelRef.value.reset()
+	mobileCounterBtnRef.value.reset()
+}
 
 // write metatags
 </script>
@@ -61,7 +73,7 @@ function AddToBasket() {
 	<div id="product">
 		<template v-if="data && !pending">
 
-			<div class="desktop" v-show="isLargeScreen">
+			<div class="desktop">
 				<NuxtLink class="go_back" to="/#magazines">
 					<Icon name="IconArrow" />
 				</NuxtLink>
@@ -94,7 +106,7 @@ function AddToBasket() {
 				</div>
 			</div>
 
-			<div class="mobile" v-show="!isLargeScreen">
+			<div class="mobile">
 				<div class="details">
 					<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
 					<ul class="info">
@@ -112,7 +124,7 @@ function AddToBasket() {
 					</span>
 				</div>
 
-				<ColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
+				<ColorPanel :data="data.colors" @color="GetColor" ref="mobileColorPanelRef" />
 
 				<div class="description">
 					<h4>Характеристики</h4> <!-- i18n -->
@@ -120,9 +132,9 @@ function AddToBasket() {
 				</div>
 
 				<div class="to_basket">
-					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="CounterBtnRef" />
+					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="mobileCounterBtnRef" />
 					<!--  i18n const -->
-					<AppBtn value="у кошик" @click="AddToBasket()" />
+					<AppBtn value="у кошик" @click="AddToBasketMobile()" />
 				</div>
 			</div>
 		</template>
@@ -241,7 +253,7 @@ function AddToBasket() {
 
 	.mobile {
 		width: inherit;
-		display: flex;
+		display: none;
 		flex-direction: column;
 		align-items: center;
 
@@ -313,6 +325,18 @@ function AddToBasket() {
 			.counter_btn {
 				margin: 2rem 0;
 			}
+		}
+	}
+}
+
+@media (max-width: 1080px) {
+	#product {
+		.mobile {
+			display: flex;
+		}
+
+		.desktop {
+			display: none;
 		}
 	}
 }

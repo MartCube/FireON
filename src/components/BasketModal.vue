@@ -2,9 +2,8 @@
 import { storeToRefs } from 'pinia'
 import { onClickOutside } from '@vueuse/core'
 
-
 const { showModal, products, totalPrice } = storeToRefs(useBasketStore())
-const { toggleModal } = useBasketStore()
+const { toggleModal, removeProduct } = useBasketStore()
 
 const basketRef = ref()
 onClickOutside(basketRef, () => toggleModal())
@@ -26,6 +25,7 @@ onClickOutside(basketRef, () => toggleModal())
 						</div>
 						<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" />
 						<span class="price">{{ product.price * product.count }}</span>
+						<Icon class="removeProduct" @click="removeProduct(product)" name="IconClose" />
 					</div>
 				</div>
 				<p class="total_price">
@@ -37,6 +37,7 @@ onClickOutside(basketRef, () => toggleModal())
 			<template v-else>
 				<p>There are no items in your basket.</p> <!-- i18n  -->
 			</template>
+
 		</div>
 	</div>
 </template>
@@ -84,6 +85,7 @@ onClickOutside(basketRef, () => toggleModal())
 				align-items: center;
 				padding: 1.5rem 0;
 				border-bottom: 1px solid $white10;
+				position: relative;
 
 				.image {
 					width: 4.5rem;
@@ -120,6 +122,29 @@ onClickOutside(basketRef, () => toggleModal())
 					height: min-content;
 				}
 
+				.removeProduct {
+					position: absolute;
+					top: 0;
+					right: 0;
+					width: 2rem;
+					height: 2rem;
+					padding: 0.5rem;
+					stroke: $white50;
+					opacity: 0;
+					transition: all 0.2s linear;
+
+					&:hover {
+						cursor: pointer;
+						stroke: $primary;
+					}
+				}
+
+				&:hover {
+					.removeProduct {
+						opacity: 1;
+					}
+				}
+
 				&:last-of-type {
 					border: none;
 				}
@@ -127,7 +152,7 @@ onClickOutside(basketRef, () => toggleModal())
 		}
 
 		.total_price {
-			margin-top: 1rem;
+			margin: 2rem 0;
 			align-self: flex-end;
 
 			color: $white50;
