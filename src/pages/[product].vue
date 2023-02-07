@@ -132,9 +132,9 @@ function AddToBasketMobile() {
 				</div>
 
 				<div class="to_basket">
-					<LazyCounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="mobileCounterBtnRef" />
+					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="mobileCounterBtnRef" />
 					<!--  i18n const -->
-					<LazyAppBtn value="у кошик" @click="AddToBasketMobile()" />
+					<AppBtn value="у кошик" @click="AddToBasketMobile()" />
 				</div>
 			</div>
 		</template>

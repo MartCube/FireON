@@ -16,7 +16,7 @@ useBasketStore()
 
 <style lang="scss" scoped>
 #app {
-	width: 100vw;
+	width: 100%;
 	height: 100%;
 	min-height: 100vh;
 	position: relative;
