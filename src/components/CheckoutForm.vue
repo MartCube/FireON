@@ -45,14 +45,15 @@ const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	console.log('sending data', values)
 	// emailjs or something else
-	const { resetStore, toggleResponse } = useBasketStore()
+	const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
 
 	console.log('sending data', products.value)
 
-	resetStore()	// clear all products
+	toggleModal()	// close basket modal
 	toggleResponse()	// show response msg
-	resetForm()
+	resetStore()	// clear all products
+	resetForm()		// clear form data
 })
 </script>
 

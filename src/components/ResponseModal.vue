@@ -29,7 +29,7 @@ function toHome() {
 
 <style lang="scss" scoped>
 .overlay {
-	z-index: 3;
+	z-index: 10;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -39,15 +39,15 @@ function toHome() {
 
 
 	#response {
-		width: 34.5rem;
-		max-height: 95vh;
+		width: 35rem;
+		max-height: calc(100vh - 8rem);
 		padding: 2.6rem;
 		border: 1px solid $white10;
 		background: $dark;
 		overflow: auto;
 
 		position: fixed;
-		z-index: 5;
+		z-index: 10;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
@@ -72,6 +72,14 @@ function toHome() {
 			width: 250px;
 			height: 250px;
 
+		}
+	}
+}
+
+@media (max-width: 800px) {
+	.overlay {
+		#response {
+			width: 100%;
 		}
 	}
 }

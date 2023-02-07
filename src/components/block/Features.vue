@@ -123,7 +123,7 @@ async function SetActiveTab(value: Feature) {
 
 				100% {
 					opacity: 1;
-					z-index: 10;
+					z-index: 4;
 				}
 			}
 

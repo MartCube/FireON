@@ -37,14 +37,13 @@ onClickOutside(basketRef, () => toggleModal())
 			<template v-else>
 				<p>There are no items in your basket.</p> <!-- i18n  -->
 			</template>
-
 		</div>
 	</div>
 </template>
 
 <style lang="scss" scoped>
 .overlay {
-	z-index: 3;
+	z-index: 9;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -53,18 +52,18 @@ onClickOutside(basketRef, () => toggleModal())
 	background: $dark80;
 
 	#basket {
-		width: 34.5rem;
-		max-height: 95vh;
+		width: 35rem;
+		max-height: calc(100vh - 8rem);
 		padding: 2.6rem;
 		border: 1px solid $white10;
 		background: $dark;
 		overflow: auto;
 
 		position: fixed;
-		z-index: 5;
-		top: 50%;
+		z-index: 9;
+		top: 4rem;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		transform: translateX(-50%);
 
 		display: flex;
 		flex-direction: column;
@@ -137,6 +136,10 @@ onClickOutside(basketRef, () => toggleModal())
 						cursor: pointer;
 						stroke: $primary;
 					}
+
+					&:active {
+						stroke: $primary;
+					}
 				}
 
 				&:hover {
@@ -178,8 +181,22 @@ onClickOutside(basketRef, () => toggleModal())
 				stroke: $primary;
 			}
 		}
+	}
+}
 
+@media (max-width: 800px) {
+	.overlay {
+		#basket {
+			width: 100%;
 
+			.products {
+				.product {
+					.removeProduct {
+						opacity: 1;
+					}
+				}
+			}
+		}
 	}
 }
 </style>
