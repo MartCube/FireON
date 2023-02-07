@@ -39,7 +39,8 @@ defineProps<{
 	height: 26rem;
 	margin-bottom: 4rem;
 	overflow: hidden;
-
+	padding-left: 0;
+	padding-right: 0;
 
 
 	.desktop {
@@ -49,6 +50,7 @@ defineProps<{
 		justify-content: space-between;
 		align-items: center;
 		position: relative;
+		padding: 0 10%;
 
 		.wrap {
 			width: 50%;
@@ -127,6 +129,7 @@ defineProps<{
 			height: 100%;
 
 			position: relative;
+			padding: 0 2rem;
 
 			.title {
 				margin: 3rem 0;

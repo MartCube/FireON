@@ -116,14 +116,21 @@ footer {
 		height: 100%;
 		flex-direction: column;
 		justify-content: center;
-		padding: 4rem 0 2rem 0;
+		padding: 2rem 0;
 
 		.logo {
-			top: 20%;
+			position: initial;
+			transform: initial;
+			order: 1;
+		}
+
+		.links {
+			margin: 2rem 0;
+			order: 2;
 		}
 
 		.smedias {
-			margin-top: 1rem;
+			order: 3;
 
 			.media .icon {
 				width: 2rem;

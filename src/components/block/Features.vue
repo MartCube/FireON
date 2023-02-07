@@ -145,6 +145,7 @@ async function SetActiveTab(value: Feature) {
 
 				.pulse {
 					width: 100%;
+					height: 100%;
 					z-index: 1;
 					position: absolute;
 					top: 0;
@@ -249,6 +250,14 @@ async function SetActiveTab(value: Feature) {
 	#features {
 		.list {
 			height: 65rem;
+		}
+	}
+}
+
+@media (max-width: 380px) {
+	#features {
+		.list {
+			height: 70rem;
 		}
 	}
 }

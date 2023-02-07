@@ -91,6 +91,11 @@ defineProps<{
 		.grid {
 			.spec {
 				width: 100%;
+
+				p {
+					font-size: 11px;
+					line-height: 19px;
+				}
 			}
 		}
 	}

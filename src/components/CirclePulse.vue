@@ -10,8 +10,8 @@
 
 <style lang="scss" scoped>
 .pulse {
-	width: 20rem;
-	height: 20rem;
+	width: inherit;
+	height: inherit;
 
 	overflow: hidden;
 	position: relative;

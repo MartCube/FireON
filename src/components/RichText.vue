@@ -30,4 +30,13 @@ defineProps<{ blocks: any[] }>()
 		}
 	}
 }
+
+@media (max-width: 800px) {
+	.rich_text {
+		p {
+			font-size: 11px;
+			line-height: 19px;
+		}
+	}
+}
 </style>

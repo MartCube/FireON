@@ -56,6 +56,7 @@ defineProps<{ data: MagazineCard }>()
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
+		padding-left: 1rem;
 
 		.name {
 			width: 10rem;
@@ -78,11 +79,35 @@ defineProps<{ data: MagazineCard }>()
 				}
 			}
 		}
+
+		.btn {
+			max-width: 180px;
+		}
 	}
 }
 
-@media (max-width: 700px) {
-	.magazine_card {}
+@media (max-width: 1200px) {
+	.magazine_card {
+		.wrap .btn {
+			max-width: initial;
+			padding: 0 2rem;
+			width: fit-content;
+		}
+
+
+	}
+}
+
+@media (max-width: 1050px) {
+	.magazine_card {
+		width: 70%;
+	}
+}
+
+@media (max-width: 850px) {
+	.magazine_card {
+		width: 85%;
+	}
 }
 
 @media (max-width: 620px) {
@@ -91,13 +116,35 @@ defineProps<{ data: MagazineCard }>()
 	}
 }
 
-@media (max-width: 450px) {
-	.magazine_card {}
+@media (max-width: 750px) {
+	.magazine_card {
+		width: 100%;
+
+		.wrap {
+			.btn {
+				padding: 0 1rem;
+			}
+		}
+	}
 }
 
 @media (max-width: 380px) {
 	.magazine_card {
 		width: 100%;
+
+		.wrap {
+			.name {
+				width: 7rem;
+			}
+
+			.btn {
+				padding: 0 0.5rem;
+
+				span {
+					font-size: 0.6rem;
+				}
+			}
+		}
 	}
 }
 

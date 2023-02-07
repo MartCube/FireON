@@ -34,32 +34,16 @@ defineProps<{
 
 		.magazine_card {
 			margin-bottom: 8rem;
-
-			&:nth-last-child(-n + 2) {
-				margin: 0;
-			}
 		}
 	}
 }
 
 
-@media (max-width: 1400px) {
+@media (max-width: 1050px) {
 	#magazines {
 		.grid {
-			flex-direction: column;
 			justify-content: center;
-			align-items: center;
-			flex-wrap: nowrap;
-
-			.magazine_card {
-				margin-bottom: 0;
-
-				&:nth-last-child(-n + 3) {
-					margin-top: 8rem;
-				}
-			}
 		}
-
 	}
 }
 </style>

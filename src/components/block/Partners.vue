@@ -34,7 +34,6 @@ defineProps<{
 		width: inherit;
 		display: flex;
 		justify-content: space-around;
-		margin-bottom: 8rem;
 
 		.image {
 			opacity: 0.1;
