@@ -23,12 +23,12 @@ export default defineNuxtConfig({
 	},
 
 	modules: [
-		'nuxt-icon',
 		'@nuxtjs/sanity',
 		'@pinia/nuxt',
 		// '@nuxtjs/i18n',
 		// '~/modules/purge-comments'
-		'~/modules/style-inlining'
+		// '~/modules/style-inlining',
+		'nuxt-icon',
 	],
 
 	icon: {
