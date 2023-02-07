@@ -93,13 +93,13 @@ function AddToBasketMobile() {
 							{{ data.price }} ГРН <!-- i18n -->
 						</span>
 					</div>
-					<ColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
+					<LazyColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
 					<div class="description">
 						<h4>Характеристики</h4> <!-- i18n -->
 						<RichText :blocks="data.description" />
 					</div>
 					<div class="to_basket">
-						<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="CounterBtnRef" />
+						<LazyCounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="CounterBtnRef" />
 						<!--  i18n const -->
 						<AppBtn value="у кошик" @click="AddToBasket()" />
 					</div>

@@ -31,9 +31,6 @@ defineExpose({ reset })
 	justify-content: space-around;
 	align-items: center;
 
-
-
-
 	.dec,
 	.inc,
 	.count {
