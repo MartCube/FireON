@@ -16,7 +16,7 @@ defineProps<{
 		<div class="desktop">
 			<div class="wrap">
 				<TitleBlock1 :src="title" :mode="ColorWord.first" noline />
-				<LinkBtn link="/#magazines">{{ button }}</LinkBtn>
+				<AppLink class="btn" to="/" hash="#magazines">{{ button }}</AppLink>
 			</div>
 			<AppImg class="magazine" :src="image" :width="640" :height="640" />
 			<AppImg class="bg" :src="bg" :width="1440" :height="420" />
@@ -25,7 +25,7 @@ defineProps<{
 		<div class="mobile">
 			<TitleBlock1 :src="title" :mode="ColorWord.first" noline />
 			<AppImg class="magazine" :src="image" :width="640" :height="640" />
-			<LinkBtn link="/#magazines">{{ button }}</LinkBtn>
+			<AppLink class="btn" to="/" hash="#magazines">{{ button }}</AppLink>
 			<AppImg class="bg" :src="bgMobile" :width="500" :height="665" />
 		</div>
 

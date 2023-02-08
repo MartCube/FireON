@@ -1,12 +1,12 @@
-<template>
-	<NuxtLink class="logo" to="/">
-		<AppImg class="magazine" :src="src" :width="280" :height="48" />
-	</NuxtLink>
-</template>
-
 <script setup lang="ts">
 defineProps<{ src: string }>()
 </script>
+
+<template>
+	<AppLink class="logo" to="/">
+		<AppImg class="magazine" :src="src" :width="280" :height="48" />
+	</AppLink>
+</template>
 
 <style lang="scss" scoped>
 .logo {

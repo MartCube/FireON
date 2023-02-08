@@ -1,6 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
-
 export default defineNuxtConfig({
 
 	srcDir: 'src',
@@ -25,11 +24,34 @@ export default defineNuxtConfig({
 	modules: [
 		'@nuxtjs/sanity',
 		'@pinia/nuxt',
-		// '@nuxtjs/i18n',
+		'@nuxtjs/i18n',
+		'nuxt-icon',
 		// '~/modules/purge-comments'
 		// '~/modules/style-inlining',
-		'nuxt-icon',
 	],
+
+	i18n: {
+		locales: [
+			{
+				code: 'ua',
+				name: 'Ukrainian',
+			},
+			{
+				code: 'en',
+				name: 'English',
+			}
+		],
+		defaultLocale: 'ua',
+		strategy: 'prefix_except_default',
+		// lazy: true,
+		// langDir: 'locales/',
+		vueI18n: {
+			legacy: false,
+			locale: 'ua',
+			fallbackLocale: 'ua',
+			availableLocales: ['ua', 'en',],
+		}
+	},
 
 	icon: {
 		size: '24px',
@@ -51,6 +73,7 @@ export default defineNuxtConfig({
 	},
 
 	vite: {
+		logLevel: 'info',
 		css: {
 			preprocessorOptions: {
 				scss: {
@@ -59,5 +82,4 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-
 })

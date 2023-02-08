@@ -74,9 +74,9 @@ function AddToBasketMobile() {
 		<template v-if="data && !pending">
 
 			<div class="desktop">
-				<NuxtLink class="go_back" to="/#magazines">
+				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
-				</NuxtLink>
+				</AppLink>
 
 				<ImageSlider :list="data.gallery" />
 

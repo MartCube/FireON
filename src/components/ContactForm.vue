@@ -35,10 +35,10 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		<button type="submit" :disabled="isSubmitting">
 			<span>{{ data.button }}</span>
 		</button>
-
+		<!-- i18n -->
 		<div v-if="showMsg" class="msg">
-			<h4>message send</h4> <!-- i18n -->
-			<LinkBtn @click="showMsg = false" link="/#contact">write new message</LinkBtn>
+			<h4>message send</h4>
+			<AppBtn @click="showMsg = false" value="write new message" />
 		</div>
 	</form>
 </template>
@@ -112,6 +112,11 @@ form {
 		a {
 			width: 100%;
 			max-width: 15rem;
+		}
+
+		.AppBtn {
+			width: 100%;
+			max-width: 300px;
 		}
 
 	}

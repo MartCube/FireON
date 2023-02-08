@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
 import type { App } from "~~/src/types"
 import { AppQuery } from "~~/src/queries"
-
+import { useI18n } from 'vue-i18n'
 export default defineStore('AppStore', () => {
+
+	// i18n
+	const { locale } = useI18n()
+
 
 	// data fetching
 	const { fetch } = useSanity()
@@ -17,6 +21,7 @@ export default defineStore('AppStore', () => {
 
 
 	return {
+		// data getters
 		logo,
 		links,
 		smedias,

@@ -1,9 +1,15 @@
 <script setup lang="ts">
-defineProps<{ link: string }>()
+defineProps<{
+	name?: string,
+	to?: string,
+	hash?: string,
+	query?: string,
+}>()
+const localePath = useLocalePath()
 </script>
 
 <template>
-	<NuxtLink class="btn" :to="link">
+	<NuxtLink :to="localePath({ name, path: to, hash, query: { product: query } })">
 		<span>
 			<slot></slot>
 		</span>

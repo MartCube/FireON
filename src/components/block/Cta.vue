@@ -8,6 +8,7 @@ defineProps<{
 	bg: string,
 	bgMobile: string,
 }>()
+
 </script>
 
 <template>
@@ -16,14 +17,12 @@ defineProps<{
 			<AppImg class="magazine" :src="image" :width="460" :height="420" />
 			<CirclePulse />
 		</div>
-
 		<div class="wrap">
 			<TitleBlock1 :src="title" :mode="ColorWord.last" noline />
-			<LinkBtn link="/#magazines">{{ button }}</LinkBtn>
+			<AppLink class="btn" to="/" hash="#magazines">{{ button }}</AppLink>
 		</div>
 		<AppImg class="bg" :src="bg" :width="1440" :height="420" />
 		<AppImg class="bg_mobile" :src="bgMobile" :width="500" :height="665" />
-
 	</section>
 </template>
 
