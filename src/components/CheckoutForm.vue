@@ -4,6 +4,7 @@ import { toFormValidator } from '@vee-validate/zod';
 import { z } from 'zod';
 import type { CheckoutForm } from "~~/src/types";
 import { storeToRefs } from 'pinia'
+import { promiseTimeout } from '@vueuse/core'
 
 let data: CheckoutForm = {
 	title: "Доставка",
@@ -29,9 +30,6 @@ let data: CheckoutForm = {
 		placeholder: "Коментар",
 	},
 }
-
-const showMsg = ref(false) // toggle msg
-// const CheckoutFormRef = ref<HTMLFormElement | null>(null) // form ref
 const validationSchema = toFormValidator(
 	z.object({
 		city: z.string().min(1, 'Required'),
@@ -43,14 +41,13 @@ const validationSchema = toFormValidator(
 
 const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
-	console.log('sending data', values)
-	// emailjs or something else
 	const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
-
+	console.log('sending data', values)
 	console.log('sending data', products.value)
 
 	toggleModal()	// close basket modal
+	await promiseTimeout(550)	// simulate data sending
 	toggleResponse()	// show response msg
 	resetStore()	// clear all products
 	resetForm()		// clear form data

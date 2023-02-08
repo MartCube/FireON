@@ -13,16 +13,18 @@
 		"@nuxtjs/i18n": "8.0.0-beta.9",
 		"@nuxtjs/sanity": "1.6.0",
 		"@pinia/nuxt": "^0.4.6",
+		"@sanity/client": "^4.0.1",
 		"@sanity/image-url": "^1.0.2",
 		"@vee-validate/zod": "^4.7.3",
 		"@vueuse/core": "9.12.0",
 		"eslint": "^8.33.0",
 		"nuxt": "^3.1.2",
-		"nuxt-icon": "^0.2.10",
+		"nuxt-icon": "^0.2.11",
 		"purgecss": "^5.0.0",
 		"purgecss-from-html": "^5.0.0",
 		"sass": "^1.58.0",
 		"sass-loader": "^13.2.0",
+		"sitemap": "^7.1.1",
 		"typescript": "^4.9.5",
 		"vee-validate": "^4.7.3",
 		"vue": "^3.2.47",
@@ -31,9 +33,5 @@
 		"vue3-lazyload": "^0.3.6",
 		"webpack": "^5.75.0",
 		"zod": "^3.20.2"
-	},
-	"dependencies": {
-		"@sanity/client": "^4.0.1",
-		"sitemap": "^7.1.1"
 	}
 }

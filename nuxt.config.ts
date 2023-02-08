@@ -53,11 +53,6 @@ export default defineNuxtConfig({
 		}
 	},
 
-	icon: {
-		size: '24px',
-		class: 'icon',
-	},
-
 	sanity: {
 		projectId: process.env.SANITY_ID,
 		dataset: process.env.SANITY_DATASET,
