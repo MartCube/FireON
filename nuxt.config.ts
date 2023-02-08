@@ -6,7 +6,11 @@ export default defineNuxtConfig({
 
 	css: ["@/assets/css/app.scss"],
 
-	// typescript: { strict: true, typeCheck: true, shim: false },
+	typescript: {
+		strict: true,
+		typeCheck: false,
+		shim: false
+	},
 
 	components: {
 		"dirs": [
