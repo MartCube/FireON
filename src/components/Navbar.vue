@@ -10,19 +10,20 @@ const [menuValue, menuToggle] = useToggle()
 
 <template>
 	<header>
-		<div class="links">
-			<div v-for="link in links" :key="link.title" class="link">
+		<div class="links" :class="{ show: menuValue }">
+			<Icon class="close" @click="menuToggle()" name="IconClose" />
+			<div v-for="link in links" :key="link.title" class="link" @click="menuValue = false">
 				<NuxtLink :to="`/#${link.hashtag}`">{{ link.title }}</NuxtLink>
 			</div>
 		</div>
-		<div class="menu">
+		<div class="menu" @click="menuToggle()">
 			<Icon name="IconMenu" />
 		</div>
 		<Logo :src="logo" />
-
 		<div class="basket" @click="toggleModal()">
 			<Icon name="IconBasket" />
 		</div>
+
 	</header>
 </template>
 
@@ -67,6 +68,10 @@ header {
 					opacity: 1;
 				}
 			}
+		}
+
+		.close {
+			display: none;
 		}
 	}
 
@@ -131,7 +136,53 @@ header {
 @media (max-width: 1000px) {
 	header {
 		.links {
-			display: none;
+			z-index: 8;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: $dark95;
+
+
+			display: none; // toggle to flex
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+
+			&.show {
+				display: flex;
+			}
+
+			.link {
+				padding: 0;
+				margin-bottom: 4rem;
+
+				a {
+					font-size: 26px;
+					line-height: 44px;
+				}
+			}
+
+			.close {
+				display: initial;
+				position: absolute;
+				top: 1rem;
+				left: 10%;
+				width: 2rem;
+				height: 2rem;
+				stroke: $white50;
+
+				&:hover {
+					cursor: pointer;
+					stroke: $primary;
+				}
+
+				&:active {
+					stroke: $primary;
+				}
+			}
+
 		}
 
 		.menu {

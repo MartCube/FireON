@@ -25,8 +25,11 @@ const activeImg = ref(props.list[0])
 	align-items: center;
 
 	.active_image {
-		width: 450px;
-		height: 450px;
+		width: 100%;
+		max-width: 450px;
+		// height: 450px;
+
+
 	}
 
 	.slider {
@@ -52,7 +55,7 @@ const activeImg = ref(props.list[0])
 	}
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1080px) {
 	.image_slider {
 		height: auto;
 	}

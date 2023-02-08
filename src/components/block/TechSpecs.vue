@@ -24,6 +24,7 @@ defineProps<{
 
 <style lang="scss" scoped>
 #techSpecs {
+
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;

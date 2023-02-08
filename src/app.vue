@@ -3,8 +3,8 @@
 		<Navbar />
 		<NuxtPage />
 		<Footer />
-		<BasketModal />
-		<ResponseModal />
+		<!-- <BasketModal /> -->
+		<!-- <ResponseModal /> -->
 	</div>
 </template>
 
