@@ -8,11 +8,10 @@ const { smedias, logo, links } = storeToRefs(useAppStore())
 	<footer>
 		<div class="links">
 			<div class="link" v-for="link in links" :key="link.title">
-				<NuxtLink :to="`/#${link.hashtag}`">{{ link.title }}</NuxtLink>
-
+				<AppLink to="/" :hash="`#${link.hashtag}`">{{ link.title }}</AppLink>
 			</div>
 		</div>
-		<Logo :src="logo!" />
+		<Logo v-if="logo" :src="logo" />
 		<div class="smedias">
 			<NuxtLink class="media" v-for="media in smedias" :to="media.link" external target="_blank">
 				<Icon :name="media.icon" />

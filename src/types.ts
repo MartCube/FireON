@@ -22,7 +22,7 @@ export interface App {
 	logo: string,
 	links: Link[],
 	smedias: SocialMedia[],
-	content: any[],
+	content: any[], // block content
 	metaTags: MetaTags,
 }
 
@@ -32,8 +32,8 @@ export interface Color {
 	hexcode: string,
 }
 export interface MagazineCard {
+	name: string,
 	svg: string,
-	uid: string,
 	info: {
 		size: string,
 		rem: string,
@@ -44,17 +44,22 @@ export interface MagazineCard {
 export interface Magazine {
 	name: string,
 	svg: string,
-	uid: string,
 	info: {
 		size: string,
 		rem: string,
 		blk: string,
 	},
 	price: number,
-	colors: Color[],
-	description: any[],
+	colors: {
+		title: string,
+		list: Color[]
+	},
+	description: any[],	// block content
 	gallery: string[],
+	button: string,
 }
+
+
 // Product
 export interface Product {
 	name: string,
@@ -63,8 +68,6 @@ export interface Product {
 	price: number,
 	count: number,
 }
-
-
 
 // blocks 
 export interface TechSpec {
@@ -96,13 +99,25 @@ export interface ContactForm {
 	message: TextField,
 	button: string,
 }
-export interface CheckoutForm {
+export interface OrderForm {
 	title: string,
-	city: TextField,
+	place: TextField,
 	name: TextField,
 	phone: TextField,
 	comment: TextField,
 	button: string,
+}
+export interface Basket {
+	basket: {
+		title: string,
+		totalSum: string,
+		emptyBasketMsg: string,
+	},
+	form: OrderForm,
+	success: {
+		title: string,
+		button: string,
+	}
 }
 
 

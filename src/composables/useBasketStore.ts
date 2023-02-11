@@ -1,8 +1,19 @@
 import { defineStore } from 'pinia'
 import { Ref } from 'vue'
-import type { Product } from "~~/src/types"
-
+import type { Product, Basket } from "~~/src/types"
+import { BasketQuery } from "~~/src/queries"
 export default defineStore('BasketStore', () => {
+
+	// i18n
+	const { locale } = useI18n()
+
+	// data fetching
+	const { fetch } = useSanity()
+	const { data, pending, refresh } = useAsyncData(
+		`Basket - ${locale.value}`,
+		(): Promise<Basket> => fetch(BasketQuery, { lang: locale.value })
+	)
+
 
 	// state
 	const showModal: Ref<boolean> = ref(false)	// show basket modal
@@ -15,6 +26,9 @@ export default defineStore('BasketStore', () => {
 		products.value.map(product => total += product.price * product.count)
 		return total
 	})
+	const basketModalData = computed(() => data.value?.basket || null)
+	const orderFormData = computed(() => data.value?.form || null)
+
 
 	// actions
 	function toggleModal() {
@@ -46,8 +60,16 @@ export default defineStore('BasketStore', () => {
 	function resetStore() {
 		products.value = []
 	}
+	function refreshBasket() {
+		refresh()
+	}
 
 	return {
+		//data
+		pending,
+		refreshBasket,
+		basketModalData,
+		orderFormData,
 		// state
 		showModal,
 		showResponse,

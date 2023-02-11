@@ -1,6 +1,8 @@
 <template>
 	<div class="content">
-		<SanityContent v-if="content" :blocks="content" :serializers="serializers" />
+		<template v-if="content && !pending">
+			<SanityContent :blocks="content" :serializers="serializers" />
+		</template>
 	</div>
 </template>
 
@@ -8,7 +10,7 @@
 import { resolveComponent } from 'vue'
 import { storeToRefs } from 'pinia'
 
-const { content } = storeToRefs(useAppStore())
+const { content, pending } = storeToRefs(useAppStore())
 
 const serializers = {
 	types: {
@@ -33,7 +35,8 @@ const serializers = {
 <style lang="scss" scoped>
 .content {
 	width: 100%;
-
+	height: 100%;
+	min-height: 100vh;
 	// .v-enter-active,
 	// .v-leave-active {
 	// 	transition: all .35s ease;

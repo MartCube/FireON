@@ -2,44 +2,23 @@
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
 import { z } from 'zod';
-import type { CheckoutForm } from "~~/src/types";
+import type { OrderForm } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { promiseTimeout } from '@vueuse/core'
 
-let data: CheckoutForm = {
-	title: "Доставка",
-	button: "замовити",
-	city: {
-		name: "city",
-		label: "Мiсто",
-		placeholder: "Киiв",
-	},
-	name: {
-		name: "name",
-		label: "Одержувач (ПІБ повністю)",
-		placeholder: "Iван Iваненко Iванович",
-	},
-	phone: {
-		name: "phone",
-		label: "Телефон",
-		placeholder: "+380",
-	},
-	comment: {
-		name: "comment",
-		label: "Коментар",
-		placeholder: "Коментар",
-	},
-}
+const { orderFormData: data, pending } = storeToRefs(useBasketStore())
+
+
 const validationSchema = toFormValidator(
 	z.object({
-		city: z.string().min(1, 'Required'),
+		place: z.string().min(1, 'Required'),
 		name: z.string().min(1, 'Required'),
 		phone: z.string().min(1, 'Required'),
 		// comment: z.string().min(1, 'Required'),
 	})
 )
 
-const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
+const { handleSubmit, isSubmitting, } = useForm<OrderForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
@@ -56,14 +35,16 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 <template>
 	<form id="form" @submit="onSubmit" autocomplete="off">
-		<h3>{{ data.title }}</h3>
-		<VeeInput :data="data.city" />
-		<VeeInput :data="data.name" />
-		<VeeInput :data="data.phone" />
-		<VeeInput :data="data.comment" />
-		<button type="submit" :disabled="isSubmitting">
-			<span>{{ data.button }}</span>
-		</button>
+		<template v-if="data && !pending">
+			<h3>{{ data.title }}</h3>
+			<VeeInput :data="data.place" />
+			<VeeInput :data="data.name" />
+			<VeeInput :data="data.phone" />
+			<VeeInput :data="data.comment" />
+			<button type="submit" :disabled="isSubmitting">
+				<span>{{ data.button }}</span>
+			</button>
+		</template>
 	</form>
 </template>
 

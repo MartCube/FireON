@@ -2,13 +2,13 @@
 import { MagazineQuery } from "~~/src/queries"
 import type { Magazine, Product, Color } from "~~/src/types"
 
-
 // fetch data
+const { locale } = useI18n()
 const { params } = useRoute()
 const { fetch } = useSanity()
 const { data, pending } = await useAsyncData(
 	`Magazine - ${params.product}`,
-	(): Promise<Magazine> => fetch(MagazineQuery, { uid: params.product })
+	(): Promise<Magazine> => fetch(MagazineQuery, { uid: params.product, lang: locale.value })
 )
 
 // handle error
@@ -23,9 +23,10 @@ let product: Product = {
 	name: data.value!.name,
 	image: data.value!.gallery[0],
 	price: data.value!.price,
-	color: data.value!.colors[0],
+	color: data.value!.colors.list[0],
 	count: 1,
 }
+
 // component refs to access expose 
 const ColorPanelRef = ref()
 const CounterBtnRef = ref()
@@ -46,7 +47,7 @@ function AddToBasket() {
 		name: data.value!.name,
 		image: data.value!.gallery[0],
 		price: data.value!.price,
-		color: data.value!.colors[0],
+		color: data.value!.colors.list[0],
 		count: 1,
 	}
 	ColorPanelRef.value.reset()
@@ -59,7 +60,7 @@ function AddToBasketMobile() {
 		name: data.value!.name,
 		image: data.value!.gallery[0],
 		price: data.value!.price,
-		color: data.value!.colors[0],
+		color: data.value!.colors.list[0],
 		count: 1,
 	}
 	mobileColorPanelRef.value.reset()
@@ -77,7 +78,6 @@ function AddToBasketMobile() {
 				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
 				</AppLink>
-
 				<ImageSlider :list="data.gallery" />
 
 				<div class="wrap">
@@ -94,14 +94,10 @@ function AddToBasketMobile() {
 						</span>
 					</div>
 					<ColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
-					<div class="description">
-						<h4>Характеристики</h4> <!-- i18n -->
-						<RichText :blocks="data.description" />
-					</div>
+					<RichText class="description" :blocks="data.description" />
 					<div class="to_basket">
 						<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="CounterBtnRef" />
-						<!--  i18n const -->
-						<AppBtn value="у кошик" @click="AddToBasket()" />
+						<AppBtn :value="data.button" @click="AddToBasket()" />
 					</div>
 				</div>
 			</div>

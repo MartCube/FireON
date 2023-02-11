@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { onClickOutside } from '@vueuse/core'
 
-const { showModal, products, totalPrice } = storeToRefs(useBasketStore())
+const { basketModalData: data, showModal, products, totalPrice } = storeToRefs(useBasketStore())
 const { toggleModal, removeProduct } = useBasketStore()
 
 const basketRef = ref()
@@ -10,10 +10,10 @@ onClickOutside(basketRef, () => toggleModal())
 </script>
 
 <template>
-	<div class="overlay" v-if="showModal">
+	<div class="overlay" v-if="showModal && data">
 		<div id="basket" ref="basketRef">
 			<IconClose class="close" @click="toggleModal()" />
-			<h2>кошик</h2> <!-- i18n  -->
+			<h2>{{ data.title }}</h2>
 
 			<template v-if="products.length">
 				<div class="products">
@@ -29,13 +29,13 @@ onClickOutside(basketRef, () => toggleModal())
 					</div>
 				</div>
 				<p class="total_price">
-					Сума: <span>{{ totalPrice }} ГРН</span><!-- i18n  -->
+					{{ data.totalSum }}: <span>{{ totalPrice }} ГРН</span>
 				</p>
 				<CheckoutForm />
 			</template>
 
 			<template v-else>
-				<p>There are no items in your basket.</p> <!-- i18n  -->
+				<p>{{ data.emptyBasketMsg }}</p>
 			</template>
 		</div>
 	</div>
@@ -69,6 +69,9 @@ onClickOutside(basketRef, () => toggleModal())
 		flex-direction: column;
 
 		h2 {
+			text-transform: uppercase;
+			font-size: 20px;
+			line-height: 34px;
 			margin-bottom: 1rem;
 		}
 

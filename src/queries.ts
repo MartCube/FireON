@@ -1,11 +1,11 @@
-export const AppQuery = groq`*[ _type == 'app'][0]{
+export const AppQuery = groq`*[ _type == 'app' && __i18n_lang == $lang][0]{
 	"logo": logo.asset._ref,
 	"links": links[] { title, hashtag },
 	"smedias": smedias[] { name, icon, link },
 	content[]{
 		_type == 'intro' => { ..., 'image':image.asset._ref, "bg": bg.asset._ref, "bgMobile": bgMobile.asset._ref},
 		_type == 'features' => { ..., list[]{ title, description, "image":image.asset._ref } },
-		_type == 'magazines' => { ..., list[]->{ "svg": svg.asset._ref, "uid": uid.current, info, "image": gallery[0].asset._ref, } },
+		_type == 'magazines' => { ..., list[]->{ name, "svg": svg.asset._ref, info, "image": gallery[0].asset._ref, } },
 		_type == 'cta' => { ..., "image": image.asset._ref, "bg": bg.asset._ref, "bgMobile": bgMobile.asset._ref },
 		_type == 'techSpecs' => { ..., list[]{ title, icon, description } },
 		_type == 'about' => { ..., 'image':image.asset._ref },
@@ -20,15 +20,32 @@ export const AppQuery = groq`*[ _type == 'app'][0]{
 	},
 }`
 
-export const MagazineQuery = groq`*[ _type == 'magazine' && uid.current == $uid][0]{
+export const MagazineQuery = groq`*[ _type == 'magazine' && name == $uid && __i18n_lang == $lang ][0]{
 	name,
-	"uid": uid.current,
 	info,
 	price,
 	description[],
 	"svg": svg.asset._ref,
 	"gallery": gallery[].asset._ref,
-	colors[]->{ name, hexcode },
+	"colors":  colors{ title, list[]->{ name, hexcode } },
+	button,
+}`
+
+export const BasketQuery = groq`*[ _type == 'basket' && __i18n_lang == $lang ][0]{
+	"basket": {
+		title,
+    	totalSum,
+		emptyBasketMsg,
+	},
+    "form":form{
+      	title,
+      	place { label, placeholder, name},
+      	name { label, placeholder, name},
+      	phone { label, placeholder, name}, 
+      	comment { label, placeholder, name},
+		button,
+    },
+    success
 }`
 
 export const Sitemap_Q = groq`[

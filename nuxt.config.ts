@@ -61,7 +61,7 @@ export default defineNuxtConfig({
 		projectId: process.env.SANITY_ID,
 		dataset: process.env.SANITY_DATASET,
 		minimal: true,
-		apiVersion: '2022-10-21'
+		apiVersion: '2023-01-01'
 	},
 
 	nitro: {

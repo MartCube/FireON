@@ -10,6 +10,7 @@ defineProps<{ blocks: any[] }>()
 
 <style lang="scss">
 .rich_text {
+
 	ul li {
 		font-size: 12px;
 		line-height: 1.25rem;

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { MagazineCard } from "~~/src/types"
-defineProps<{ data: MagazineCard }>()
-const localePath = useLocalePath()
-
+defineProps<{
+	data: MagazineCard,
+	button: string,
+}>()
 </script>
 
 <template>
@@ -18,12 +19,10 @@ const localePath = useLocalePath()
 				<li>{{ data.info.blk }}BLK</li>
 			</ul>
 			<!-- i18n -->
-
-			<AppLink class="btn" :to="data.uid" hash="#product">Детальнiше</AppLink>
+			<AppLink class="btn" :to="data.name" hash="#product">{{ button }}</AppLink>
 		</div>
 	</div>
 </template>
-
 
 <style lang="scss" >
 .magazine_card {

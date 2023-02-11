@@ -20,6 +20,13 @@ const validationSchema = toFormValidator(
 const { handleSubmit, isSubmitting, } = useForm<ContactForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	console.log('sending data', values)
+
+	await $fetch('/', {
+		method: 'POST',
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: values,
+	})
+
 	// emailjs or something else
 	showMsg.value = true
 	resetForm()
@@ -27,7 +34,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 </script>
 
 <template>
-	<form id="form" @submit="onSubmit" autocomplete="off">
+	<form id="form" @submit="onSubmit" autocomplete="off" method="POST" data-netlify="true">
 		<TitleBlock :src="data.title" :mode="ColorWord.first" noline />
 		<VeeInput :data="data.name" />
 		<VeeInput :data="data.phone" />

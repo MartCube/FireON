@@ -4,6 +4,7 @@ import type { MagazineCard } from "~~/src/types"
 
 defineProps<{
 	title: string,
+	button: string,
 	list: MagazineCard[],
 }>()
 </script>
@@ -12,7 +13,7 @@ defineProps<{
 	<section id="magazines">
 		<TitleBlock :src="title" :mode="ColorWord.last" />
 		<div class="grid">
-			<MagazineCard v-for="item in list" :key="item.uid" :data="item" />
+			<MagazineCard v-for="item in list" :key="item.name" :data="item" :button="button" />
 		</div>
 	</section>
 </template>
