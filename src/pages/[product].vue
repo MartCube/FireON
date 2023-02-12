@@ -6,17 +6,22 @@ import type { Magazine, Product, Color } from "~~/src/types"
 const { locale } = useI18n()
 const { params } = useRoute()
 const { fetch } = useSanity()
-const { data, pending } = await useAsyncData(
+const { data, pending, refresh } = await useAsyncData(
 	`Magazine - ${params.product}`,
 	(): Promise<Magazine> => fetch(MagazineQuery, { uid: params.product, lang: locale.value })
 )
-
 // handle error
 if (!data.value) throw createError({
 	statusCode: 404,
 	statusMessage: `Magazine - ${params.product} Not Found`,
 	fatal: true
 })
+watch(locale, async (newLocale) => {
+	if (newLocale) refresh()
+})
+
+
+
 
 // initial product
 let product: Product = {
@@ -26,14 +31,12 @@ let product: Product = {
 	color: data.value!.colors.list[0],
 	count: 1,
 }
-
 // component refs to access expose 
 const ColorPanelRef = ref()
 const CounterBtnRef = ref()
 const mobileColorPanelRef = ref()
 const mobileCounterBtnRef = ref()
 const { addProduct } = useBasketStore()
-
 // Get selected color from Color Panel
 function GetColor(value: Color) {
 	product.color = value
@@ -52,19 +55,6 @@ function AddToBasket() {
 	}
 	ColorPanelRef.value.reset()
 	CounterBtnRef.value.reset()
-}
-function AddToBasketMobile() {
-	addProduct(product)
-	// reset values
-	product = {
-		name: data.value!.name,
-		image: data.value!.gallery[0],
-		price: data.value!.price,
-		color: data.value!.colors.list[0],
-		count: 1,
-	}
-	mobileColorPanelRef.value.reset()
-	mobileCounterBtnRef.value.reset()
 }
 
 // write metatags
@@ -90,7 +80,7 @@ function AddToBasketMobile() {
 						</ul>
 						<span class="price">
 							<Icon name="IconMoney" />
-							{{ data.price }} ГРН <!-- i18n -->
+							{{ data.price }} ГРН
 						</span>
 					</div>
 					<ColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
@@ -111,26 +101,17 @@ function AddToBasketMobile() {
 						<li>{{ data.info.blk }}BLK</li>
 					</ul>
 				</div>
-
 				<ImageSlider :list="data.gallery" />
-
 				<div class="price">
 					<span>
-						<Icon name="IconMoney" />{{ data.price }} ГРН <!-- i18n -->
+						<Icon name="IconMoney" />{{ data.price }} ГРН
 					</span>
 				</div>
-
 				<ColorPanel :data="data.colors" @color="GetColor" ref="mobileColorPanelRef" />
-
-				<div class="description">
-					<h4>Характеристики</h4> <!-- i18n -->
-					<RichText :blocks="data.description" />
-				</div>
-
+				<RichText class="description" :blocks="data.description" />
 				<div class="to_basket">
 					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="mobileCounterBtnRef" />
-					<!--  i18n const -->
-					<AppBtn value="у кошик" @click="AddToBasketMobile()" />
+					<AppBtn :value="data.button" @click="AddToBasket()" />
 				</div>
 			</div>
 		</template>

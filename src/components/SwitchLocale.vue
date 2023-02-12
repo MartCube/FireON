@@ -2,14 +2,6 @@
 const { locale, localeCodes } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 
-watch(locale, async (newLocale) => {
-	if (newLocale) {
-		const { refreshApp } = useAppStore()
-		const { refreshBasket } = useBasketStore()
-		refreshApp()
-		refreshBasket()
-	}
-})
 </script>
 
 <template>

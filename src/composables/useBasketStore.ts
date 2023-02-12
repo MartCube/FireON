@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { Ref } from 'vue'
 import type { Product, Basket } from "~~/src/types"
 import { BasketQuery } from "~~/src/queries"
+
 export default defineStore('BasketStore', () => {
 
 	// i18n
@@ -13,7 +14,6 @@ export default defineStore('BasketStore', () => {
 		`Basket - ${locale.value}`,
 		(): Promise<Basket> => fetch(BasketQuery, { lang: locale.value })
 	)
-
 
 	// state
 	const showModal: Ref<boolean> = ref(false)	// show basket modal

@@ -27,6 +27,14 @@ export default defineStore('AppStore', () => {
 		refresh()
 	}
 
+	watch(locale, async (newLocale) => {
+		if (newLocale) {
+			const { refreshBasket } = useBasketStore()
+			refreshApp()
+			refreshBasket()
+		}
+	})
+
 	return {
 		// data fetching
 		pending,
