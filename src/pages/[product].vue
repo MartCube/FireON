@@ -16,9 +16,7 @@ if (!data.value) throw createError({
 	statusMessage: `Magazine - ${params.product} Not Found`,
 	fatal: true
 })
-watch(locale, async (newLocale) => {
-	if (newLocale) refresh()
-})
+
 
 
 
