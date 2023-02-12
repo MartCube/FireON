@@ -7,7 +7,7 @@ const { locale } = useI18n()
 const { params } = useRoute()
 const { fetch } = useSanity()
 const { data, pending, refresh } = await useAsyncData(
-	`Magazine - ${params.product}`,
+	`Magazine - ${params.product} - ${locale.value}`,
 	(): Promise<Magazine> => fetch(MagazineQuery, { uid: params.product, lang: locale.value })
 )
 // handle error
@@ -16,10 +16,6 @@ if (!data.value) throw createError({
 	statusMessage: `Magazine - ${params.product} Not Found`,
 	fatal: true
 })
-watch(locale, async (oldLocale, newLocale) => {
-	if (newLocale) refresh()
-})
-
 
 
 
