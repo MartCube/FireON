@@ -18,18 +18,13 @@ const validationSchema = toFormValidator(
 )
 
 const { handleSubmit, isSubmitting, } = useForm<ContactForm>({ validationSchema })
-const onSubmit = handleSubmit(async (values, { resetForm, setErrors }) => {
+const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	console.log('sending data', values)
 
 	// emailjs or something else
 
 	showMsg.value = true
 	resetForm()
-	setErrors({
-		name: undefined,
-		phone: undefined,
-		message: undefined,
-	})
 })
 </script>
 
@@ -43,7 +38,7 @@ const onSubmit = handleSubmit(async (values, { resetForm, setErrors }) => {
 			<span>{{ data.button }}</span>
 		</button>
 		<!-- i18n -->
-		<div v-show="showMsg" class="msg">
+		<div v-if="showMsg" class="msg">
 			<h4>message send</h4>
 			<AppBtn @click="showMsg = false" value="write new message" />
 		</div>
