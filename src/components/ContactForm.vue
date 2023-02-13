@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			<span>{{ data.button }}</span>
 		</button>
 		<!-- i18n -->
-		<div v-if="showMsg" class="msg">
+		<div v-show="showMsg" class="msg">
 			<h4>message send</h4>
 			<AppBtn @click="showMsg = false" value="write new message" />
 		</div>
