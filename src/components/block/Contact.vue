@@ -2,7 +2,6 @@
 <script setup lang="ts">
 import type { ContactForm } from "~~/src/types"
 
-
 defineProps<{
 	form: ContactForm,
 	image: string,

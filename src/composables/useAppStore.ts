@@ -19,14 +19,15 @@ export default defineStore('AppStore', () => {
 	const links = computed(() => data.value?.links || null)
 	const smedias = computed(() => data.value?.smedias || null)
 	const content = computed(() => data.value?.content || null)
-	// meta tags
-	if (data.value) useMetaTags(data.value.metaTags)
+	const metaTags = computed(() => {
+		if (data.value) return useMetaTags(data.value.metaTags)
+	})
+
 
 
 	function refreshApp() {
 		refresh()
 	}
-
 	watch(locale, async (newLocale) => {
 		if (newLocale) {
 			const { refreshBasket } = useBasketStore()
@@ -44,5 +45,6 @@ export default defineStore('AppStore', () => {
 		links,
 		smedias,
 		content,
+		metaTags,
 	}
 })

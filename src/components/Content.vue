@@ -15,15 +15,15 @@ const { content, pending } = storeToRefs(useAppStore())
 const serializers = {
 	types: {
 		// page content ###  Lazy load ?
-		intro: resolveComponent('BlockIntro'),
-		features: resolveComponent('BlockFeatures'),
-		magazines: resolveComponent('BlockMagazines'),
-		cta: resolveComponent('BlockCta'),
-		techSpecs: resolveComponent('BlockTechSpecs'),
-		about: resolveComponent('BlockAbout'),
-		gallery: resolveComponent('BlockGallery'),
-		partners: resolveComponent('BlockPartners'),
-		contact: resolveComponent('BlockContact'),
+		intro: resolveComponent('LazyBlockIntro'),
+		features: resolveComponent('LazyBlockFeatures'),
+		magazines: resolveComponent('LazyBlockMagazines'),
+		cta: resolveComponent('LazyBlockCta'),
+		techSpecs: resolveComponent('LazyBlockTechSpecs'),
+		about: resolveComponent('LazyBlockAbout'),
+		gallery: resolveComponent('LazyBlockGallery'),
+		partners: resolveComponent('LazyBlockPartners'),
+		contact: resolveComponent('LazyBlockContact'),
 
 	},
 	// marks: {

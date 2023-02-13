@@ -13,10 +13,14 @@ export const AppQuery = groq`*[ _type == 'app' && __i18n_lang == $lang][0]{
 		_type == 'partners' => { ..., list[]{ name, link, 'image': image.asset._ref } },
 		_type == 'contact' => { ..., 'image': image.asset._ref, form{ title, button, name{ name, label, placeholder }, phone{ name, label, placeholder }, message{ name, label, placeholder }, }, },
 	},
-	metaTags {
-		title,
-		description,
-		"image": image.asset._ref,
+	"metaTags": {
+        "lang": __i18n_lang,
+		"uid": "/",
+		...metaTags {
+          	title,
+            description,
+          	"image": image.asset._ref
+		}
 	},
 }`
 

@@ -14,6 +14,8 @@ export interface SocialMedia {
 	link: string,
 }
 export interface MetaTags {
+	lang: string,
+	uid: string,
 	title: string,
 	description: string,
 	image: string,
