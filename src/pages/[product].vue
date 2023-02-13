@@ -6,7 +6,7 @@ import type { Magazine, Product, Color } from "~~/src/types"
 const { locale } = useI18n()
 const { params } = useRoute()
 const { fetch } = useSanity()
-const { data, pending, refresh } = await useAsyncData(
+const { data, pending } = await useAsyncData(
 	`Magazine - ${params.product} - ${locale.value}`,
 	(): Promise<Magazine> => fetch(MagazineQuery, { uid: params.product, lang: locale.value })
 )
