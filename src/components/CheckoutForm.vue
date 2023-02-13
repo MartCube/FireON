@@ -5,6 +5,7 @@ import { z } from 'zod';
 import type { OrderForm } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { promiseTimeout } from '@vueuse/core'
+import emailjs from '@emailjs/browser';
 
 const { orderFormData: data, pending } = storeToRefs(useBasketStore())
 
@@ -22,11 +23,28 @@ const { handleSubmit, isSubmitting, } = useForm<OrderForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
-	console.log('sending data', values)
-	console.log('sending data', products.value)
 
 	toggleModal()	// close basket modal
-	await promiseTimeout(550)	// simulate data sending
+
+	const emailData = {
+		name: values.name,
+		place: values.place,
+		phone: values.phone,
+		comment: values.comment,
+		products: products.value
+	}
+
+	emailjs.send('service_s85kwin', 'template_checkoutForm', emailData, 'VQEgDD8AG-LcDAAuS')
+		.then(
+			(result) => {
+				console.log('SUCCESS!', result.text)
+			},
+			(error) => {
+				console.log('ERROR...', error.text)
+			},
+		)
+
+	await promiseTimeout(350)	// simulate data sending
 	toggleResponse()	// show response msg
 	resetStore()	// clear all products
 	resetForm()		// clear form data

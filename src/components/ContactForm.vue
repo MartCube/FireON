@@ -4,11 +4,12 @@ import { toFormValidator } from '@vee-validate/zod';
 import { z } from 'zod';
 import type { ContactForm } from "~~/src/types";
 import { ColorWord } from "~~/src/types";
+import emailjs from '@emailjs/browser';
 
 defineProps<{ data: ContactForm }>()
 
 const showMsg = ref(false) // toggle msg
-const ContactFormRef = ref<HTMLFormElement | null>(null) // form ref
+// const ContactFormRef = ref<HTMLFormElement | null>(null) // form ref
 const validationSchema = toFormValidator(
 	z.object({
 		name: z.string().min(1, 'Required'),
@@ -19,17 +20,28 @@ const validationSchema = toFormValidator(
 
 const { handleSubmit, isSubmitting, } = useForm<ContactForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
-	console.log('sending data', values)
-
-	// emailjs or something else
-
+	const emailData = {
+		name: values.name,
+		phone: values.phone,
+		message: values.message,
+	}
 	showMsg.value = true
+
+	emailjs.send('service_s85kwin', 'template_contactForm', emailData, 'VQEgDD8AG-LcDAAuS')
+		.then(
+			(result) => {
+				console.log('SUCCESS!', result.text)
+			},
+			(error) => {
+				console.log('ERROR...', error.text)
+			},
+		)
+
 	resetForm()
 })
 </script>
 
 <template>
-	<!-- method="POST" data-netlify="true" -->
 	<form id="form" @submit="onSubmit" autocomplete="off">
 		<TitleBlock :src="data.title" :mode="ColorWord.first" noline />
 		<VeeInput :data="data.name" />
