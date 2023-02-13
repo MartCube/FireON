@@ -8,7 +8,7 @@ import { ColorWord } from "~~/src/types";
 defineProps<{ data: ContactForm }>()
 
 const showMsg = ref(false) // toggle msg
-// const ContactFormRef = ref<HTMLFormElement | null>(null) // form ref
+const ContactFormRef = ref<HTMLFormElement | null>(null) // form ref
 const validationSchema = toFormValidator(
 	z.object({
 		name: z.string().min(1, 'Required'),
@@ -29,7 +29,8 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 </script>
 
 <template>
-	<form id="form" @submit="onSubmit" autocomplete="off" method="POST" data-netlify="true">
+	<!-- method="POST" data-netlify="true" -->
+	<form id="form" @submit="onSubmit" autocomplete="off">
 		<TitleBlock :src="data.title" :mode="ColorWord.first" noline />
 		<VeeInput :data="data.name" />
 		<VeeInput :data="data.phone" />
@@ -37,8 +38,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		<button type="submit" :disabled="isSubmitting">
 			<span>{{ data.button }}</span>
 		</button>
-		<!-- i18n -->
-		<div v-show="showMsg" class="msg">
+		<div v-if="showMsg" class="msg">
 			<h4>message send</h4>
 			<AppBtn @click="showMsg = false" value="write new message" />
 		</div>
