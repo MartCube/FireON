@@ -18,18 +18,18 @@ const validationSchema = toFormValidator(
 )
 
 const { handleSubmit, isSubmitting, } = useForm<ContactForm>({ validationSchema })
-const onSubmit = handleSubmit(async (values, { resetForm }) => {
+const onSubmit = handleSubmit(async (values, { resetForm, setErrors }) => {
 	console.log('sending data', values)
 
-	await $fetch('/', {
-		method: 'POST',
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: values,
-	})
-
 	// emailjs or something else
+
 	showMsg.value = true
 	resetForm()
+	setErrors({
+		name: undefined,
+		phone: undefined,
+		message: undefined,
+	})
 })
 </script>
 
@@ -43,7 +43,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			<span>{{ data.button }}</span>
 		</button>
 		<!-- i18n -->
-		<div v-if="showMsg" class="msg">
+		<div v-show="showMsg" class="msg">
 			<h4>message send</h4>
 			<AppBtn @click="showMsg = false" value="write new message" />
 		</div>
