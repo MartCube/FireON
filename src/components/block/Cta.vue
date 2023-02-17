@@ -15,7 +15,6 @@ defineProps<{
 	<section id="cta">
 		<div class="image-wrapper">
 			<AppImg class="magazine" :src="image" :width="460" :height="420" />
-			<CirclePulse />
 		</div>
 		<div class="wrap">
 			<TitleBlock1 :src="title" :mode="ColorWord.last" noline />
@@ -23,7 +22,7 @@ defineProps<{
 		</div>
 		<AppImg class="bg" :src="bg" :width="1440" :height="420" />
 		<AppImg class="bg_mobile" :src="bgMobile" :width="500" :height="665" />
-	</section>
+</section>
 </template>
 
 <style lang="scss">
@@ -84,14 +83,6 @@ defineProps<{
 			position: relative;
 		}
 
-		.pulse {
-			position: absolute;
-			z-index: 0;
-			width: 120%;
-			height: 120%;
-			left: -10%;
-			top: -10%;
-		}
 	}
 
 	&::before {
@@ -158,13 +149,6 @@ defineProps<{
 
 		.image-wrapper {
 			order: 2;
-
-			.pulse {
-				width: 100%;
-				height: 100%;
-				left: 0;
-				top: 0;
-			}
 		}
 
 		.bg_mobile {

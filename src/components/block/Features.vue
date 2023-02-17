@@ -34,7 +34,7 @@ async function SetActiveTab(value: Feature) {
 				</div>
 			</div>
 		</div>
-	</section>
+</section>
 </template>
 
 <style lang="scss" scoped>
@@ -88,7 +88,6 @@ async function SetActiveTab(value: Feature) {
 			}
 		}
 	}
-
 
 	.list {
 		position: relative;
@@ -174,19 +173,6 @@ async function SetActiveTab(value: Feature) {
 			}
 		}
 	}
-
-
-}
-
-.tab-enter-active,
-.tab-leave-active {
-	transition: all .35s ease-in-out;
-	transition-delay: 0.35s;
-}
-
-.tab-enter-from,
-.tab-leave-to {
-	opacity: 0
 }
 
 @media (max-width: 1200px) {
@@ -256,9 +242,24 @@ async function SetActiveTab(value: Feature) {
 
 @media (max-width: 380px) {
 	#features {
+		.tabs .tab {
+			margin: 0 1rem;
+		}
+
 		.list {
 			height: 70rem;
 		}
 	}
+}
+
+.tab-enter-active,
+.tab-leave-active {
+	transition: all .35s ease-in-out;
+	transition-delay: 0.35s;
+}
+
+.tab-enter-from,
+.tab-leave-to {
+	opacity: 0
 }
 </style>
