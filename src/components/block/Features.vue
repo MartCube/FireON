@@ -34,7 +34,7 @@ async function SetActiveTab(value: Feature) {
 				</div>
 			</div>
 		</div>
-</section>
+	</section>
 </template>
 
 <style lang="scss" scoped>

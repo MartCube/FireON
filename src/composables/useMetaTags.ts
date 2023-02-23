@@ -2,7 +2,6 @@ import type { MetaTags } from "~~/src/types";
 import imageUrlBuilder from '@sanity/image-url'
 
 export default (data: MetaTags) => {
-	console.log('useMetaTags')
 
 	const { fullPath } = useRoute()
 	const domain = "https://fireon.netlify.app"
@@ -20,7 +19,7 @@ export default (data: MetaTags) => {
 
 
 	useHead({
-		title: "FireON",
+		title: data.title,
 		htmlAttrs: { lang: data.lang },
 		link: [
 			{ hid: 'alternate', rel: 'alternate', href: alternate, hreflang: altLang },

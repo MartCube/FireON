@@ -1,24 +1,19 @@
 import { defineStore } from 'pinia'
-import { Ref } from 'vue'
 import type { Product, Basket } from "~~/src/types"
 import { BasketQuery } from "~~/src/queries"
 
 export default defineStore('BasketStore', () => {
 
-	// i18n
-	const { locale } = useI18n()
-
 	// data fetching
-	const { fetch } = useSanity()
-	const { data, pending, refresh } = useAsyncData(
-		`Basket - ${locale.value}`,
-		(): Promise<Basket> => fetch(BasketQuery, { lang: locale.value })
+	const { locale } = useI18n()
+	const { data, pending, refresh } = useSanityQuery<Basket>(
+		BasketQuery, { lang: locale.value }
 	)
 
 	// state
-	const showModal: Ref<boolean> = ref(false)	// show basket modal
-	const showResponse: Ref<boolean> = ref(false) // show response msg from checkout form
-	const products: Ref<Product[]> = ref([])
+	const showModal = ref(false)	// show basket modal
+	const showResponse = ref(false) // show response msg from checkout form
+	const products = ref<Product[]>([])
 
 	// computed
 	const totalPrice = computed(() => {
