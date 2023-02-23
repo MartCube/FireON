@@ -1,57 +1,10 @@
 <script setup lang="ts">
-import { MagazineQuery } from "~~/src/queries"
-import type { Magazine, Product, Color } from "~~/src/types"
+import { storeToRefs } from 'pinia'
 
-// fetch data
-const { locale } = useI18n()
-const { params } = useRoute()
-const { fetch } = useSanity()
-const { data, pending } = await useAsyncData(
-	`Magazine - ${params.product} - ${locale.value}`,
-	(): Promise<Magazine> => fetch(MagazineQuery, { uid: params.product, lang: locale.value })
-)
-// handle error
-if (!data.value) throw createError({
-	statusCode: 404,
-	statusMessage: `Magazine - ${params.product} Not Found`,
-	fatal: true
-})
+useProductStore()
+const { pageData: data, pending, newProductCount } = storeToRefs(useProductStore())
+const { addToBasket } = useProductStore()
 
-
-
-// initial product
-let product: Product = {
-	name: data.value!.name,
-	image: data.value!.gallery[0],
-	price: data.value!.price,
-	color: data.value!.colors.list[0],
-	count: 1,
-}
-// component refs to access expose 
-const ColorPanelRef = ref()
-const CounterBtnRef = ref()
-const mobileColorPanelRef = ref()
-const mobileCounterBtnRef = ref()
-const { addProduct } = useBasketStore()
-// Get selected color from Color Panel
-function GetColor(value: Color) {
-	product.color = value
-}
-// add to Basket Store
-function AddToBasket() {
-	addProduct(product)
-
-	// reset values
-	product = {
-		name: data.value!.name,
-		image: data.value!.gallery[0],
-		price: data.value!.price,
-		color: data.value!.colors.list[0],
-		count: 1,
-	}
-	ColorPanelRef.value.reset()
-	CounterBtnRef.value.reset()
-}
 
 // write metatags
 </script>
@@ -59,12 +12,11 @@ function AddToBasket() {
 <template>
 	<div id="product">
 		<template v-if="data && !pending">
-
 			<div class="desktop">
 				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
 				</AppLink>
-				<ImageSlider :list="data.gallery" />
+				<ImageSlider />
 
 				<div class="wrap">
 					<div class="details">
@@ -79,11 +31,11 @@ function AddToBasket() {
 							{{ data.price }} ГРН
 						</span>
 					</div>
-					<ColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
+					<ColorPanel />
 					<RichText class="description" :blocks="data.description" />
 					<div class="to_basket">
-						<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="CounterBtnRef" />
-						<AppBtn :value="data.button" @click="AddToBasket()" />
+						<CounterBtn :data="newProductCount" @dec="newProductCount--" @inc="newProductCount++" />
+						<AppBtn :value="data.button" @click="addToBasket()" />
 					</div>
 				</div>
 			</div>
@@ -97,17 +49,17 @@ function AddToBasket() {
 						<li>{{ data.info.blk }}BLK</li>
 					</ul>
 				</div>
-				<ImageSlider :list="data.gallery" />
+				<ImageSlider />
 				<div class="price">
 					<span>
 						<Icon name="IconMoney" />{{ data.price }} ГРН
 					</span>
 				</div>
-				<ColorPanel :data="data.colors" @color="GetColor" ref="mobileColorPanelRef" />
+				<ColorPanel />
 				<RichText class="description" :blocks="data.description" />
 				<div class="to_basket">
-					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="mobileCounterBtnRef" />
-					<AppBtn :value="data.button" @click="AddToBasket()" />
+					<CounterBtn :data="newProductCount" @dec="newProductCount--" @inc="newProductCount++" />
+					<AppBtn :value="data.button" @click="addToBasket()" />
 				</div>
 			</div>
 		</template>

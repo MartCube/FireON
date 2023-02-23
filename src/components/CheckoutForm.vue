@@ -31,7 +31,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		place: values.place,
 		phone: values.phone,
 		comment: values.comment,
-		products: products.value
+		products: JSON.stringify(products.value)
 	}
 
 	emailjs.send('service_s85kwin', 'template_checkoutForm', emailData, 'VQEgDD8AG-LcDAAuS')

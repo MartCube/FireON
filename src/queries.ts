@@ -24,15 +24,19 @@ export const AppQuery = groq`*[ _type == 'app' && __i18n_lang == $lang][0]{
 	},
 }`
 
+
+
 export const MagazineQuery = groq`*[ _type == 'magazine' && name == $uid && __i18n_lang == $lang ][0]{
-	name,
-	info,
-	price,
-	description[],
-	"svg": svg.asset._ref,
+	"pageData":{
+		name,
+		info,
+		price,
+		description[],
+		"svg": svg.asset._ref,
+		button,
+	},
 	"gallery": gallery[].asset._ref,
 	"colors":  colors{ title, list[]->{ name, hexcode } },
-	button,
 }`
 
 export const BasketQuery = groq`*[ _type == 'basket' && __i18n_lang == $lang ][0]{

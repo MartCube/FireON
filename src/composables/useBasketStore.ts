@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { Ref } from 'vue'
 import type { Product, Basket } from "~~/src/types"
 import { BasketQuery } from "~~/src/queries"
 
@@ -9,16 +8,15 @@ export default defineStore('BasketStore', () => {
 	const { locale } = useI18n()
 
 	// data fetching
-	const { fetch } = useSanity()
-	const { data, pending, refresh } = useAsyncData(
-		`Basket - ${locale.value}`,
-		(): Promise<Basket> => fetch(BasketQuery, { lang: locale.value })
+	const { data, pending, refresh } = useSanityQuery<Basket>(
+		BasketQuery, { lang: locale.value }
 	)
 
+
 	// state
-	const showModal: Ref<boolean> = ref(false)	// show basket modal
-	const showResponse: Ref<boolean> = ref(false) // show response msg from checkout form
-	const products: Ref<Product[]> = ref([])
+	const showModal = ref(false)	// show basket modal
+	const showResponse = ref(false) // show response msg from checkout form
+	const products = ref<Product[]>([])
 
 	// computed
 	const totalPrice = computed(() => {
@@ -39,10 +37,12 @@ export default defineStore('BasketStore', () => {
 	}
 	function addProduct(product: Product) {
 		// check if product is in basket with same color
-		if (products.value.some(p => p.name === product.name && p.color === product.color)) {
-			// update counter
+
+
+		if (products.value.some(p => p.name == product.name && p.color.name == product.color.name)) {
 			products.value.forEach(p => {
-				if (p.name === product.name && p.color === product.color)
+				console.log('update counter')
+				if (p.name == product.name && p.color.name == product.color.name)
 					p.count += product.count
 			})
 		}

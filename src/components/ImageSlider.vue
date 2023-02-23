@@ -1,14 +1,16 @@
 <script setup lang="ts">
-const props = defineProps<{ list: string[] }>()
+import { storeToRefs } from 'pinia'
 
-const activeImg = ref(props.list[0])
+const { gallery } = storeToRefs(useProductStore())
+
+const activeImg = ref(gallery.value![0])
 </script>
 
 <template>
 	<div class="image_slider">
 		<AppImg class="active_image" :src="activeImg" :width="500" :height="500" />
 		<div class="slider">
-			<AppImg v-for="image in list" :class="{ active: image == activeImg }" :src="image" @click="activeImg=image" :width="100" :height="100" />
+			<AppImg v-for="image in gallery" :class="{ active: image == activeImg }" :src="image" @click="activeImg = image" :width="100" :height="100" />
 		</div>
 	</div>
 </template>

@@ -43,22 +43,26 @@ export interface MagazineCard {
 	},
 	image: string,
 }
+
+
 export interface Magazine {
-	name: string,
-	svg: string,
-	info: {
-		size: string,
-		rem: string,
-		blk: string,
-	},
-	price: number,
+	pageData: {
+		name: string,
+		svg: string,
+		info: {
+			size: string,
+			rem: string,
+			blk: string,
+		},
+		price: number,
+		description: any[],
+		button: string,
+	}
 	colors: {
 		title: string,
 		list: Color[]
 	},
-	description: any[],	// block content
 	gallery: string[],
-	button: string,
 }
 
 

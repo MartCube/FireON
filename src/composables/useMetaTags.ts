@@ -20,7 +20,7 @@ export default (data: MetaTags) => {
 
 
 	useHead({
-		title: "FireON",
+		title: data.title,
 		htmlAttrs: { lang: data.lang },
 		link: [
 			{ hid: 'alternate', rel: 'alternate', href: alternate, hreflang: altLang },

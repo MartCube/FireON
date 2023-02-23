@@ -1,30 +1,19 @@
 <script setup lang="ts">
-import type { Color } from "~~/src/types"
+import { storeToRefs } from 'pinia'
 
-const props = defineProps<{
-	data: {
-		title: string,
-		list: Color[],
-	}
-}>()
-const activeColor = ref(props.data.list[0].name) // first color as default
-
-defineEmits<{ (e: 'color', color: Color): void }>() // emit selected color
-
-function reset() {
-	activeColor.value = props.data.list[0].name
-}
-defineExpose({ reset })
+const { colors, newProductColor } = storeToRefs(useProductStore())
 </script>
 
 <template>
 	<div class="panel">
-		<h4>{{ data.title }}</h4> <!-- i18n const -->
-		<label class="color" v-for="(color, i) in data.list" :key="color.name" @click="$emit('color', color)">
-			<input v-model="activeColor" :value="color.name" :style="{ background: `#${color.hexcode}` }" type="radio" />
-			<span class="name">{{ color.name }}</span>
-			<Icon name="IconCheck" />
-		</label>
+		<template v-if="colors">
+			<h4>{{ colors.title }}</h4>
+			<label class="color" v-for="color in colors.list">
+				<input @click="newProductColor = color" v-model="newProductColor.name" :value="color.name" :style="{ background: `#${color.hexcode}` }" type="radio" />
+				<span class="name">{{ color.name }}</span>
+				<Icon name="IconCheck" />
+			</label>
+		</template>
 	</div>
 </template>
 
