@@ -18,21 +18,23 @@ if (!data.value) throw createError({
 })
 
 
-
 // initial product
 let product: Product = {
-	name: data.value!.name,
-	image: data.value!.gallery[0],
-	price: data.value!.price,
-	color: data.value!.colors.list[0],
+	name: data.value.name,
+	image: data.value.gallery[0],
+	price: data.value.price,
+	color: data.value.colors.list[0],
 	count: 1,
 }
-// component refs to access expose 
+// component refs to access exposed functions 
 const ColorPanelRef = ref()
 const CounterBtnRef = ref()
 const mobileColorPanelRef = ref()
 const mobileCounterBtnRef = ref()
 const { addProduct } = useBasketStore()
+
+
+
 // Get selected color from Color Panel
 function GetColor(value: Color) {
 	product.color = value
@@ -51,6 +53,8 @@ function AddToBasket() {
 	}
 	ColorPanelRef.value.reset()
 	CounterBtnRef.value.reset()
+	mobileColorPanelRef.value.reset()
+	mobileCounterBtnRef.value.reset()
 }
 
 // write metatags
