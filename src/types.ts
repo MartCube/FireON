@@ -29,10 +29,6 @@ export interface App {
 }
 
 // Magazine
-export interface Color {
-	name: string,
-	hexcode: string,
-}
 export interface MagazineCard {
 	name: string,
 	svg: string,
@@ -43,6 +39,18 @@ export interface MagazineCard {
 	},
 	image: string,
 }
+
+export interface Color {
+	name: string,
+	hexcode: string,
+}
+
+export interface ColorGallery {
+	color: Color,
+	images: string[],
+}
+
+
 export interface Magazine {
 	name: string,
 	svg: string,
@@ -56,8 +64,8 @@ export interface Magazine {
 		title: string,
 		list: Color[]
 	},
-	description: any[],	// block content
-	gallery: string[],
+	gallery: ColorGallery[],
+	description: any[],
 	button: string,
 }
 

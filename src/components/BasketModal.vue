@@ -18,7 +18,7 @@ onClickOutside(basketRef, () => toggleModal())
 			<template v-if="products.length">
 				<div class="products">
 					<div class="product" v-for="product in products" :key="product.name">
-						<AppImg :src="product.image" :width="150" :height="150" />
+						<AppImg :src="product.image" :width="150" :height="300" />
 						<div class="info">
 							<span>{{ product.name }}</span>
 							<div class="color" :style="{ background: `#${product.color.hexcode}` }" />
@@ -90,7 +90,8 @@ onClickOutside(basketRef, () => toggleModal())
 				position: relative;
 
 				.image {
-					width: 4.5rem;
+					width: 40px;
+					height: 80px;
 				}
 
 				.info {

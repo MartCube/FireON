@@ -1,21 +1,34 @@
 <script setup lang="ts">
-const props = defineProps<{ list: string[] }>()
+import type { ColorGallery, Color } from "~/types"
 
-const activeImg = ref(props.list[0])
+const props = defineProps<{
+	gallery: ColorGallery[]
+}>()
 
+const activeGallery = ref(props.gallery[0])
+const activeImage = ref(activeGallery.value.images[0])
 
-function setActiveGallery() {
-	// receive active color
-	// change active gallery with new color
+function setActiveGallery(color: Color) {
+	props.gallery.forEach(gallery => {
+		if (gallery.color.name == color.name) {
+			activeGallery.value = gallery
+			activeImage.value = activeGallery.value.images[0]
+		}
+	})
 }
-defineExpose({ setActiveGallery })
+function reset() {
+	activeGallery.value = props.gallery[0]
+	activeImage.value = activeGallery.value.images[0]
+}
+
+defineExpose({ setActiveGallery, reset })
 </script>
 
 <template>
 	<div class="image_slider">
-		<AppImg class="active_image" :src="activeImg" :width="500" :height="500" />
+		<AppImg class="active_image" :src="activeImage" :width="250" :height="500" />
 		<div class="slider">
-			<AppImg v-for="image in list" :class="{ active: image == activeImg }" :src="image" @click="activeImg = image" :width="100" :height="100" />
+			<AppImg v-for="image in activeGallery.images" :class="{ active: image == activeImage }" :src="image" @click="activeImage = image" :width="100" :height="100" />
 		</div>
 	</div>
 </template>
@@ -33,8 +46,7 @@ defineExpose({ setActiveGallery })
 
 	.active_image {
 		width: 100%;
-		max-width: 450px;
-		// height: 450px;
+		max-width: 250px;
 	}
 
 	.slider {

@@ -5,12 +5,9 @@ import type { Magazine, Product, Color } from "~~/src/types"
 // fetch data
 const { locale } = useI18n()
 const { params } = useRoute()
-const { fetch } = useSanity()
-const { data, pending } = await useAsyncData(
-	`Magazine - ${params.product} - ${locale.value}`,
-	(): Promise<Magazine> => fetch(MagazineQuery, { uid: params.product, lang: locale.value })
+const { data, pending } = await useSanityQuery<Magazine>(
+	MagazineQuery, { uid: params.product, lang: locale.value }
 )
-// handle error
 if (!data.value) throw createError({
 	statusCode: 404,
 	statusMessage: `Magazine - ${params.product} Not Found`,
@@ -21,7 +18,7 @@ if (!data.value) throw createError({
 // initial product
 let product: Product = {
 	name: data.value.name,
-	image: data.value.gallery[0],
+	image: data.value.gallery[0].images[0],
 	price: data.value.price,
 	color: data.value.colors.list[0],
 	count: 1,
@@ -31,32 +28,40 @@ const ColorPanelRef = ref()
 const CounterBtnRef = ref()
 const mobileColorPanelRef = ref()
 const mobileCounterBtnRef = ref()
-const { addProduct } = useBasketStore()
-
-
-
+const ImageSliderRef = ref()
+const mobileImageSliderRef = ref()
 // Get selected color from Color Panel
 function GetColor(value: Color) {
 	product.color = value
+	ImageSliderRef.value.setActiveGallery(value)
+
+	if (!data.value) return
+	data.value.gallery.forEach(gallery => {
+		if (gallery.color.name == value.name) {
+			product.image = gallery.images[0]
+		}
+	})
 }
 // add to Basket Store
 function AddToBasket() {
+	if (!data.value) return
+	const { addProduct } = useBasketStore()
 	addProduct(product)
-
 	// reset values
 	product = {
-		name: data.value!.name,
-		image: data.value!.gallery[0],
-		price: data.value!.price,
-		color: data.value!.colors.list[0],
+		name: data.value.name,
+		image: data.value.gallery[0].images[0],
+		price: data.value.price,
+		color: data.value.colors.list[0],
 		count: 1,
 	}
 	ColorPanelRef.value.reset()
 	CounterBtnRef.value.reset()
+	ImageSliderRef.value.reset()
 	mobileColorPanelRef.value.reset()
 	mobileCounterBtnRef.value.reset()
+	mobileImageSliderRef.value.reset()
 }
-
 // write metatags
 </script>
 
@@ -68,7 +73,7 @@ function AddToBasket() {
 				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
 				</AppLink>
-				<ImageSlider :list="data.gallery" />
+				<ImageSlider :gallery="data.gallery" ref="ImageSliderRef" />
 
 				<div class="wrap">
 					<div class="details">
@@ -101,7 +106,7 @@ function AddToBasket() {
 						<li>{{ data.info.blk }}BLK</li>
 					</ul>
 				</div>
-				<ImageSlider :list="data.gallery" />
+				<ImageSlider :gallery="data.gallery" ref="mobileImageSliderRef" />
 				<div class="price">
 					<span>
 						<Icon name="IconMoney" />{{ data.price }} ГРН
