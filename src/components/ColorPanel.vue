@@ -1,28 +1,26 @@
 <script setup lang="ts">
-import type { Color } from "~~/src/types"
 
 const props = defineProps<{
-	data: {
-		title: string,
-		list: Color[],
-	}
+	title: string,
+	colors: string[],
 }>()
-const activeColor = ref(props.data.list[0].name) // first color as default
 
-defineEmits<{ (e: 'color', color: Color): void }>() // emit selected color
+const activeColor = ref(props.colors[0]) // first color as default
+
+defineEmits<{ (e: 'color', color: string): void }>() // emit selected color
 
 function reset() {
-	activeColor.value = props.data.list[0].name
+	activeColor.value = props.colors[0]
 }
 defineExpose({ reset })
 </script>
 
 <template>
 	<div class="panel">
-		<h4>{{ data.title }}</h4> <!-- i18n const -->
-		<label class="color" v-for="(color, i) in data.list" :key="color.name" @click="$emit('color', color)">
-			<input v-model="activeColor" :value="color.name" :style="{ background: `#${color.hexcode}` }" type="radio" />
-			<span class="name">{{ color.name }}</span>
+		<h4>{{ title }}</h4> <!-- i18n const -->
+		<label v-for="(color, i) in colors" :key="color" @click.stop="$emit('color', color)">
+			<input v-model="activeColor" :value="color" type="radio" :class="color" />
+			<span class="name">{{ color }}</span>
 			<Icon name="IconCheck" />
 		</label>
 	</div>
@@ -35,7 +33,7 @@ defineExpose({ reset })
 	flex-direction: column;
 	margin: 2rem 0;
 
-	.color {
+	label {
 		width: fit-content;
 		height: 1.25rem;
 		margin-bottom: 7px;
@@ -76,6 +74,26 @@ defineExpose({ reset })
 				&~.icon {
 					opacity: 1;
 				}
+			}
+
+			&.Black {
+				background: $Black;
+			}
+
+			&.Coyote {
+				background: $Coyote;
+			}
+
+			&.Olive {
+				background: $Olive;
+			}
+
+			&.Tan {
+				background: $Tan;
+			}
+
+			&.Pink {
+				background: $Pink;
 			}
 		}
 

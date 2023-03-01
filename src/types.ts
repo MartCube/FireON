@@ -39,18 +39,6 @@ export interface MagazineCard {
 	},
 	image: string,
 }
-
-export interface Color {
-	name: string,
-	hexcode: string,
-}
-
-export interface ColorGallery {
-	color: Color,
-	images: string[],
-}
-
-
 export interface Magazine {
 	name: string,
 	svg: string,
@@ -59,14 +47,14 @@ export interface Magazine {
 		rem: string,
 		blk: string,
 	},
-	price: number,
-	colors: {
-		title: string,
-		list: Color[]
-	},
-	gallery: ColorGallery[],
-	description: any[],
+	colorMagazines: [{
+		color: string,
+		price: number,
+		gallery: string[],
+	}],
+	colorTitle: string,
 	button: string,
+	description: any[],
 }
 
 
@@ -74,7 +62,7 @@ export interface Magazine {
 export interface Product {
 	name: string,
 	image: string,
-	color: Color,
+	color: string,
 	price: number,
 	count: number,
 }
@@ -109,7 +97,7 @@ export interface ContactForm {
 	message: TextField,
 	button: string,
 }
-export interface OrderForm {
+export interface CheckoutForm {
 	title: string,
 	place: TextField,
 	name: TextField,
@@ -123,7 +111,7 @@ export interface Basket {
 		totalSum: string,
 		emptyBasketMsg: string,
 	},
-	form: OrderForm,
+	form: CheckoutForm,
 	success: {
 		title: string,
 		button: string,

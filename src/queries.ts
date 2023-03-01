@@ -5,7 +5,7 @@ export const AppQuery = groq`*[ _type == 'app' && __i18n_lang == $lang][0]{
 	content[]{
 		_type == 'intro' => { ..., 'image':image.asset._ref, "bg": bg.asset._ref, "bgMobile": bgMobile.asset._ref},
 		_type == 'features' => { ..., list[]{ title, description, "image":image.asset._ref } },
-		_type == 'magazines' => { ..., list[]->{ name, "svg": svg.asset._ref, info, "image": gallery[0].images[0].asset._ref, } },
+		_type == 'magazines' => { ..., list[]->{ name, "svg": svg.asset._ref, info, "image": colorMagazines[0].gallery[0].asset._ref, } },
 		_type == 'cta' => { ..., "image": image.asset._ref, "bg": bg.asset._ref, "bgMobile": bgMobile.asset._ref },
 		_type == 'techSpecs' => { ..., list[]{ title, icon, description } },
 		_type == 'about' => { ..., 'image':image.asset._ref },
@@ -26,15 +26,15 @@ export const AppQuery = groq`*[ _type == 'app' && __i18n_lang == $lang][0]{
 
 export const MagazineQuery = groq`*[ _type == 'magazine' && name == $uid && __i18n_lang == $lang ][0]{
 	name,
+    "svg": svg.asset._ref,
 	info,
-	price,
-	description[],
-	"svg": svg.asset._ref,
-	"gallery": gallery[]{
-        "color": color->{name,hexcode},
-        "images": images[].asset._ref,
+    colorMagazines[]{
+      	color,
+      	price,
+      	"gallery": gallery[].asset._ref,
     },
-	"colors":  colors{ title, list[]->{ name, hexcode } },
+	description[],
+    colorTitle,
 	button,
 }`
 

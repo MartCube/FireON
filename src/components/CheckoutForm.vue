@@ -2,7 +2,7 @@
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
 import { z } from 'zod';
-import type { OrderForm } from "~~/src/types";
+import type { CheckoutForm } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { promiseTimeout } from '@vueuse/core'
 import emailjs from '@emailjs/browser';
@@ -19,7 +19,7 @@ const validationSchema = toFormValidator(
 	})
 )
 
-const { handleSubmit, isSubmitting, } = useForm<OrderForm>({ validationSchema })
+const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())

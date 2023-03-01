@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MagazineQuery } from "~~/src/queries"
-import type { Magazine, Product, Color } from "~~/src/types"
+import type { Magazine, Product } from "~~/src/types"
 
 // fetch data
 const { locale } = useI18n()
@@ -15,52 +15,49 @@ if (!data.value) throw createError({
 })
 
 
-// initial product
-let product: Product = {
-	name: data.value.name,
-	image: data.value.gallery[0].images[0],
-	price: data.value.price,
-	color: data.value.colors.list[0],
-	count: 1,
-}
-// component refs to access exposed functions 
-const ColorPanelRef = ref()
-const CounterBtnRef = ref()
-const mobileColorPanelRef = ref()
-const mobileCounterBtnRef = ref()
-const ImageSliderRef = ref()
-const mobileImageSliderRef = ref()
-// Get selected color from Color Panel
-function GetColor(value: Color) {
-	product.color = value
-	ImageSliderRef.value.setActiveGallery(value)
+const colors = data.value.colorMagazines.map((magazine) => magazine.color)
+const color = ref(data.value.colorMagazines[0].color)
+const gallery = ref(data.value.colorMagazines[0].gallery)
+const price = ref(data.value.colorMagazines[0].price)
+const count = ref(1)
 
-	if (!data.value) return
-	data.value.gallery.forEach(gallery => {
-		if (gallery.color.name == value.name) {
-			product.image = gallery.images[0]
+
+// component refs to access exposed functions 
+const CounterBtnRef = ref()
+const mobileCounterBtnRef = ref()
+
+
+
+// Get selected color from Color Panel
+function GetColor(value: string) {
+	color.value = value
+
+	// update gallery and price
+	for (let magazine of data.value!.colorMagazines) {
+		if (magazine.color == value) {
+			price.value = magazine.price
+			gallery.value = magazine.gallery
+			break
 		}
-	})
+	}
 }
 // add to Basket Store
 function AddToBasket() {
 	if (!data.value) return
-	const { addProduct } = useBasketStore()
-	addProduct(product)
-	// reset values
-	product = {
+
+	let newProduct: Product = {
 		name: data.value.name,
-		image: data.value.gallery[0].images[0],
-		price: data.value.price,
-		color: data.value.colors.list[0],
-		count: 1,
+		image: gallery.value[0],
+		price: price.value,
+		color: color.value,
+		count: count.value,
 	}
-	ColorPanelRef.value.reset()
+	const { addProduct } = useBasketStore()
+	addProduct(newProduct)
+	// reset values
+	count.value = 1
 	CounterBtnRef.value.reset()
-	ImageSliderRef.value.reset()
-	mobileColorPanelRef.value.reset()
 	mobileCounterBtnRef.value.reset()
-	mobileImageSliderRef.value.reset()
 }
 // write metatags
 </script>
@@ -73,7 +70,7 @@ function AddToBasket() {
 				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
 				</AppLink>
-				<ImageSlider :gallery="data.gallery" ref="ImageSliderRef" />
+				<ImageSlider :gallery="gallery" ref="ImageSliderRef" />
 
 				<div class="wrap">
 					<div class="details">
@@ -85,13 +82,13 @@ function AddToBasket() {
 						</ul>
 						<span class="price">
 							<Icon name="IconMoney" />
-							{{ data.price }} ГРН
+							{{ price }} ГРН
 						</span>
 					</div>
-					<ColorPanel :data="data.colors" @color="GetColor" ref="ColorPanelRef" />
+					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" ref="ColorPanelRef" />
 					<RichText class="description" :blocks="data.description" />
 					<div class="to_basket">
-						<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="CounterBtnRef" />
+						<CounterBtn :data="count" @dec="count--" @inc="count++" ref="CounterBtnRef" />
 						<AppBtn :value="data.button" @click="AddToBasket()" />
 					</div>
 				</div>
@@ -106,16 +103,16 @@ function AddToBasket() {
 						<li>{{ data.info.blk }}BLK</li>
 					</ul>
 				</div>
-				<ImageSlider :gallery="data.gallery" ref="mobileImageSliderRef" />
+				<ImageSlider :gallery="gallery" ref="mobileImageSliderRef" />
 				<div class="price">
 					<span>
-						<Icon name="IconMoney" />{{ data.price }} ГРН
+						<Icon name="IconMoney" />{{ price }} ГРН
 					</span>
 				</div>
-				<ColorPanel :data="data.colors" @color="GetColor" ref="mobileColorPanelRef" />
+				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" ref="mobileColorPanelRef" />
 				<RichText class="description" :blocks="data.description" />
 				<div class="to_basket">
-					<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" ref="mobileCounterBtnRef" />
+					<CounterBtn :data="count" @dec="count--" @inc="count++" ref="mobileCounterBtnRef" />
 					<AppBtn :value="data.button" @click="AddToBasket()" />
 				</div>
 			</div>

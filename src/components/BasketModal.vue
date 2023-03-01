@@ -21,7 +21,7 @@ onClickOutside(basketRef, () => toggleModal())
 						<AppImg :src="product.image" :width="150" :height="300" />
 						<div class="info">
 							<span>{{ product.name }}</span>
-							<div class="color" :style="{ background: `#${product.color.hexcode}` }" />
+							<div :class="['color', product.color]" />
 						</div>
 						<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" />
 						<span class="price">{{ product.price * product.count }}</span>
@@ -88,6 +88,28 @@ onClickOutside(basketRef, () => toggleModal())
 				padding: 1.5rem 0;
 				border-bottom: 1px solid $white10;
 				position: relative;
+
+				.color {
+					&.Black {
+						background: $Black;
+					}
+
+					&.Coyote {
+						background: $Coyote;
+					}
+
+					&.Olive {
+						background: $Olive;
+					}
+
+					&.Tan {
+						background: $Tan;
+					}
+
+					&.Pink {
+						background: $Pink;
+					}
+				}
 
 				.image {
 					width: 40px;
