@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import { useCounter } from '@vueuse/core'
-
-const props = defineProps<{ data: number }>()
-const { count, inc, dec, reset } = useCounter(props.data, { min: 1, max: 100 })
+defineProps<{ data: number }>()
 
 defineEmits<{
-	(e: 'dec', count: number): void,
-	(e: 'inc', count: number): void,
+	(e: 'dec'): void,
+	(e: 'inc'): void,
 }>()
-defineExpose({ reset })
 </script>
 
 <template>
 	<div class="counter_btn">
-		<button class="dec" @click="$emit('dec', dec())" :disabled="count <= 1">-</button>
-		<span class="count">{{ count }}</span>
-		<button class="inc" @click="$emit('inc', inc())" :disabled="count >= 99">+</button>
+		<button class="dec" @click="$emit('dec')" :disabled="data <= 1">-</button>
+		<span class="count">{{ data }}</span>
+		<button class="inc" @click="$emit('inc')" :disabled="data >= 99">+</button>
 	</div>
 </template>
 

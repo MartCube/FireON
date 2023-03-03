@@ -22,18 +22,12 @@ const price = ref(data.value.colorMagazines[0].price)
 const count = ref(1)
 
 
-// component refs to access exposed functions 
-const CounterBtnRef = ref()
-const mobileCounterBtnRef = ref()
-
-
-
 // Get selected color from Color Panel
 function GetColor(value: string) {
+	if (!data.value) return
 	color.value = value
-
 	// update gallery and price
-	for (let magazine of data.value!.colorMagazines) {
+	for (let magazine of data.value.colorMagazines) {
 		if (magazine.color == value) {
 			price.value = magazine.price
 			gallery.value = magazine.gallery
@@ -44,8 +38,7 @@ function GetColor(value: string) {
 // add to Basket Store
 function AddToBasket() {
 	if (!data.value) return
-
-	let newProduct: Product = {
+	const newProduct: Product = {
 		name: data.value.name,
 		image: gallery.value[0],
 		price: price.value,
@@ -54,10 +47,8 @@ function AddToBasket() {
 	}
 	const { addProduct } = useBasketStore()
 	addProduct(newProduct)
-	// reset values
+	// reset counter
 	count.value = 1
-	CounterBtnRef.value.reset()
-	mobileCounterBtnRef.value.reset()
 }
 // write metatags
 </script>
@@ -70,7 +61,7 @@ function AddToBasket() {
 				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
 				</AppLink>
-				<ImageSlider :gallery="gallery" ref="ImageSliderRef" />
+				<ImageSlider :gallery="gallery" />
 
 				<div class="wrap">
 					<div class="details">
@@ -85,10 +76,10 @@ function AddToBasket() {
 							{{ price }} ГРН
 						</span>
 					</div>
-					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" ref="ColorPanelRef" />
+					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 					<RichText class="description" :blocks="data.description" />
 					<div class="to_basket">
-						<CounterBtn :data="count" @dec="count--" @inc="count++" ref="CounterBtnRef" />
+						<CounterBtn :data="count" @dec="count--" @inc="count++" />
 						<AppBtn :value="data.button" @click="AddToBasket()" />
 					</div>
 				</div>
@@ -103,16 +94,16 @@ function AddToBasket() {
 						<li>{{ data.info.blk }}BLK</li>
 					</ul>
 				</div>
-				<ImageSlider :gallery="gallery" ref="mobileImageSliderRef" />
+				<ImageSlider :gallery="gallery" />
 				<div class="price">
 					<span>
 						<Icon name="IconMoney" />{{ price }} ГРН
 					</span>
 				</div>
-				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" ref="mobileColorPanelRef" />
+				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 				<RichText class="description" :blocks="data.description" />
 				<div class="to_basket">
-					<CounterBtn :data="count" @dec="count--" @inc="count++" ref="mobileCounterBtnRef" />
+					<CounterBtn :data="count" @dec="count--" @inc="count++" />
 					<AppBtn :value="data.button" @click="AddToBasket()" />
 				</div>
 			</div>

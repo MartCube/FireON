@@ -1,74 +1,228 @@
+<script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { onClickOutside } from '@vueuse/core'
+
+const { basketModalData: data, showModal, products, totalPrice } = storeToRefs(useBasketStore())
+const { toggleModal, removeProduct } = useBasketStore()
+
+const basketRef = ref()
+onClickOutside(basketRef, () => toggleModal())
+</script>
+
 <template>
-	<div class="pulse">
-		<div class="circle1"></div>
-		<div class="circle2"></div>
-		<div class="circle3"></div>
-		<div class="circle4"></div>
-		<div class="circle5"></div>
-		<div class="circle6"></div>
-		<div class="circle7"></div>
+	<div class="overlay" v-if="showModal && data">
+		<div id="basket" ref="basketRef">
+			<IconClose class="close" @click="toggleModal()" />
+			<h2>{{ data.title }}</h2>
+
+			<template v-if="products.length">
+				<div class="products">
+					<div class="product" v-for="product in products" :key="product.name">
+						<AppImg :src="product.image" :width="150" :height="300" />
+						<div class="info">
+							<span>{{ product.name }}</span>
+							<div :class="['color', product.color]" />
+						</div>
+						<CounterBtn :data="product.count" @dec="product.count--" @inc="product.count++" />
+						<span class="price">{{ product.price * product.count }}</span>
+						<Icon class="removeProduct" @click="removeProduct(product)" name="IconClose" />
+					</div>
+				</div>
+				<p class="total_price">
+					{{ data.totalSum }}: <span>{{ totalPrice }} ГРН</span>
+				</p>
+				<CheckoutForm />
+			</template>
+
+			<template v-else>
+				<p>{{ data.emptyBasketMsg }}</p>
+			</template>
+		</div>
 	</div>
 </template>
 
 <style lang="scss" scoped>
-.pulse {
-	width: inherit;
-	height: inherit;
+.overlay {
+	z-index: 9;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: $dark80;
 
-	overflow: hidden;
-	position: relative;
+	#basket {
+		width: 35rem;
+		max-height: calc(100vh - 8rem);
+		padding: 2.6rem;
+		border: 1px solid $white10;
+		background: $dark;
+		overflow: auto;
 
-	div {
-		// stroke: $primary;
-		width: 100%;
-		height: 100%;
-		border-radius: 50%;
-		opacity: 1;
-		border: 3px solid;
-		border-color: $primary;
-		transform: scale(0);
-		animation: pulse 9.8s ease-in infinite;
-		// animation: name duration timing-function delay iteration-count direction fill-mode;
-		position: absolute;
-		left: 0;
-		top: 0;
+		position: fixed;
+		z-index: 9;
+		top: 4rem;
+		left: 50%;
+		transform: translateX(-50%);
 
-		&.circle2 {
-			animation-delay: 1.4s;
+		display: flex;
+		flex-direction: column;
+
+		h2 {
+			text-transform: uppercase;
+			font-size: 20px;
+			line-height: 34px;
+			margin-bottom: 1rem;
 		}
 
-		&.circle3 {
-			animation-delay: 2.8s;
+		.products {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+
+			.product {
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 1.5rem 0;
+				border-bottom: 1px solid $white10;
+				position: relative;
+
+				.color {
+					&.Black {
+						background: $Black;
+					}
+
+					&.Coyote {
+						background: $Coyote;
+					}
+
+					&.Olive {
+						background: $Olive;
+					}
+
+					&.Tan {
+						background: $Tan;
+					}
+
+					&.Pink {
+						background: $Pink;
+					}
+				}
+
+				.image {
+					width: 40px;
+					height: 80px;
+				}
+
+				.info {
+					display: flex;
+					// flex-direction: column;
+					align-items: center;
+
+					span {
+						font-size: 14px;
+						font-weight: 400;
+						line-height: 1.5rem;
+					}
+
+					.color {
+						margin-left: 1rem;
+						width: 1rem;
+						height: 1rem;
+						border: 1px solid $white20;
+						transform: skew(-10deg);
+
+					}
+				}
+
+				.counter_btn {
+					width: 120px;
+				}
+
+				.price {
+					text-align: right;
+					min-width: 3rem;
+					height: min-content;
+				}
+
+				.removeProduct {
+					position: absolute;
+					top: 0;
+					right: 0;
+					width: 2rem;
+					height: 2rem;
+					padding: 0.5rem;
+					stroke: $white50;
+					opacity: 0;
+					transition: all 0.2s linear;
+
+					&:hover {
+						cursor: pointer;
+						stroke: $primary;
+					}
+
+					&:active {
+						stroke: $primary;
+					}
+				}
+
+				&:hover {
+					.removeProduct {
+						opacity: 1;
+					}
+				}
+
+				&:last-of-type {
+					border: none;
+				}
+			}
 		}
 
-		&.circle4 {
-			animation-delay: 4.2s;
+		.total_price {
+			margin: 2rem 0;
+			align-self: flex-end;
+
+			color: $white50;
+			text-transform: uppercase;
+			font-size: .75rem;
+			line-height: 1.25rem;
+
+			span {
+				color: $primary;
+				font-size: 1rem;
+				line-height: 1.7rem;
+			}
 		}
 
-		&.circle5 {
-			animation-delay: 5.6s;
-		}
+		.close {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+			stroke: $white30;
 
-		&.circle6 {
-			animation-delay: 7s;
-		}
-
-		&.circle7 {
-			animation-delay: 8.4s;
+			&:hover {
+				cursor: pointer;
+				stroke: $primary;
+			}
 		}
 	}
 }
 
-@keyframes pulse {
-	0% {
-		transform: scale(0);
-		transform-origin: center center;
-		opacity: 1;
-	}
+@media (max-width: 800px) {
+	.overlay {
+		#basket {
+			width: 100%;
 
-	100% {
-		transform: scale(1);
-		transform-origin: center center;
-		opacity: 0;
+			.products {
+				.product {
+					.removeProduct {
+						opacity: 1;
+					}
+				}
+			}
+		}
 	}
-}</style>
+}
+</style>
