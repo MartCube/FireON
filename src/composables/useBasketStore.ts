@@ -32,18 +32,13 @@ export default defineStore('BasketStore', () => {
 	function toggleResponse() {
 		showResponse.value = !showResponse.value
 	}
-	function addProduct(product: Product) {
-		// check if product is in basket with same color
-		if (products.value.some(p => p.name === product.name && p.color === product.color)) {
-			// update counter
-			products.value.forEach(p => {
-				if (p.name === product.name && p.color === product.color)
-					p.count += product.count
-			})
-		}
-		else
-			products.value.push(product)
-
+	function addProduct(newProduct: Product) {
+		// check if product exist
+		const productIndex = products.value.findIndex(p => p.name == newProduct.name && p.color == newProduct.color)
+		// update counter or push to products
+		if (productIndex != -1) products.value[productIndex].count += newProduct.count
+		else products.value.push(newProduct)
+		// show updates
 		showModal.value = true
 	}
 	function removeProduct(product: Product) {
