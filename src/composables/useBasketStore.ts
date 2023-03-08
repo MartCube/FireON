@@ -6,8 +6,10 @@ export default defineStore('BasketStore', () => {
 
 	// data fetching
 	const { locale } = useI18n()
-	const { data, pending, refresh } = useSanityQuery<Basket>(
-		BasketQuery, { lang: locale.value }
+	const { fetch } = useSanity()
+	const { data, pending, refresh } = useAsyncData<Basket>(
+		`Basket - ${locale}`,
+		() => fetch(BasketQuery, { lang: locale.value })
 	)
 
 	// state

@@ -6,8 +6,10 @@ export default defineStore('AppStore', () => {
 
 	// data fetching
 	const { locale } = useI18n()
-	const { data, pending, refresh } = useSanityQuery<App>(
-		AppQuery, { lang: locale.value }
+	const { fetch } = useSanity()
+	const { data, pending, refresh } = useAsyncData<App>(
+		`App - ${locale}`,
+		() => fetch(AppQuery, { lang: locale.value })
 	)
 
 	// data getters
