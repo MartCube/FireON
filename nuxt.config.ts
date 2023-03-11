@@ -58,8 +58,8 @@ export default defineNuxtConfig({
 	},
 
 	sanity: {
-		projectId: process.env.SANITY_ID,
-		dataset: process.env.SANITY_DATASET,
+		projectId: 'okruw9dl',
+		dataset: 'production',
 		minimal: true,
 		apiVersion: '2023-01-01'
 	},

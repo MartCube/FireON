@@ -35,7 +35,7 @@ defineProps<{
 <style lang="scss" >
 #intro {
 	width: 100%;
-	height: 26rem;
+	height: 35vw;
 	padding: 0;
 	margin-bottom: 4rem;
 	overflow: hidden;

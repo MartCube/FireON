@@ -68,8 +68,8 @@ function AddToBasket() {
 						<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
 						<ul class="info">
 							<li>{{ data.info.size }}</li>
-							<li>{{ data.info.rem }}REM</li>
-							<li>{{ data.info.blk }}BLK</li>
+							<li v-if="data.info.rem">{{ data.info.rem }}REM</li>
+							<li v-if="data.info.blk">{{ data.info.blk }}BLK</li>
 						</ul>
 						<span class="price">
 							<Icon name="IconMoney" />
