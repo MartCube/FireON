@@ -51,6 +51,8 @@ function AddToBasket() {
 	count.value = 1
 }
 // write metatags
+
+const openLightbox = ref(false)
 </script>
 
 <template>
@@ -61,8 +63,10 @@ function AddToBasket() {
 				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
 				</AppLink>
-				<ImageSlider :gallery="gallery" />
-
+				<ImageSlider :open-lightbox="openLightbox" :gallery="gallery" />
+				<div class="icon_full_screen" @click="openLightbox = true">
+					<Icon name="IconOpenFullScreen" />
+				</div>
 				<div class="wrap">
 					<div class="details">
 						<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
@@ -86,6 +90,9 @@ function AddToBasket() {
 			</div>
 
 			<div class="mobile">
+				<div class="icon_full_screen"  @click="openLightbox = true">
+					<Icon name="IconOpenFullScreen" />
+				</div>
 				<div class="details">
 					<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
 					<ul class="info">
@@ -94,7 +101,7 @@ function AddToBasket() {
 						<li>{{ data.info.blk }}BLK</li>
 					</ul>
 				</div>
-				<ImageSlider :gallery="gallery" />
+				<ImageSlider :gallery="gallery" :open-lightbox="openLightbox" @closelightbox="openLightbox = $event" />
 				<div class="price">
 					<span>
 						<Icon name="IconMoney" />{{ price }} ГРН
@@ -145,6 +152,22 @@ function AddToBasket() {
 				stroke: $primary;
 			}
 
+		}
+		.icon_full_screen {
+			position: absolute;
+			top: 2rem;
+			left: 33vw;
+			opacity: 0;
+			transition: opacity 0.4s linear;
+			svg {
+				fill: $primary;
+				opacity: 0.4;
+				width: 2.5rem;
+				height: 2.5rem;
+			}
+		}
+		.image_slider:hover ~ .icon_full_screen {
+			opacity: 1;
 		}
 
 		.wrap {
@@ -230,7 +253,18 @@ function AddToBasket() {
 		.go_back {
 			display: none;
 		}
-
+		.icon_full_screen {
+			position: absolute;
+			top: 14rem;
+			right: 4rem;
+			transition: opacity 0.4s linear;
+			svg {
+				fill: $primary;
+				opacity: 0.4;
+				width: 2.5rem;
+				height: 2.5rem;
+			}
+		}
 		.details {
 			width: 100%;
 			display: flex;
@@ -307,6 +341,25 @@ function AddToBasket() {
 
 		.desktop {
 			display: none;
+		}
+	}
+}
+@media (max-width: 700px) {
+	#product {
+		.mobile {
+			.icon_full_screen {
+				top: 12rem;
+				right: 2rem;
+			}
+		}
+	}
+}
+@media (max-width: 400px) {
+	#product {
+		.mobile {
+			.icon_full_screen {
+				right: 1rem;
+			}
 		}
 	}
 }
