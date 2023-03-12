@@ -15,6 +15,7 @@ export default defineStore('BasketStore', () => {
 	// state
 	const showModal = ref(false)	// show basket modal
 	const showResponse = ref(false) // show response msg from checkout form
+	const responsePayload = ref(null)
 	const products = ref<Product[]>([])
 
 	// computed
@@ -25,13 +26,17 @@ export default defineStore('BasketStore', () => {
 	})
 	const basketModalData = computed(() => data.value?.basket || null)
 	const orderFormData = computed(() => data.value?.form || null)
+	const modalResponseData = computed(() => data.value?.response || null)
 
 
 	// actions
 	function toggleModal() {
 		showModal.value = !showModal.value
 	}
-	function toggleResponse() {
+	function toggleResponse(payload: any) {
+		responsePayload.value = payload
+		console.log('payload', payload);
+		
 		showResponse.value = !showResponse.value
 	}
 	function addProduct(newProduct: Product) {
@@ -65,6 +70,8 @@ export default defineStore('BasketStore', () => {
 		// state
 		showModal,
 		showResponse,
+		responsePayload,
+		modalResponseData,
 		products,
 		//computed
 		totalPrice,

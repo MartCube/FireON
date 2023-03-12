@@ -112,9 +112,15 @@ export interface Basket {
 		emptyBasketMsg: string,
 	},
 	form: CheckoutForm,
-	success: {
-		title: string,
-		button: string,
+	response: {
+		success: {
+			title: string,
+			button: string,
+		},
+		error: {
+			title: string,
+			button: string,
+		}
 	}
 }
 

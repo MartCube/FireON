@@ -52,7 +52,7 @@ export const BasketQuery = groq`*[ _type == 'basket' && __i18n_lang == $lang ][0
       	comment { label, placeholder, name},
 		button,
     },
-    success
+    response
 }`
 
 export const Sitemap_Q = groq`*[ _type in ["app", "magazine",] ]{

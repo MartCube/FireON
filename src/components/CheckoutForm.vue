@@ -4,7 +4,7 @@ import { toFormValidator } from '@vee-validate/zod';
 import { z } from 'zod';
 import type { CheckoutForm } from "~~/src/types";
 import { storeToRefs } from 'pinia'
-import { promiseTimeout } from '@vueuse/core'
+import { promiseTimeout, useFetch } from '@vueuse/core'
 import emailjs from '@emailjs/browser';
 
 const { orderFormData: data, pending } = storeToRefs(useBasketStore())
@@ -26,26 +26,67 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 	toggleModal()	// close basket modal
 
-	const emailData = {
-		name: values.name,
-		place: values.place,
-		phone: values.phone,
-		comment: values.comment,
-		products: products.value
+	// const emailData = {
+	// 	name: values.name,
+	// 	place: values.place,
+	// 	phone: values.phone,
+	// 	comment: values.comment,
+	// 	products: products.value
+	// }
+
+	// prepare product html
+	let productsTemplate: any
+	if(products.value) {
+		productsTemplate = products.value.map( el => 
+			`<div class="item">
+				<p><strong>Name:</stong> ${el.name}</p>
+				<p><strong>Image:</stong> <img src="https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250" ></p>
+				<p><strong>Count:</stong> ${el.count}</p>
+				<p><strong>Color: </stong> ${el.color}</p>
+				<p><strong>Price: </stong> ${el.price}</p>
+			</div>`
+		).join()
+	}
+console.log(productsTemplate);
+
+	// compose email template
+	const emailTemplate = `
+		<h4>Name: </h4><p>${values.name}</p>
+		<h4>Place: </h4><p>${values.place}</p>
+		<h4>Phone: </h4><p>${values.phone}</p>
+		<h4>Comment: </h4><p>${values.comment}</p>
+		<h4>Products</h4>
+		<div class="products">${productsTemplate}</div>
+	`
+	
+	const requestOptions = {
+		method: 'POST',
+		headers: {},
+		body: await emailTemplate,
+	};
+
+	// trigger netlify function
+	try {
+		const { json, response, statusCode, error, text, data } = await useFetch('http://localhost:8888/.netlify/functions/chekout', requestOptions)
+		// console.log('json: ', json, 'response: ', response.value,'statusCode: ', statusCode.value,'error: ', error.value,'text: ', text, 'data: ', data.value )
+		// console.log('submited')
+		toggleResponse(response.value?.status)
+	} catch (error) {
+		console.log(error)
 	}
 
-	emailjs.send('service_s85kwin', 'template_checkoutForm', emailData, 'VQEgDD8AG-LcDAAuS')
-		.then(
-			(result) => {
-				console.log('SUCCESS!', result.text)
-			},
-			(error) => {
-				console.log('ERROR...', error.text)
-			},
-		)
+	// emailjs.send('service_s85kwin', 'template_checkoutForm', emailData, 'VQEgDD8AG-LcDAAuS')
+	// 	.then(
+	// 		(result) => {
+	// 			console.log('SUCCESS!', result.text)
+	// 		},
+	// 		(error) => {
+	// 			console.log('ERROR...', error.text)
+	// 		},
+	// 	)
 
-	await promiseTimeout(350)	// simulate data sending
-	toggleResponse()	// show response msg
+	// await promiseTimeout(350)	// simulate data sending
+		// show response msg
 	resetStore()	// clear all products
 	resetForm()		// clear form data
 })

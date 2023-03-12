@@ -2,26 +2,21 @@
 import { storeToRefs } from 'pinia'
 import { onClickOutside } from '@vueuse/core'
 
-const { showResponse } = storeToRefs(useBasketStore())
+const { showResponse, modalResponseData, responsePayload } = storeToRefs(useBasketStore())
 const { toggleResponse } = useBasketStore()
 
 const responseRef = ref()
-onClickOutside(responseRef, () => toggleResponse())
+onClickOutside(responseRef, () => toggleResponse(''))
 
-
-function toHome() {
-	toggleResponse()
-	const router = useRouter()
-	router.push({ path: "/" })
-}
 </script>
 
 <template>
 	<div class="overlay" v-if="showResponse">
 		<div id="response" ref="responseRef">
-			<h2>замовлення оформлене!</h2> <!-- i18n -->
+
+			<h2>{{ responsePayload === 200 ? modalResponseData?.success.title :modalResponseData?.error.title }}</h2> <!-- i18n -->
 			<Icon class="success" name="IconSuccess" />
-			<AppBtn @click="toHome()" value="у головну" />
+			<AppBtn @click="toggleResponse('')" :value="responsePayload === 200 ? modalResponseData?.success.button : modalResponseData?.error.button" />
 		</div>
 	</div>
 
