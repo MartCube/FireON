@@ -67,7 +67,7 @@ console.log(productsTemplate);
 
 	// trigger netlify function
 	try {
-		const { json, response, statusCode, error, text, data } = await useFetch('http://localhost:8888/.netlify/functions/chekout', requestOptions)
+		const { json, response, statusCode, error, text, data } = await useFetch('https://fireon.com.ua/.netlify/functions/chekout', requestOptions)
 		// console.log('json: ', json, 'response: ', response.value,'statusCode: ', statusCode.value,'error: ', error.value,'text: ', text, 'data: ', data.value )
 		// console.log('submited')
 		toggleResponse(response.value?.status)
