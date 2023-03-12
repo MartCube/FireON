@@ -52,7 +52,6 @@ function AddToBasket() {
 }
 // write metatags
 
-const openLightbox = ref(false)
 </script>
 
 <template>
@@ -63,10 +62,7 @@ const openLightbox = ref(false)
 				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
 				</AppLink>
-				<ImageSlider :open-lightbox="openLightbox" :gallery="gallery" />
-				<div class="icon_full_screen" @click="openLightbox = true">
-					<Icon name="IconOpenFullScreen" />
-				</div>
+				<ImageSlider :gallery="gallery" />
 				<div class="wrap">
 					<div class="details">
 						<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
@@ -90,9 +86,6 @@ const openLightbox = ref(false)
 			</div>
 
 			<div class="mobile">
-				<div class="icon_full_screen"  @click="openLightbox = true">
-					<Icon name="IconOpenFullScreen" />
-				</div>
 				<div class="details">
 					<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
 					<ul class="info">
@@ -101,7 +94,7 @@ const openLightbox = ref(false)
 						<li>{{ data.info.blk }}BLK</li>
 					</ul>
 				</div>
-				<ImageSlider :gallery="gallery" :open-lightbox="openLightbox" @closelightbox="openLightbox = $event" />
+				<ImageSlider :gallery="gallery" />
 				<div class="price">
 					<span>
 						<Icon name="IconMoney" />{{ price }} ГРН
@@ -152,22 +145,6 @@ const openLightbox = ref(false)
 				stroke: $primary;
 			}
 
-		}
-		.icon_full_screen {
-			position: absolute;
-			top: 2rem;
-			left: 33vw;
-			opacity: 0;
-			transition: opacity 0.4s linear;
-			svg {
-				fill: $primary;
-				opacity: 0.4;
-				width: 2.5rem;
-				height: 2.5rem;
-			}
-		}
-		.image_slider:hover ~ .icon_full_screen {
-			opacity: 1;
 		}
 
 		.wrap {
@@ -253,18 +230,6 @@ const openLightbox = ref(false)
 		.go_back {
 			display: none;
 		}
-		.icon_full_screen {
-			position: absolute;
-			top: 14rem;
-			right: 4rem;
-			transition: opacity 0.4s linear;
-			svg {
-				fill: $primary;
-				opacity: 0.4;
-				width: 2.5rem;
-				height: 2.5rem;
-			}
-		}
 		.details {
 			width: 100%;
 			display: flex;
@@ -344,23 +309,5 @@ const openLightbox = ref(false)
 		}
 	}
 }
-@media (max-width: 700px) {
-	#product {
-		.mobile {
-			.icon_full_screen {
-				top: 12rem;
-				right: 2rem;
-			}
-		}
-	}
-}
-@media (max-width: 400px) {
-	#product {
-		.mobile {
-			.icon_full_screen {
-				right: 1rem;
-			}
-		}
-	}
-}
+
 </style>
