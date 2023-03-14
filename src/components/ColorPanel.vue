@@ -92,8 +92,8 @@ defineExpose({ reset })
 				background: $Tan;
 			}
 
-			&.Pink {
-				background: $Pink;
+			&.Sand {
+				background: $product_sand;
 			}
 		}
 
