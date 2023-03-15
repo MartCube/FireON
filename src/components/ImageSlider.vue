@@ -17,7 +17,7 @@ const lightbox = ref(null)	// lightbox ref
 // open lightbox
 function Open(image: string) {
 	isOpen.value = true
-	lightboxImage.value = image
+	state.value = image
 }
 function Close() {
 	isOpen.value = false
@@ -51,7 +51,7 @@ onClickOutside(lightbox, (event) => {
 	<div class="image_slider">
 		<div v-show="isOpen" class="lightbox" >
 			<div class="wrapper" ref="lightbox">
-				<AppImg class="active_image" :src="lightboxImage = activeImage" :key="lightboxImage" :width="3000" :height="6000"/>
+				<AppImg class="active_image" :src="state" :key="lightboxImage" :width="3000" :height="6000"/>
 				<Icon class="prev" @click="prev()" name="IconArrow" />
 				<Icon class="next" @click="next()" name="IconArrow" />
 				<Icon class="close" @click="Close" name="IconClose" />
@@ -262,6 +262,11 @@ onClickOutside(lightbox, (event) => {
 				height: 2rem;
 			}
 		}
+		.lightbox .wrapper {
+			.image {
+				max-width: initial;
+			}
+		} 
 	}
 }
 </style>
