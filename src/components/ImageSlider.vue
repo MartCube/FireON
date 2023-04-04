@@ -58,7 +58,7 @@ onClickOutside(lightbox, (event) => {
 				<div class="lds-ripple"><div></div><div></div></div>
 			</div>
 		</div>
-		<AppImg class="active_image" :src="activeImage" @click="Open(activeImage)" :width="250" :height="500" />
+		<AppImg class="active_image" :src="activeImage" @click="Open(activeImage)" :width="500" :height="500" />
 		<div class="icon_full_screen" @click="isOpen = true">
 			<Icon name="IconOpenFullScreen" />
 		</div>
@@ -82,7 +82,9 @@ onClickOutside(lightbox, (event) => {
 
 	.active_image {
 		width: 100%;
-		max-width: 250px;
+		max-width: 500px;
+		max-height: 500px;
+		object-fit: contain;
 		&:hover {
 			cursor: pointer;
 		}
@@ -152,6 +154,7 @@ onClickOutside(lightbox, (event) => {
 				user-select: none;
 				position: relative;
 				z-index: 3;
+				max-height: 100%;
 				img {
 					width: 100%;
 					height: 100%;
@@ -249,6 +252,9 @@ onClickOutside(lightbox, (event) => {
 		.icon_full_screen {
 			right: 1rem;
 			opacity: 1;
+		}
+		.active_image {
+			margin: 3rem 0 4rem;
 		}
 	}
 }

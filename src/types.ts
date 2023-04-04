@@ -132,3 +132,11 @@ export interface Sitemap {
 	priority: number,
 	lastmod: string,
 }
+
+export interface EmailData {
+	name: string,
+	// place: values.place,
+	phone: number,
+	comment: string,
+	products: Product[]
+} 

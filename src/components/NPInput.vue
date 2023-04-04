@@ -1,21 +1,36 @@
 <script setup lang="ts">
+import { is } from '@babel/types';
 import { useField } from 'vee-validate'
 import { toRef } from 'vue'
 import type { TextField } from "~~/src/types";
 
-const props = defineProps<{ data: TextField }>()
-const nameRef = toRef(props.data, 'name')
+const props = defineProps<{ data: any, name: TextField }>()
+const nameRef = toRef(props.name, 'name')
+const citiesRef = ref(JSON.parse(props.data).data)
 const { errorMessage, value } = useField(nameRef)
+const isCitiesListActive = ref(false)
+
+const filterCities = () => {
+
+}
+
+const showCitiesList = () => {
+	isCitiesListActive.value = true
+}
 </script>
 
 <template>
 	<div class="field">
-		<div class="error">
+		<!-- <div class="error">
 			<span v-show="errorMessage"> {{ errorMessage }} </span>
-		</div>
-		<label :for="data.name">{{ data.label }}</label>
-		<input v-if="data.name === 'phone'" v-model="value" type="number" :id="data.name" :name="data.name" :placeholder="data.placeholder" />
-		<input v-else v-model="value" type="text" :id="data.name" :name="data.name" :placeholder="data.placeholder" />
+		</div> -->
+		<label :for="name.name">{{ name.label }}</label>
+		<input v-model="value" v-on:focus="showCitiesList" v-on:blur="filterCities" type="text" :id="name.name" :name="name.name" :placeholder="name.placeholder" />
+		<ul v-if="isCitiesListActive" class="city_list">
+			<li v-for="city in citiesRef">
+				{{ city.AreaDescription }}
+			</li>
+		</ul>
 	</div>
 </template>
 
@@ -81,6 +96,23 @@ const { errorMessage, value } = useField(nameRef)
 		}
 	}
 
+
+	.city_list {
+		position: absolute;
+		z-index: 10;
+    top: 3.6rem;
+    max-height: 40vh;
+    overflow-x: auto;
+		li {
+			padding: 0.5rem 1rem;
+			background-color: $white;
+			color: $dark95;
+			&:hover {
+				cursor: pointer;
+				color: $white70;
+			}
+		}
+	}
 
 }
 </style>

@@ -1,23 +1,63 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
-import { z } from 'zod';
+import { object, z } from 'zod';
 import type { CheckoutForm } from "~~/src/types";
 import { storeToRefs } from 'pinia'
-import { promiseTimeout, useFetch } from '@vueuse/core'
-import emailjs from '@emailjs/browser';
+import { useFetch } from '@vueuse/core'
+
+
+const config = useRuntimeConfig()
 
 const { orderFormData: data, pending } = storeToRefs(useBasketStore())
 
-
 const validationSchema = toFormValidator(
 	z.object({
-		place: z.string().min(1, 'Required'),
+		// place: z.string().min(1, 'Required'),
 		name: z.string().min(1, 'Required'),
-		phone: z.string().min(1, 'Required'),
-		// comment: z.string().min(1, 'Required'),
+		phone: z.number().int().min(1, 'Required'),
+		comment: z.string(),
 	})
 )
+
+
+// novaposhta api
+const npEndpoint = 'https://api.novaposhta.ua/v2.0/json/';
+const npBodyParams = {
+	apiKey: config.public.novaposhta,
+	modelName: 'AddressGeneral',
+	calledMethod: 'getCities',
+	methodProperties: {
+		Language: 'ua',
+		Page: "1",
+		Limit : "9000"
+	}
+};
+const npRequestParams = {
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json'
+	},
+	body: JSON.stringify(npBodyParams)
+}
+
+// type CitiesData = {
+// 	success: boolean,
+// 	data: object[]
+// }
+// let citiesArray
+let citiesArray = shallowRef('')
+const { data: cities, isFinished, error: npError } = await useFetch(npEndpoint, npRequestParams as object)
+if(isFinished.value) {
+	citiesArray.value = cities.value as string
+	console.log(citiesArray.value);
+	
+} else if (npError) {
+	console.error(npError)
+}
+
+
+// novaposhta api
 
 const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
@@ -26,66 +66,86 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 	toggleModal()	// close basket modal
 
-	// const emailData = {
-	// 	name: values.name,
-	// 	place: values.place,
-	// 	phone: values.phone,
-	// 	comment: values.comment,
-	// 	products: products.value
-	// }
 
-	// prepare product html
-	let productsTemplate: any
-	if(products.value) {
-		productsTemplate = products.value.map( el => 
-			`<div class="item">
-				<p><strong>Name:</stong> ${el.name}</p>
-				<p><strong>Image:</stong> <img src="https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250" ></p>
-				<p><strong>Count:</stong> ${el.count}</p>
-				<p><strong>Color: </stong> ${el.color}</p>
-				<p><strong>Price: </stong> ${el.price}</p>
-			</div>`
-		).join()
+	// store data in localhost
+	const emailData = {
+		name: values.name,
+		// place: values.place,
+		phone: values.phone,
+		comment: values.comment,
+		products: products.value
 	}
-console.log(productsTemplate);
+	if(window.process) {
+		localStorage.setItem('user_checkout', JSON.stringify(emailData))
+	}
 
-	// compose email template
-	const emailTemplate = `
-		<h4>Name: </h4><p>${values.name}</p>
-		<h4>Place: </h4><p>${values.place}</p>
-		<h4>Phone: </h4><p>${values.phone}</p>
-		<h4>Comment: </h4><p>${values.comment}</p>
-		<h4>Products</h4>
-		<div class="products">${productsTemplate}</div>
-	`
+
 	
-	const requestOptions = {
+	//paymnet monobank
+	let paymentBillBasketTotalPrice = 0;
+	products.value.map(el => paymentBillBasketTotalPrice += el.price)
+
+	let paymentBillBasketData = products.value.map( el => {
+		return {
+					"name": el.name,
+					"qty": 1,
+					"sum": el.price,
+					"icon": `https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250`,
+					"unit": "шт.",
+					"code": crypto.randomUUID(),
+					"header": el.name,
+					"footer": "Футер",
+					"tax": [
+						0
+					],
+				}
+	})
+
+	const paymentData = {
+		"amount": paymentBillBasketTotalPrice,
+		"ccy": 980,
+		"merchantPaymInfo": {
+			"reference": crypto.randomUUID(),
+			"destination": "Магазин FireOn",
+			"basketOrder": paymentBillBasketData
+		},
+		"redirectUrl": "http://localhost:8888/payment-status",
+		// "webHookUrl": "https://f1de-213-135-161-93.eu.ngrok.io/server/api/payment-response",
+		"validity": 3600,
+		"paymentType": "debit",
+	}
+
+	const paymentRequestOptions = {
 		method: 'POST',
-		headers: {},
-		body: await emailTemplate,
+		headers: {
+			'X-Token': config.public.mono
+		},
+		body: JSON.stringify(paymentData),
 	};
 
-	// trigger netlify function
+	// monobank create invoice
+	// async function createInvoice() {}
+	//paymnet monobank
+	
+	
 	try {
-		const { json, response, statusCode, error, text, data } = await useFetch('http://localhost:8888/.netlify/functions/chekout', requestOptions)
-		// console.log('json: ', json, 'response: ', response.value,'statusCode: ', statusCode.value,'error: ', error.value,'text: ', text, 'data: ', data.value )
-		// console.log('submited')
-		toggleResponse(response.value?.status)
+		
+		const { data, isFinished, error } = await useFetch('https://api.monobank.ua/api/merchant/invoice/create', paymentRequestOptions as object)
+		if(isFinished.value) {
+			const parsedValue: {
+				invoiceId: string,
+				pageUrl: string
+			} = JSON.parse(data.value as string)
+			console.log(parsedValue)
+			localStorage.setItem('invoice', parsedValue.invoiceId)
+			window.open(parsedValue.pageUrl)
+		}
+		// show result modal
+		// toggleResponse(response.value?.status)
 	} catch (error) {
 		console.log(error)
 	}
 
-	// emailjs.send('service_s85kwin', 'template_checkoutForm', emailData, 'VQEgDD8AG-LcDAAuS')
-	// 	.then(
-	// 		(result) => {
-	// 			console.log('SUCCESS!', result.text)
-	// 		},
-	// 		(error) => {
-	// 			console.log('ERROR...', error.text)
-	// 		},
-	// 	)
-
-	// await promiseTimeout(350)	// simulate data sending
 		// show response msg
 	resetStore()	// clear all products
 	resetForm()		// clear form data
@@ -96,7 +156,7 @@ console.log(productsTemplate);
 	<form id="form" @submit="onSubmit" autocomplete="off">
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
-			<VeeInput :data="data.place" />
+			<NPInput :data="citiesArray" :name="data.place"/>
 			<VeeInput :data="data.name" />
 			<VeeInput :data="data.phone" />
 			<VeeInput :data="data.comment" />
