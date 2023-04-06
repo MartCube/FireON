@@ -33,7 +33,7 @@ export default function(orderNumber: string) {
 	const requestEmailOptions = {
 		method: 'POST',
 		headers: {},
-		body: await emailTemplate,
+		body: emailTemplate,
 	};
 	// prepare product email html
 

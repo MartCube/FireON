@@ -2,7 +2,7 @@
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
 import { object, z } from 'zod';
-import type { CheckoutForm } from "~~/src/types";
+import type { CheckoutForm, City, Warehouse } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { useFetch } from '@vueuse/core'
 
@@ -20,44 +20,8 @@ const validationSchema = toFormValidator(
 	})
 )
 
-
-// novaposhta api
-const npEndpoint = 'https://api.novaposhta.ua/v2.0/json/';
-const npBodyParams = {
-	apiKey: config.public.novaposhta,
-	modelName: 'AddressGeneral',
-	calledMethod: 'getCities',
-	methodProperties: {
-		Language: 'ua',
-		Page: "1",
-		Limit : "9000"
-	}
-};
-const npRequestParams = {
-	method: 'POST',
-	headers: {
-		'Content-Type': 'application/json'
-	},
-	body: JSON.stringify(npBodyParams)
-}
-
-// type CitiesData = {
-// 	success: boolean,
-// 	data: object[]
-// }
-// let citiesArray
-let citiesArray = shallowRef('')
-const { data: cities, isFinished, error: npError } = await useFetch(npEndpoint, npRequestParams as object)
-if(isFinished.value) {
-	citiesArray.value = cities.value as string
-	console.log(citiesArray.value);
-	
-} else if (npError) {
-	console.error(npError)
-}
-
-
-// novaposhta api
+const city = ref<City>()
+const warehouse = ref<Warehouse>()
 
 const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
@@ -156,7 +120,8 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	<form id="form" @submit="onSubmit" autocomplete="off">
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
-			<NPInput :data="citiesArray" :name="data.place"/>
+			<NPCityInput @selected-city="(e) => city = e" :name="data.place"/>
+			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"/>
 			<VeeInput :data="data.name" />
 			<VeeInput :data="data.phone" />
 			<VeeInput :data="data.comment" />
