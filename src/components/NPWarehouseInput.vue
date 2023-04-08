@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
 
-import type { TextField } from "~~/src/types";
 import { useFetch } from '@vueuse/core'
 import { City, Warehouse } from "~~/src/types"
 
@@ -11,7 +10,7 @@ const config = useRuntimeConfig()
 
 
 // novaposhta api
-const npEndpoint = 'https://api.novaposhta.ua/v2.0/json/';
+const npEndpoint = config.public.npEndpoint;
 const npBodyParams = {
 	apiKey: config.public.novaposhta,
   modelName: 'Address',
@@ -142,11 +141,11 @@ const emit = defineEmits<{
     overflow-x: auto;
 		li {
 			padding: 0.5rem 1rem;
-			background-color: $white;
-			color: $dark95;
+			background-color: hsl(0deg 0% 13.33%);
+			color: $white;
 			&:hover {
 				cursor: pointer;
-				color: $white70;
+				color: $primary;
 			}
 		}
 	}

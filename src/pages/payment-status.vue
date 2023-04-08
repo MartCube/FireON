@@ -3,14 +3,17 @@ import { useFetch } from '@vueuse/core'
 
 const statusMessage = ref('')
 const invoiceId = ref('')
+const emailData = ref('')
 const config = useRuntimeConfig();
-const orderNumber = crypto.randomUUID()
 try {
-
-
+	
+	
 	if (process.client) {
-
+		
+		const orderNumber = crypto.randomUUID()
 		invoiceId.value = localStorage.getItem('invoice') as string
+		emailData.value = localStorage.getItem('user_checkout') as string 
+
 		console.log(invoiceId.value);
 
 		const headers = {
@@ -20,7 +23,7 @@ try {
 			},
 		};
 		// monobank create invoice
-		const { data, isFinished } = await useFetch(`https://api.monobank.ua/api/merchant/invoice/status?invoiceId=${invoiceId.value}`, headers)
+		const { data, isFinished } = await useFetch(`${config.public.monoEnpoint}status?invoiceId=${invoiceId.value}`, headers)
 		if(isFinished.value) {
 			const parsedValue = JSON.parse(data.value as string)
 			console.log(parsedValue, )
@@ -38,7 +41,7 @@ try {
 					const {  response, } = await useFetch('http://localhost:8888/.netlify/functions/chekout', email)
 					console.log(response);
 					
-					break;
+					break
 			
 				default:
 					break;

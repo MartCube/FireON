@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
-
-import type { TextField } from "~~/src/types";
+import type { TextField, City } from "~~/src/types";
 import { useFetch } from '@vueuse/core'
-import { City } from "~~/src/types"
 
 
-defineProps<{ name: TextField }>()
+defineProps<{ data: TextField }>()
 const config = useRuntimeConfig()
 
 
 // novaposhta api
-const npEndpoint = 'https://api.novaposhta.ua/v2.0/json/';
+const npEndpoint = config.public.npEndpoint;
 const npBodyParams = {
 	apiKey: config.public.novaposhta,
 	modelName: 'AddressGeneral',
@@ -31,6 +29,7 @@ const npRequestParams = {
 }
 
 let citiesArray = shallowRef<City[]>([])
+
 async function getCities() {
 	const { data: cities, isFinished, error: npError } = await useFetch(npEndpoint, npRequestParams as object)
 	if(isFinished.value) {
@@ -63,8 +62,8 @@ const emit = defineEmits<{
 
 <template>
 	<div class="field">
-		<label :for="name.name">{{ name.label }}</label>
-		<input v-model="inputValue" @click.once="getCities" v-on:focus="showCitiesList" type="text" :id="name.name" :name="name.name" :placeholder="name.placeholder" />
+		<label :for="data.name">{{ data.label }}</label>
+		<input v-model="inputValue" @click.once="getCities" v-on:focus="showCitiesList" type="text" :id="data.name" :name="data.name" :placeholder="data.placeholder" />
 		<ul v-if="isCitiesListActive" class="city_list">
 			<li v-for="city in filteredCities" @click="emit('selectedCity', city), isCitiesListActive = false, inputValue = city.Description">
 				{{ city.Description }}
@@ -144,11 +143,11 @@ const emit = defineEmits<{
     overflow-x: auto;
 		li {
 			padding: 0.5rem 1rem;
-			background-color: $white;
-			color: $dark95;
+			background-color: hsl(0deg 0% 13.33%);
+			color: $white;
 			&:hover {
 				cursor: pointer;
-				color: $white70;
+				color: $primary;
 			}
 		}
 	}

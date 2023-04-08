@@ -5,7 +5,7 @@ const sgMail = require('@sendgrid/mail')
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
 	// console.log( "context",  context, "\n event.body", event.body);
 	
-	sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+	sgMail.setApiKey(process.env.NUXT_SENDGRID_API_KEY)
 	const msg = {
 		to: 'dev.fireon@gmail.com', // Change to your recipient
 		from: 'dev.fireon@gmail.com', // Change to your verified sender

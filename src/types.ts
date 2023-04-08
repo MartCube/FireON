@@ -100,6 +100,7 @@ export interface ContactForm {
 export interface CheckoutForm {
 	title: string,
 	place: TextField,
+	warehouse: Warehouse,
 	name: TextField,
 	phone: TextField,
 	comment: TextField,
@@ -135,7 +136,8 @@ export interface Sitemap {
 
 export interface EmailData {
 	name: string,
-	// place: values.place,
+	city: string,
+	warehouse: string,
 	phone: number,
 	comment: string,
 	products: Product[]

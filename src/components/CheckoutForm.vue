@@ -13,7 +13,8 @@ const { orderFormData: data, pending } = storeToRefs(useBasketStore())
 
 const validationSchema = toFormValidator(
 	z.object({
-		// place: z.string().min(1, 'Required'),
+		// place: z.string(),
+		// warehouse: z.string(),
 		name: z.string().min(1, 'Required'),
 		phone: z.number().int().min(1, 'Required'),
 		comment: z.string(),
@@ -23,31 +24,34 @@ const validationSchema = toFormValidator(
 const city = ref<City>()
 const warehouse = ref<Warehouse>()
 
+
 const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
+
+// send form
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
+
 	const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
-
-	toggleModal()	// close basket modal
-
-
-	// store data in localhost
+	
+	// toggleModal()	// close basket modal
+	
+	
+	// create data for localStore
 	const emailData = {
 		name: values.name,
-		// place: values.place,
+		place: city.value?.Description,
+		warehouse: warehouse.value?.Description,
 		phone: values.phone,
 		comment: values.comment,
 		products: products.value
 	}
-	if(window.process) {
-		localStorage.setItem('user_checkout', JSON.stringify(emailData))
-	}
-
-
+	
 	
 	//paymnet monobank
+	// TODO: change this to useBasketStore totalPrice Martin )
 	let paymentBillBasketTotalPrice = 0;
 	products.value.map(el => paymentBillBasketTotalPrice += el.price)
+	paymentBillBasketTotalPrice *= paymentBillBasketTotalPrice * 100
 
 	let paymentBillBasketData = products.value.map( el => {
 		return {
@@ -65,6 +69,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 				}
 	})
 
+	// body data for monobank
 	const paymentData = {
 		"amount": paymentBillBasketTotalPrice,
 		"ccy": 980,
@@ -79,40 +84,44 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		"paymentType": "debit",
 	}
 
+	// headers data for monobank
 	const paymentRequestOptions = {
 		method: 'POST',
 		headers: {
 			'X-Token': config.public.mono
 		},
 		body: JSON.stringify(paymentData),
-	};
-
-	// monobank create invoice
-	// async function createInvoice() {}
-	//paymnet monobank
-	
+	}
 	
 	try {
-		
-		const { data, isFinished, error } = await useFetch('https://api.monobank.ua/api/merchant/invoice/create', paymentRequestOptions as object)
+		// save email data to localStorage
+		localStorage.setItem('user_checkout', JSON.stringify(emailData))
+
+		const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
 		if(isFinished.value) {
 			const parsedValue: {
 				invoiceId: string,
 				pageUrl: string
 			} = JSON.parse(data.value as string)
+
 			console.log(parsedValue)
+
+			// store invoice data
 			localStorage.setItem('invoice', parsedValue.invoiceId)
+
+			// redirect user to monobank payment page
 			window.open(parsedValue.pageUrl)
 		}
-		// show result modal
+		// show result modal 
+		// there is no result modal anymore we redierectin to payment-status page
 		// toggleResponse(response.value?.status)
 	} catch (error) {
 		console.log(error)
 	}
 
-		// show response msg
-	resetStore()	// clear all products
-	resetForm()		// clear form data
+	// show response msg
+	// resetStore()	// clear all products
+	// resetForm() // clear form data
 })
 </script>
 
@@ -120,7 +129,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	<form id="form" @submit="onSubmit" autocomplete="off">
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
-			<NPCityInput @selected-city="(e) => city = e" :name="data.place"/>
+			<NPCityInput @selected-city="(e) => city = e" :data="data.place"/>
 			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"/>
 			<VeeInput :data="data.name" />
 			<VeeInput :data="data.phone" />
