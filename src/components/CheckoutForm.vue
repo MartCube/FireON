@@ -30,12 +30,11 @@ const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema
 // send form
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
-	const { resetStore, toggleResponse, toggleModal } = useBasketStore()
+	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
-	
+
 	// toggleModal()	// close basket modal
-	
-	
+
 	// create data for localStore
 	const emailData = {
 		name: values.name,
@@ -45,28 +44,27 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		comment: values.comment,
 		products: products.value
 	}
-	
-	
-	//paymnet monobank
-	// TODO: change this to useBasketStore totalPrice Martin )
-	let paymentBillBasketTotalPrice = 0;
-	products.value.map(el => paymentBillBasketTotalPrice += el.price)
-	paymentBillBasketTotalPrice *= paymentBillBasketTotalPrice * 100
 
-	let paymentBillBasketData = products.value.map( el => {
+
+	//paymnet monobank
+	let paymentBillBasketTotalPrice = 0
+	// uah to coins
+	products.value.map(el => paymentBillBasketTotalPrice += (el.price * el.count) * 100)
+
+	let paymentBillBasketData = products.value.map(el => {
 		return {
-					"name": el.name,
-					"qty": 1,
-					"sum": el.price,
-					"icon": `https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250`,
-					"unit": "шт.",
-					"code": crypto.randomUUID(),
-					"header": el.name,
-					"footer": "Футер",
-					"tax": [
-						0
-					],
-				}
+			"name": el.name,
+			"qty": el.count,
+			"sum": (el.price * el.count) * 100,
+			"icon": `https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250`,
+			"unit": "шт.",
+			"code": crypto.randomUUID(),
+			"header": el.name,
+			"footer": "Футер",
+			"tax": [
+				0
+			],
+		}
 	})
 
 	// body data for monobank
@@ -92,13 +90,13 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		},
 		body: JSON.stringify(paymentData),
 	}
-	
+
 	try {
 		// save email data to localStorage
 		localStorage.setItem('user_checkout', JSON.stringify(emailData))
 
 		const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
-		if(isFinished.value) {
+		if (isFinished.value) {
 			const parsedValue: {
 				invoiceId: string,
 				pageUrl: string
@@ -129,8 +127,8 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	<form id="form" @submit="onSubmit" autocomplete="off">
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
-			<NPCityInput @selected-city="(e) => city = e" :data="data.place"/>
-			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"/>
+			<NPCityInput @selected-city="(e) => city = e" :data="data.place" />
+			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e" />
 			<VeeInput :data="data.name" />
 			<VeeInput :data="data.phone" />
 			<VeeInput :data="data.comment" />

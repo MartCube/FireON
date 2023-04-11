@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
+// add type for payment-status object
 
 const statusMessage = ref('')
 const invoiceId = ref('')
 const emailData = ref('')
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
+
 try {
-	
-	
 	if (process.client) {
-		
 		const orderNumber = crypto.randomUUID()
 		invoiceId.value = localStorage.getItem('invoice') as string
-		emailData.value = localStorage.getItem('user_checkout') as string 
+		emailData.value = localStorage.getItem('user_checkout') as string
 
-		console.log(invoiceId.value);
+		console.log(invoiceId.value)
 
 		const headers = {
 			method: 'GET',
@@ -22,38 +21,41 @@ try {
 				'X-Token': config.mono
 			},
 		};
-		// monobank create invoice
+		// get monobank invoice status
 		const { data, isFinished } = await useFetch(`${config.public.monoEnpoint}status?invoiceId=${invoiceId.value}`, headers)
-		if(isFinished.value) {
+		if (isFinished.value) {
 			const parsedValue = JSON.parse(data.value as string)
-			console.log(parsedValue, )
+			console.log(parsedValue)
 			switch (parsedValue.status) {
 				case "success":
-					
+
 					statusMessage.value = `
 					Слава Україні!
 					Дякуємо за замовлення!
 					Номер вашого замовлення ${crypto.randomUUID()}
 					`
 
-						// send form with products sendgrid
+					// send form with products sendgrid
 					const email = useEmailTemplate(orderNumber)
-					const {  response, } = await useFetch('http://localhost:8888/.netlify/functions/chekout', email)
-					console.log(response);
-					
+					const { response } = await useFetch('http://localhost:8888/.netlify/functions/chekout', email)
+					console.log(response)
+
 					break
-			
+				case "failure":
+
+					statusMessage.value = parsedValue.failureReason
+
 				default:
-					break;
+					break
 			}
 		}
 	}
 
-		// show result modal
-		// toggleResponse(response.value?.status)
-	} catch (error) {
-		console.log(error)
-	}
+	// show result modal
+	// toggleResponse(response.value?.status)
+} catch (error) {
+	console.log(error)
+}
 </script>
 
 <template>
