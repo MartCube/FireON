@@ -6,6 +6,7 @@ const statusMessage = ref('')
 const invoiceId = ref('')
 const emailData = ref('')
 const config = useRuntimeConfig()
+const icon = ref('')
 
 try {
 	if (process.client) {
@@ -28,23 +29,22 @@ try {
 			console.log(parsedValue)
 			switch (parsedValue.status) {
 				case "success":
-
 					statusMessage.value = `
 					Слава Україні!
 					Дякуємо за замовлення!
 					Номер вашого замовлення ${crypto.randomUUID()}
 					`
-
+					// send form with products sendgrid
+					icon.value = 'IconSuccess'
 					// send form with products sendgrid
 					const email = useEmailTemplate(orderNumber)
 					const { response } = await useFetch('http://localhost:8888/.netlify/functions/chekout', email)
 					console.log(response)
-
 					break
 				case "failure":
-
 					statusMessage.value = parsedValue.failureReason
-
+					icon.value = 'IconFailure'
+					break
 				default:
 					break
 			}
@@ -56,14 +56,17 @@ try {
 } catch (error) {
 	console.log(error)
 }
+
+useHead({
+	title: "Payment Status",
+})
 </script>
 
 <template>
 	<div class="response-page">
-
 		<h2>{{ statusMessage }}</h2> <!-- i18n -->
-		<Icon class="success" name="IconSuccess" />
-		<AppBtn value="Go home" />
+		<Icon class="success" :name="icon" />
+		<AppLink class="btn" to="/">Go Home</AppLink> <!-- i18n -->
 	</div>
 </template>
 

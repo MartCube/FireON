@@ -6,7 +6,7 @@ import type { CheckoutForm, City, Warehouse } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { useFetch } from '@vueuse/core'
 
-
+// 4441 1144 3585 8681
 const config = useRuntimeConfig()
 
 const { orderFormData: data, pending } = storeToRefs(useBasketStore())
