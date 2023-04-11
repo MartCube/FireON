@@ -82,6 +82,7 @@ onClickOutside(lightbox, (event) => {
 
 	.active_image {
 		width: 100%;
+		height: auto;
 		max-width: 500px;
 		max-height: 500px;
 		object-fit: contain;

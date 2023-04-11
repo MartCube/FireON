@@ -106,8 +106,8 @@ onClickOutside(basketRef, () => toggleModal())
 						background: $product_tan;
 					}
 
-					&.Pink {
-						background: $Pink;
+					&.Sand {
+						background: $product_sand;
 					}
 				}
 

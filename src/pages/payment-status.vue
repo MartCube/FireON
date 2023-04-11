@@ -4,7 +4,9 @@ import { useFetch } from '@vueuse/core'
 const statusMessage = ref('')
 const invoiceId = ref('')
 const emailData = ref('')
+const icon = ref('')
 const config = useRuntimeConfig();
+
 try {
 	
 	
@@ -36,6 +38,8 @@ try {
 					Номер вашого замовлення ${crypto.randomUUID()}
 					`
 
+					icon.value = 'IconSuccess'
+
 						// send form with products sendgrid
 					const email = useEmailTemplate(orderNumber)
 					const {  response, } = await useFetch('http://localhost:8888/.netlify/functions/chekout', email)
@@ -43,6 +47,10 @@ try {
 					
 					break
 			
+				case "failure":
+
+				icon.value = 'IconFailure'
+
 				default:
 					break;
 			}
@@ -60,7 +68,7 @@ try {
 	<div class="response-page">
 
 		<h2>{{ statusMessage }}</h2> <!-- i18n -->
-		<Icon class="success" name="IconSuccess" />
+		<Icon class="success" :name="icon" />
 		<AppBtn value="Go home" />
 	</div>
 </template>

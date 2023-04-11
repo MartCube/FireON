@@ -51,7 +51,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	// TODO: change this to useBasketStore totalPrice Martin )
 	let paymentBillBasketTotalPrice = 0;
 	products.value.map(el => paymentBillBasketTotalPrice += el.price)
-	paymentBillBasketTotalPrice *= paymentBillBasketTotalPrice * 100
+	paymentBillBasketTotalPrice = paymentBillBasketTotalPrice * 100
 
 	let paymentBillBasketData = products.value.map( el => {
 		return {
