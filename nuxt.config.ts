@@ -71,6 +71,16 @@ export default defineNuxtConfig({
 		}
 	},
 
+	runtimeConfig: {
+		public: {
+			mono: process.env.NUXT_MONO, // can be overridden by NUXT_API_SECRET environment variable
+			novaposhta: process.env.NUXT_NOVAPOSHTA,
+			npEndpoint: 'https://api.novaposhta.ua/v2.0/json/',
+			monoEnpoint: 'https://api.monobank.ua/api/merchant/invoice/',
+			sendGrid: process.env.NUXT_SENDGRID_API_KEY,
+    }
+  },
+
 	vite: {
 		logLevel: 'info',
 		css: {

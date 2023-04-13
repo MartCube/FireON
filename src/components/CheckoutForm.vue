@@ -1,94 +1,125 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
-import { z } from 'zod';
-import type { CheckoutForm } from "~~/src/types";
+import { object, z } from 'zod';
+import type { CheckoutForm, City, Warehouse } from "~~/src/types";
 import { storeToRefs } from 'pinia'
-import { promiseTimeout, useFetch } from '@vueuse/core'
-import emailjs from '@emailjs/browser';
+import { useFetch } from '@vueuse/core'
+
+// 4441 1144 3585 8681
+const config = useRuntimeConfig()
 
 const { orderFormData: data, pending } = storeToRefs(useBasketStore())
 
-
 const validationSchema = toFormValidator(
 	z.object({
-		place: z.string().min(1, 'Required'),
+		// place: z.string(),
+		// warehouse: z.string(),
 		name: z.string().min(1, 'Required'),
-		phone: z.string().min(1, 'Required'),
-		// comment: z.string().min(1, 'Required'),
+		phone: z.number().int().min(1, 'Required'),
+		comment: z.string(),
 	})
 )
 
+const city = ref<City>()
+const warehouse = ref<Warehouse>()
+
+
 const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
+
+// send form
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
-	const { resetStore, toggleResponse, toggleModal } = useBasketStore()
+
+	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
 
-	toggleModal()	// close basket modal
+	// toggleModal()	// close basket modal
 
-	// const emailData = {
-	// 	name: values.name,
-	// 	place: values.place,
-	// 	phone: values.phone,
-	// 	comment: values.comment,
-	// 	products: products.value
-	// }
-
-	// prepare product html
-	let productsTemplate: any
-	if(products.value) {
-		productsTemplate = products.value.map( el => 
-			`<div class="item">
-				<p><strong>Name:</stong> ${el.name}</p>
-				<p><strong>Image:</stong> <img src="https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250" ></p>
-				<p><strong>Count:</stong> ${el.count}</p>
-				<p><strong>Color: </stong> ${el.color}</p>
-				<p><strong>Price: </stong> ${el.price}</p>
-			</div>`
-		).join()
+	// create data for localStore
+	const emailData = {
+		name: values.name,
+		place: city.value?.Description,
+		warehouse: warehouse.value?.Description,
+		phone: values.phone,
+		comment: values.comment,
+		products: products.value
 	}
-console.log(productsTemplate);
 
-	// compose email template
-	const emailTemplate = `
-		<h4>Name: </h4><p>${values.name}</p>
-		<h4>Place: </h4><p>${values.place}</p>
-		<h4>Phone: </h4><p>${values.phone}</p>
-		<h4>Comment: </h4><p>${values.comment}</p>
-		<h4>Products</h4>
-		<div class="products">${productsTemplate}</div>
-	`
-	
-	const requestOptions = {
+
+	//paymnet monobank
+	let paymentBillBasketTotalPrice = 0
+	// uah to coins
+	products.value.map(el => paymentBillBasketTotalPrice += (el.price * el.count) * 100)
+
+	let paymentBillBasketData = products.value.map(el => {
+		return {
+			"name": el.name,
+			"qty": el.count,
+			"sum": (el.price * el.count) * 100,
+			"icon": `https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250`,
+			"unit": "шт.",
+			"code": crypto.randomUUID(),
+			"header": el.name,
+			"footer": "Футер",
+			"tax": [
+				0
+			],
+		}
+	})
+
+	// body data for monobank
+	const paymentData = {
+		"amount": paymentBillBasketTotalPrice,
+		"ccy": 980,
+		"merchantPaymInfo": {
+			"reference": crypto.randomUUID(),
+			"destination": "Магазин FireOn",
+			"basketOrder": paymentBillBasketData
+		},
+		"redirectUrl": "http://localhost:8888/payment-status",
+		// "webHookUrl": "https://f1de-213-135-161-93.eu.ngrok.io/server/api/payment-response",
+		"validity": 3600,
+		"paymentType": "debit",
+	}
+
+	// headers data for monobank
+	const paymentRequestOptions = {
 		method: 'POST',
-		headers: {},
-		body: await emailTemplate,
-	};
+		headers: {
+			'X-Token': config.public.mono
+		},
+		body: JSON.stringify(paymentData),
+	}
 
-	// trigger netlify function
 	try {
-		const { json, response, statusCode, error, text, data } = await useFetch('https://fireon.com.ua/.netlify/functions/chekout', requestOptions)
-		// console.log('json: ', json, 'response: ', response.value,'statusCode: ', statusCode.value,'error: ', error.value,'text: ', text, 'data: ', data.value )
-		// console.log('submited')
-		toggleResponse(response.value?.status)
+		// save email data to localStorage
+		localStorage.setItem('user_checkout', JSON.stringify(emailData))
+
+		const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
+		if (isFinished.value) {
+			const parsedValue: {
+				invoiceId: string,
+				pageUrl: string
+			} = JSON.parse(data.value as string)
+
+			console.log(parsedValue)
+
+			// store invoice data
+			localStorage.setItem('invoice', parsedValue.invoiceId)
+
+			// redirect user to monobank payment page
+			window.open(parsedValue.pageUrl)
+		}
+		// show result modal 
+		// there is no result modal anymore we redierectin to payment-status page
+		// toggleResponse(response.value?.status)
 	} catch (error) {
 		console.log(error)
 	}
 
-	// emailjs.send('service_s85kwin', 'template_checkoutForm', emailData, 'VQEgDD8AG-LcDAAuS')
-	// 	.then(
-	// 		(result) => {
-	// 			console.log('SUCCESS!', result.text)
-	// 		},
-	// 		(error) => {
-	// 			console.log('ERROR...', error.text)
-	// 		},
-	// 	)
-
-	// await promiseTimeout(350)	// simulate data sending
-		// show response msg
-	resetStore()	// clear all products
-	resetForm()		// clear form data
+	// show response msg
+	// resetStore()	// clear all products
+	// resetForm() // clear form data
 })
 </script>
 
@@ -96,7 +127,8 @@ console.log(productsTemplate);
 	<form id="form" @submit="onSubmit" autocomplete="off">
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
-			<VeeInput :data="data.place" />
+			<NPCityInput @selected-city="(e) => city = e" :data="data.place" />
+			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e" />
 			<VeeInput :data="data.name" />
 			<VeeInput :data="data.phone" />
 			<VeeInput :data="data.comment" />

@@ -17,7 +17,7 @@ const lightbox = ref(null)	// lightbox ref
 // open lightbox
 function Open(image: string) {
 	isOpen.value = true
-	lightboxImage.value = image
+	state.value = image
 }
 function Close() {
 	isOpen.value = false
@@ -51,14 +51,14 @@ onClickOutside(lightbox, (event) => {
 	<div class="image_slider">
 		<div v-show="isOpen" class="lightbox" >
 			<div class="wrapper" ref="lightbox">
-				<AppImg class="active_image" :src="lightboxImage = activeImage" :key="lightboxImage" :width="3000" :height="6000"/>
+				<AppImg class="active_image" :src="state" :key="lightboxImage" :width="3000" :height="6000"/>
 				<Icon class="prev" @click="prev()" name="IconArrow" />
 				<Icon class="next" @click="next()" name="IconArrow" />
 				<Icon class="close" @click="Close" name="IconClose" />
 				<div class="lds-ripple"><div></div><div></div></div>
 			</div>
 		</div>
-		<AppImg class="active_image" :src="activeImage" @click="Open(activeImage)" :width="250" :height="500" />
+		<AppImg class="active_image" :src="activeImage" @click="Open(activeImage)" :width="500" :height="500" />
 		<div class="icon_full_screen" @click="isOpen = true">
 			<Icon name="IconOpenFullScreen" />
 		</div>
@@ -82,7 +82,10 @@ onClickOutside(lightbox, (event) => {
 
 	.active_image {
 		width: 100%;
-		max-width: 250px;
+		height: auto;
+		max-width: 500px;
+		max-height: 500px;
+		object-fit: contain;
 		&:hover {
 			cursor: pointer;
 		}
@@ -152,6 +155,7 @@ onClickOutside(lightbox, (event) => {
 				user-select: none;
 				position: relative;
 				z-index: 3;
+				max-height: 100%;
 				img {
 					width: 100%;
 					height: 100%;
@@ -250,6 +254,9 @@ onClickOutside(lightbox, (event) => {
 			right: 1rem;
 			opacity: 1;
 		}
+		.active_image {
+			margin: 3rem 0 4rem;
+		}
 	}
 }
 
@@ -262,6 +269,11 @@ onClickOutside(lightbox, (event) => {
 				height: 2rem;
 			}
 		}
+		.lightbox .wrapper {
+			.image {
+				max-width: initial;
+			}
+		} 
 	}
 }
 </style>

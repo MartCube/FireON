@@ -14,7 +14,8 @@ const { errorMessage, value } = useField(nameRef)
 			<span v-show="errorMessage"> {{ errorMessage }} </span>
 		</div>
 		<label :for="data.name">{{ data.label }}</label>
-		<input v-model="value" type="text" :id="data.name" :name="data.name" :placeholder="data.placeholder" />
+		<input v-if="data.name === 'phone'" v-model="value" type="number" :id="data.name" :name="data.name" :placeholder="data.placeholder" />
+		<input v-else v-model="value" type="text" :id="data.name" :name="data.name" :placeholder="data.placeholder" />
 	</div>
 </template>
 

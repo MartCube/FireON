@@ -46,10 +46,10 @@ export const BasketQuery = groq`*[ _type == 'basket' && __i18n_lang == $lang ][0
 	},
     "form":form{
       	title,
-      	place { label, placeholder, name},
-      	name { label, placeholder, name},
-      	phone { label, placeholder, name}, 
-      	comment { label, placeholder, name},
+      	place { label, placeholder, name },
+      	name { label, placeholder, name },
+      	phone { label, placeholder, name }, 
+      	comment { label, placeholder, name },
 		button,
     },
     response

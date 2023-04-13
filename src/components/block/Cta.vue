@@ -75,12 +75,14 @@ defineProps<{
 	.image-wrapper {
 		position: relative;
 		overflow: hidden;
+		width: 50%;
 
 		.magazine {
-			width: auto;
+			width: 50%;
 			height: 100%;
 			z-index: 3;
 			position: relative;
+			margin: auto;
 		}
 
 	}
@@ -149,6 +151,9 @@ defineProps<{
 
 		.image-wrapper {
 			order: 2;
+			.magazine {
+				width: 100%;
+			}
 		}
 
 		.bg_mobile {

@@ -77,19 +77,19 @@ defineExpose({ reset })
 			}
 
 			&.Black {
-				background: $Black;
+				background: $product_black;
 			}
 
 			&.Coyote {
-				background: $Coyote;
+				background: $product_coyote;
 			}
 
 			&.Olive {
-				background: $Olive;
+				background: $product_olive;
 			}
 
 			&.Tan {
-				background: $Tan;
+				background: $product_tan;
 			}
 
 			&.Sand {
