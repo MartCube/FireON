@@ -14,45 +14,50 @@ export const AppQuery = groq`*[ _type == 'app' && __i18n_lang == $lang][0]{
 		_type == 'contact' => { ..., 'image': image.asset._ref, form{ title, button, name{ name, label, placeholder }, phone{ name, label, placeholder }, message{ name, label, placeholder }, }, },
 	},
 	"metaTags": {
-        "lang": __i18n_lang,
+		"lang": __i18n_lang,
 		"uid": "/",
 		...metaTags {
-          	title,
-            description,
-          	"image": image.asset._ref
+			title,
+			description,
+			"image": image.asset._ref
 		}
 	},
 }`
 
 export const MagazineQuery = groq`*[ _type == 'magazine' && name == $uid && __i18n_lang == $lang ][0]{
 	name,
-    "svg": svg.asset._ref,
+	"svg": svg.asset._ref,
 	info,
-    colorMagazines[]{
-      	color,
-      	price,
-      	"gallery": gallery[].asset._ref,
-    },
+	colorMagazines[]{
+		color,
+		price,
+		"gallery": gallery[].asset._ref,
+		isProductActive,
+	},
 	description[],
-    colorTitle,
+	colorTitle,
 	button,
 }`
 
 export const BasketQuery = groq`*[ _type == 'basket' && __i18n_lang == $lang ][0]{
 	"basket": {
 		title,
-    	totalSum,
+		totalSum,
 		emptyBasketMsg,
 	},
-    "form":form{
-      	title,
-      	place { label, placeholder, name },
-      	name { label, placeholder, name },
-      	phone { label, placeholder, name }, 
-      	comment { label, placeholder, name },
+	"form": form {
+		title,
+		place { label, placeholder, name },
+		firstname { label, placeholder, name },
+		middlename { label, placeholder, name },
+		lastname { label, placeholder, name },
+		warehouse { label, placeholder, name },
+		email { label, placeholder, name },
+		phone { label, placeholder, name }, 
+		comment { label, placeholder, name },
 		button,
-    },
-    response
+	},
+	response
 }`
 
 export const Sitemap_Q = groq`*[ _type in ["app", "magazine",] ]{

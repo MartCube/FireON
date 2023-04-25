@@ -51,6 +51,7 @@ export interface Magazine {
 		color: string,
 		price: number,
 		gallery: string[],
+		isProductActive: boolean
 	}],
 	colorTitle: string,
 	button: string,
@@ -100,8 +101,11 @@ export interface ContactForm {
 export interface CheckoutForm {
 	title: string,
 	place: TextField,
-	warehouse: Warehouse,
-	name: TextField,
+	warehouse: TextField
+	firstname: TextField,
+	middlename: TextField,
+	lastname: TextField,
+	email: TextField,
 	phone: TextField,
 	comment: TextField,
 	button: string,
@@ -135,13 +139,20 @@ export interface Sitemap {
 }
 
 export interface EmailData {
-	name: string,
-	city: string,
+	firstname: string,
+	lastname: string,
+	middlename: string,
+	email: string,
+	place: string,
 	warehouse: string,
-	phone: number,
+	phone: string,
 	comment: string,
 	products: Product[]
 } 
+
+
+
+
 
 export interface City {
 	Area: string,

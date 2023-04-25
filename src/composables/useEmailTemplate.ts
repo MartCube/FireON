@@ -22,8 +22,8 @@ export default function(orderNumber: string) {
 		// console.log(productsEmailTemplate);
 		const emailTemplate = `
 		<p><strong>Номер замовлення:</stong> ${orderNumber}</p>
-		<h4>Name: </h4><p>${data.name}</p>
-		<h4>City: </h4><p>${data.city}</p>
+		<h4>Name: </h4><p>${data.firstname} ${data.middlename} ${data.lastname}</p>
+		<h4>City: </h4><p>${data.place}</p>
 		<h4>Warehouse: </h4><p>${data.warehouse}</p>
 		<h4>Phone: </h4><p>${data.phone}</p>
 		<h4>Comment: </h4><p>${data.comment}</p>
