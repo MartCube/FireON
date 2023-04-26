@@ -1,23 +1,12 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
 import useCreateNP_TTN from '../composables/useCreateNP_TTN'
-import { EmailData } from '../types'
-import { Ref } from 'vue'
+import { UserData } from '../types'
 
 const statusMessage = ref('')
 const statusResponce = ref('')
 const invoiceId = ref('')
-const userData = ref<EmailData>({
-	firstname: '',
-	lastname: '',
-	middlename: '',
-	email: '',
-	place: '',
-	warehouse: '',
-	phone: '',
-	comment: '',
-	products: []
-})
+const userData = ref<UserData>()
 const icon = ref('')
 const config = useRuntimeConfig();
 const orderNumber = ref('')
@@ -28,9 +17,9 @@ try {
 		
 		orderNumber.value = crypto.randomUUID().slice(0, 6)
 		invoiceId.value = localStorage.getItem('invoice') as string
-		userData.value = JSON.parse(localStorage.getItem('user_checkout') as string) as EmailData
+		userData.value = JSON.parse(localStorage.getItem('user_data') as string) as UserData
 
-		console.log(userData.value, invoiceId.value);
+		// console.log(userData.value, invoiceId.value);
 
 		const headers = {
 			method: 'GET',
@@ -41,9 +30,10 @@ try {
 		// monobank create invoice
 		const { data, isFinished } = await useFetch(`${config.public.monoEnpoint}status?invoiceId=${invoiceId.value}`, headers)
 		if(isFinished.value) {
-			const parsedValue = JSON.parse(data.value as string)
-			statusResponce.value = parsedValue.status
-			// console.log(parsedValue, )
+
+			const parsedResponse = JSON.parse(data.value as string)
+			statusResponce.value = parsedResponse.status
+			// console.log(parsedResponse, )
 			switch (statusResponce.value) {
 				case "success":
 					
@@ -55,17 +45,21 @@ try {
 					icon.value = 'IconSuccess'
 
 						// send form with products sendgrid
-					const email = useEmailTemplate(orderNumber.value)
-					const {  response, } = await useFetch('http://localhost:8888/.netlify/functions/chekout', email)
+					const emailToFireOn = useEmailTemplate(orderNumber.value)
+					const { response: emailResponse, error: emailError, data: emailData } = await useFetch('http://localhost:8888/.netlify/functions/chekout', emailToFireOn)
 
-					const createTTN = useCreateNP_TTN();
-					console.log(response, createTTN);
+					// console.log(emailData, emailError, emailResponse);
+
+					// create ttn
+					useCreateNP_TTN()
+
+					// console.log(emailResponse, createTTN);
 					
 					break
 			
 				case "failure":
 
-				statusMessage.value = parsedValue.failureReason
+				statusMessage.value = parsedResponse.failureReason
 				icon.value = 'IconFailure'
 
 				default:

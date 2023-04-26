@@ -83,9 +83,12 @@ function AddToBasket() {
 					</div>
 					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 					<RichText class="description" :blocks="data.description" />
-					<div class="to_basket">
+					<div v-if="isActive && color" class="to_basket">
 						<CounterBtn :data="count" @dec="count--" @inc="count++" />
 						<AppBtn :value="data.button" @click="AddToBasket()" />
+					</div>
+					<div v-else class="not_available">
+						<AppBtn :value="locale === 'ua' ? 'незабаром' : 'Unvailable'"/>
 					</div>
 				</div>
 			</div>

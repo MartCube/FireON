@@ -138,13 +138,13 @@ export interface Sitemap {
 	lastmod: string,
 }
 
-export interface EmailData {
+export interface UserData {
 	firstname: string,
 	lastname: string,
 	middlename: string,
 	email: string,
-	place: string,
-	warehouse: string,
+	place: City,
+	warehouse: Warehouse,
 	phone: string,
 	comment: string,
 	products: Product[]

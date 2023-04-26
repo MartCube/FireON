@@ -2,7 +2,7 @@
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
 import { object, z } from 'zod';
-import type { CheckoutForm, City, EmailData, Warehouse } from "~~/src/types";
+import type { CheckoutForm, City, UserData, Warehouse } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { useFetch } from '@vueuse/core'
 
@@ -37,13 +37,13 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	// toggleModal()	// close basket modal
 
 	// create data for localStore
-	const emailData: EmailData = {
+	const UserData: UserData = {
 		firstname: values.firstname.toString(),
 		lastname: values.lastname.toString(),
 		middlename:  values.middlename.toString(),
 		email: values.email.toString(),
-		place: city.value?.Description as string,
-		warehouse: warehouse.value?.Description as string,
+		place: city.value as City,
+		warehouse: warehouse.value as Warehouse,
 		phone: values.phone.toString(),
 		comment: values.comment.toString(),
 		products: products.value
@@ -51,7 +51,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 	try {
 		// save email data to localStorage
-		localStorage.setItem('user_checkout', JSON.stringify(emailData))
+		localStorage.setItem('user_data', JSON.stringify(UserData))
 
 		const paymentRequestOptions = usePaymentOptions(products.value);
 		const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)

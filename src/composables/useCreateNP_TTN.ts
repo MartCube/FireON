@@ -1,29 +1,44 @@
 import { useFetch } from '@vueuse/core'
-import { EmailData } from '../types'
+import { UserData } from '../types'
 
 export default function() {
 	const config = useRuntimeConfig()
-	const user = JSON.parse(localStorage.getItem('user_checkout') as string ) as EmailData
+	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
+	const createUserResponse = ref()
 
-	console.log(user);
+	console.log(config.public.novaposhta);
+
+	// get recipient 
+	// Set up the request parameters
+	const createUserRequestParams = {
+		apiKey: config.public.novaposhta,
+		modelName: "Counterparty",
+		calledMethod: "save",
+		methodProperties: {
+			FirstName: user.firstname,
+			MiddleName: user.middlename,
+			LastName: user.lastname,
+			Phone: user.phone,
+			Email: user.email,
+			CounterpartyType: "PrivatePerson",
+			CounterpartyProperty: "Recipient"
+		}
+	};
+
+	const { data: createUserData, isFinished: createUserState, error: createUserError } = useFetch(config.public.npEndpoint, createUserRequestParams as object)
+	console.log(createUserRequestParams, createUserData);
+	
+	if(createUserState) {
+		console.log(createUserData.value);
+		createUserResponse.value = createUserData.value
+	} else if (createUserError.value) {
+		console.error(createUserError.value);
+	}
 	
 	// create recipient 
 	// this is for creating TTN 
 	// method or will return you existing person 
 	// or will create new one and will return you a data 
-	// {
-	// 	"apiKey": "[ВАШ КЛЮЧ]",
-	// 	"modelName": "Counterparty",
-	// 	"calledMethod": "save",
-	// 	"methodProperties": {
-	// 		"FirstName" : "Іван",
-	// 		"MiddleName" : "Іванович",
-	// 		"LastName" : "Іванов",
-	// 		"Phone" : "380997979789",
-	// 		"Email" : "test@i.com",
-	// 		"CounterpartyType" : "PrivatePerson",
-	// 		"CounterpartyProperty" : "Recipient"
-	// 	}
 	// 	{
 	// 		"Description": "Приватна особа",
 	// 		"Ref": "6a208b6d-c3e1-11ed-a60f-48df37b921db",
@@ -83,21 +98,11 @@ export default function() {
 		}
 	}
 
-	// const npRequestOptions = {
-	// 	apiKey: config.public.novaposhta,
-	// 	modelName: 'Counterparty',
-	// 	calledMethod: 'getCounterparties',
-	// 	methodProperties: {
-	// 		CounterpartyProperty: 'Sender', // Specify that we're searching for a sender
-	// 		Page: "1", // Replace with the name of the sender you're searching for
-	// 	}
+	// const { data: createTTNdata, isFinished: createTTNstate, error: createTTNerror } = useFetch(config.public.npEndpoint, createTTNrequestOptions as object)
+	// if(createTTNstate.value) {
+	// 	console.log(createTTNdata.value);
 	// }
 
-	// const { data, isFinished, error } = useFetch(config.public.npEndpoint, createTTNrequestOptions as object)
-	// if(isFinished) {
-	// 	console.log(data.value);
-	// }
-
-	// return isFinished
+	// return { isFinished, data.value }
 
 }
