@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
-// add type for payment-status object
+import useCreateNP_TTN from '../composables/useCreateNP_TTN'
+import { UserData } from '../types'
 
 const statusMessage = ref('')
+const statusResponce = ref('')
 const invoiceId = ref('')
-const emailData = ref('')
-const config = useRuntimeConfig()
+const userData = ref<UserData>()
 const icon = ref('')
-
+const config = useRuntimeConfig();
+const orderNumber = ref('')
 try {
+	
+	
 	if (process.client) {
-		const orderNumber = crypto.randomUUID()
+		
+		orderNumber.value = crypto.randomUUID().slice(0, 6)
 		invoiceId.value = localStorage.getItem('invoice') as string
-		emailData.value = localStorage.getItem('user_checkout') as string
+		userData.value = JSON.parse(localStorage.getItem('user_data') as string) as UserData
 
-		console.log(invoiceId.value)
+		// console.log(userData.value, invoiceId.value);
 
 		const headers = {
 			method: 'GET',
@@ -22,74 +27,87 @@ try {
 				'X-Token': config.mono
 			},
 		};
-		// get monobank invoice status
+		// monobank create invoice
 		const { data, isFinished } = await useFetch(`${config.public.monoEnpoint}status?invoiceId=${invoiceId.value}`, headers)
-		if (isFinished.value) {
-			const parsedValue = JSON.parse(data.value as string)
-			console.log(parsedValue)
-			switch (parsedValue.status) {
+		if(isFinished.value) {
+
+			const parsedResponse = JSON.parse(data.value as string)
+			statusResponce.value = parsedResponse.status
+			// console.log(parsedResponse, )
+			switch (statusResponce.value) {
 				case "success":
+					
 					statusMessage.value = `
-					Слава Україні!
-					Дякуємо за замовлення!
-					Номер вашого замовлення ${crypto.randomUUID()}
+					Дякуємо! 
+					Номер вашого замовлення: 
 					`
-					// send form with products sendgrid
+
 					icon.value = 'IconSuccess'
-					// send form with products sendgrid
-					const email = useEmailTemplate(orderNumber)
-					const { response } = await useFetch('http://localhost:8888/.netlify/functions/chekout', email)
-					console.log(response)
+
+						// send form with products sendgrid
+					const emailToFireOn = useEmailTemplate(orderNumber.value)
+					const { response: emailResponse, error: emailError, data: emailData } = await useFetch('http://localhost:8888/.netlify/functions/chekout', emailToFireOn)
+
+					// console.log(emailData, emailError, emailResponse);
+
+					// create ttn
+					useCreateNP_TTN()
+
+					// console.log(emailResponse, createTTN);
+					
 					break
+			
 				case "failure":
-					statusMessage.value = parsedValue.failureReason
-					icon.value = 'IconFailure'
-					break
+
+				statusMessage.value = parsedResponse.failureReason
+				icon.value = 'IconFailure'
+
 				default:
-					break
+					break;
 			}
 		}
 	}
 
-	// show result modal
-	// toggleResponse(response.value?.status)
-} catch (error) {
-	console.log(error)
-}
-
-useHead({
-	title: "Payment Status",
-})
+		// show result modal
+		// toggleResponse(response.value?.status)
+	} catch (error) {
+		console.log(error)
+	}
 </script>
 
 <template>
 	<div class="response-page">
-		<h2>{{ statusMessage }}</h2> <!-- i18n -->
+
+		<h3>{{ statusMessage }}</h3> <!-- i18n -->
+		<h2 v-if="statusResponce === 'success'">{{ orderNumber }}</h2> 
 		<Icon class="success" :name="icon" />
-		<AppLink class="btn" to="/">Go Home</AppLink> <!-- i18n -->
+		<AppBtn value="Go home" />
 	</div>
 </template>
 
 <style lang="scss" scoped>
 .response-page {
 	width: 100%;
-	height: calc(100vh - 272px);
+	height: calc(100vh - 128px);
 	padding: 2.6rem;
 	border: 1px solid $white10;
 	background: $dark;
 
 	display: flex;
 	flex-direction: column;
-	// justify-content: center;
+	justify-content: center;
 	align-items: center;
 
+	h3 {
+		margin-bottom: 1rem;
+	}
 	h2 {
 		width: 60%;
-		margin-bottom: 1rem;
+		// margin-bottom: 1rem;
 
 		text-align: center;
 		text-transform: uppercase;
-		font-size: 28px;
+		font-size: 32px;
 		line-height: 34px;
 	}
 

@@ -65,7 +65,10 @@ const { errorMessage, value } = useField(nameRef)
 
 		&::placeholder {
 			color: $white50;
-			text-transform: capitalize;
+			// text-transform: lowercase;
+			&::first-letter {
+				text-transform: capitalize;
+			}
 		}
 
 		transition: all 0.2s ease;

@@ -2,7 +2,7 @@
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
 import { object, z } from 'zod';
-import type { CheckoutForm, City, Warehouse } from "~~/src/types";
+import type { CheckoutForm, City, UserData, Warehouse } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { useFetch } from '@vueuse/core'
 
@@ -14,8 +14,10 @@ const { orderFormData: data, pending } = storeToRefs(useBasketStore())
 const validationSchema = toFormValidator(
 	z.object({
 		// place: z.string(),
-		// warehouse: z.string(),
-		name: z.string().min(1, 'Required'),
+		email: z.string().min(1, { message: "Required" }).email("This is not a valid email."),
+		firstname: z.string().min(1, 'Required'),
+		middlename: z.string().min(1, 'Required'),
+		lastname: z.string().min(1, 'Required'),
 		phone: z.number().int().min(1, 'Required'),
 		comment: z.string(),
 	})
@@ -32,77 +34,33 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
-
 	// toggleModal()	// close basket modal
 
 	// create data for localStore
-	const emailData = {
-		name: values.name,
-		place: city.value?.Description,
-		warehouse: warehouse.value?.Description,
-		phone: values.phone,
-		comment: values.comment,
+	const UserData: UserData = {
+		firstname: values.firstname.toString(),
+		lastname: values.lastname.toString(),
+		middlename:  values.middlename.toString(),
+		email: values.email.toString(),
+		place: city.value as City,
+		warehouse: warehouse.value as Warehouse,
+		phone: values.phone.toString(),
+		comment: values.comment.toString(),
 		products: products.value
-	}
-
-
-	//paymnet monobank
-	let paymentBillBasketTotalPrice = 0
-	// uah to coins
-	products.value.map(el => paymentBillBasketTotalPrice += (el.price * el.count) * 100)
-
-	let paymentBillBasketData = products.value.map(el => {
-		return {
-			"name": el.name,
-			"qty": el.count,
-			"sum": (el.price * el.count) * 100,
-			"icon": `https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250`,
-			"unit": "шт.",
-			"code": crypto.randomUUID(),
-			"header": el.name,
-			"footer": "Футер",
-			"tax": [
-				0
-			],
-		}
-	})
-
-	// body data for monobank
-	const paymentData = {
-		"amount": paymentBillBasketTotalPrice,
-		"ccy": 980,
-		"merchantPaymInfo": {
-			"reference": crypto.randomUUID(),
-			"destination": "Магазин FireOn",
-			"basketOrder": paymentBillBasketData
-		},
-		"redirectUrl": "http://localhost:8888/payment-status",
-		// "webHookUrl": "https://f1de-213-135-161-93.eu.ngrok.io/server/api/payment-response",
-		"validity": 3600,
-		"paymentType": "debit",
-	}
-
-	// headers data for monobank
-	const paymentRequestOptions = {
-		method: 'POST',
-		headers: {
-			'X-Token': config.public.mono
-		},
-		body: JSON.stringify(paymentData),
 	}
 
 	try {
 		// save email data to localStorage
-		localStorage.setItem('user_checkout', JSON.stringify(emailData))
+		localStorage.setItem('user_data', JSON.stringify(UserData))
 
+		const paymentRequestOptions = usePaymentOptions(products.value);
 		const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
 		if (isFinished.value) {
 			const parsedValue: {
 				invoiceId: string,
 				pageUrl: string
 			} = JSON.parse(data.value as string)
-
-			console.log(parsedValue)
+			// console.log(parsedValue)
 
 			// store invoice data
 			localStorage.setItem('invoice', parsedValue.invoiceId)
@@ -110,8 +68,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			// redirect user to monobank payment page
 			window.open(parsedValue.pageUrl)
 		}
+
 		// show result modal 
-		// there is no result modal anymore we redierectin to payment-status page
+		// there is no result modal anymore we redierect user to payment-status page
 		// toggleResponse(response.value?.status)
 	} catch (error) {
 		console.log(error)
@@ -128,8 +87,11 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
 			<NPCityInput @selected-city="(e) => city = e" :data="data.place" />
-			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e" />
-			<VeeInput :data="data.name" />
+			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  />
+			<VeeInput :data="data.firstname" />
+			<VeeInput :data="data.lastname" />
+			<VeeInput :data="data.middlename" />
+			<VeeInput :data="data.email" />
 			<VeeInput :data="data.phone" />
 			<VeeInput :data="data.comment" />
 			<button type="submit" :disabled="isSubmitting">
@@ -142,8 +104,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 <style lang="scss" scoped>
 form {
 	width: 100%;
-	max-width: 460px;
-
+	@media (min-width: 800px) {
+		max-width: 460px;
+	}
 	display: flex;
 	flex-direction: column;
 	position: relative;

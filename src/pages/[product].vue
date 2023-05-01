@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { boolean } from "zod"
 import { MagazineQuery } from "~~/src/queries"
 import type { Magazine, Product } from "~~/src/types"
 
@@ -17,6 +18,7 @@ if (!data.value) throw createError({
 
 const colors = data.value.colorMagazines.map((magazine) => magazine.color)
 const color = ref(data.value.colorMagazines[0].color)
+const isActive = ref(data.value.colorMagazines[0].isProductActive)
 const gallery = ref(data.value.colorMagazines[0].gallery)
 const price = ref(data.value.colorMagazines[0].price)
 const count = ref(1)
@@ -29,8 +31,11 @@ function GetColor(value: string) {
 	// update gallery and price
 	for (let magazine of data.value.colorMagazines) {
 		if (magazine.color == value) {
+			console.log(magazine);
+			
 			price.value = magazine.price
 			gallery.value = magazine.gallery
+			isActive.value = magazine.isProductActive
 			break
 		}
 	}
@@ -73,14 +78,17 @@ function AddToBasket() {
 						</ul>
 						<span class="price">
 							<Icon name="IconMoney" />
-							{{ price }} ГРН
+							{{ price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
 						</span>
 					</div>
 					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 					<RichText class="description" :blocks="data.description" />
-					<div class="to_basket">
+					<div v-if="isActive && color" class="to_basket">
 						<CounterBtn :data="count" @dec="count--" @inc="count++" />
 						<AppBtn :value="data.button" @click="AddToBasket()" />
+					</div>
+					<div v-else class="not_available">
+						<AppBtn :value="locale === 'ua' ? 'незабаром' : 'Unvailable'"/>
 					</div>
 				</div>
 			</div>
@@ -97,14 +105,17 @@ function AddToBasket() {
 				<ImageSlider :gallery="gallery" />
 				<div class="price">
 					<span>
-						<Icon name="IconMoney" />{{ price }} ГРН
+						<Icon name="IconMoney" />{{ price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
 					</span>
 				</div>
 				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 				<RichText class="description" :blocks="data.description" />
-				<div class="to_basket">
+				<div v-if="isActive && color" class="to_basket">
 					<CounterBtn :data="count" @dec="count--" @inc="count++" />
 					<AppBtn :value="data.button" @click="AddToBasket()" />
+				</div>
+				<div v-else class="not_available">
+					<AppBtn :value="locale === 'ua' ? 'незабаром' : 'Unvailable'"/>
 				</div>
 			</div>
 		</template>
@@ -294,6 +305,10 @@ function AddToBasket() {
 			.counter_btn {
 				margin: 2rem 0;
 			}
+		}
+
+		.not_available {
+			padding: 2rem 0 1rem 0;
 		}
 	}
 }
