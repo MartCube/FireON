@@ -45,8 +45,8 @@ try {
 					icon.value = 'IconSuccess'
 
 					// create ttn
-					const responseTTN = useCreateNP_TTN()
-					console.log(responseTTN);
+					const responseTTN = await useCreateNP_TTN()
+					console.log("responseTTN", responseTTN);
 					
 					// send form with products sendgrid
 					const emailToFireOn = useEmailTemplate(orderNumber.value)

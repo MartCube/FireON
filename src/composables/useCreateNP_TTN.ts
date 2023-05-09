@@ -1,7 +1,7 @@
 import { useFetch } from '@vueuse/core'
 import { UserData, ContactPerson } from '../types'
 
-export default function() {
+export default async function() {
 	const config = useRuntimeConfig()
 	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
 	const endResponse = ref()
@@ -42,7 +42,7 @@ export default function() {
 				// console.log("contactPersonData", contactPersonData);
 				
 				// create TTN and return value back to frontend , to payment-status page
-				endResponse.value = await createTTN(createUserResponse.data[0].Ref, contactPersonData.Ref)
+				return await createTTN(createUserResponse.data[0].Ref, contactPersonData.Ref)
 				// return 
 
 			} else if (createUserError) {
@@ -170,7 +170,7 @@ export default function() {
 		try {
 			const { data: createTTNdata, isFinished: createTTNstate, error: createTTNerror } = await useFetch(config.public.npEndpoint, npTTNRequestParams as object)
 			if(createTTNstate) {
-				console.log("createTTNdata", createTTNdata.value);
+				// console.log("createTTNdata", createTTNdata.value);
 
 				return createTTNdata.value
 			} else {
@@ -183,6 +183,10 @@ export default function() {
 		}
 	}
 
-	createUser()
+	endResponse.value = await createUser()
 
+	return endResponse.value
+	// if(endResponse.value !== undefined) {
+	// 	return await endResponse.value
+	// }
 }
