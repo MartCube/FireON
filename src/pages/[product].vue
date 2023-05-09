@@ -230,6 +230,10 @@ function AddToBasket() {
 				}
 			}
 		}
+
+		.not_available {
+			padding: 2rem 0 1rem 0;
+		}
 	}
 
 	.mobile {

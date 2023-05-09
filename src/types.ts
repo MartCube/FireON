@@ -138,6 +138,9 @@ export interface Sitemap {
 	lastmod: string,
 }
 
+
+// nova poshta types
+
 export interface UserData {
 	firstname: string,
 	lastname: string,
@@ -149,10 +152,6 @@ export interface UserData {
 	comment: string,
 	products: Product[]
 } 
-
-
-
-
 
 export interface City {
 	Area: string,
@@ -176,7 +175,6 @@ export interface City {
 	SettlementTypeDescriptionRu: string,
 	SpecialCashCheck: number
 }
-
 export interface Warehouse {
 		SiteKey: string,
 		Description: string,
@@ -255,4 +253,35 @@ export interface Warehouse {
 		PostalCodeUA: string,
 		OnlyReceivingParcel: string,
 		WarehouseIndex: string
+}
+
+export interface ContactPerson {
+	ContactPerson: {
+		data: {
+			Description: string,
+			FirstName: string,
+			LastName: string,
+			MiddleName: string,
+			Ref: string,
+		}[],
+		errorCodes: [],
+		errors: [],
+		info: [],
+		infoCodes: [],
+		messageCodes: [],
+		success: boolean
+		translatedErrors: [],
+		warningCodes: [],
+		warnings: string[],
+	}, 
+	Counterparty: string,
+	CounterpartyType: string, 
+	Description: string,
+	EDRPOU: string, 
+	FirstName: string,
+	LastName: string,
+	MiddleName: string,
+	OwnershipForm: string,
+	OwnershipFormDescription: string,
+	Ref: string,
 }
