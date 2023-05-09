@@ -4,22 +4,18 @@ import useCreateNP_TTN from '../composables/useCreateNP_TTN'
 import { UserData } from '../types'
 
 const statusMessage = ref('')
-const statusResponce = ref('')
 const invoiceId = ref('')
-const userData = ref<UserData>()
 const icon = ref('')
 const config = useRuntimeConfig();
 const orderNumber = ref('')
+
 try {
-	
-	
+	// checking if window object is loaded and client side is available
+	// needed for localStorage and crypto 
 	if (process.client) {
 		
-		orderNumber.value = crypto.randomUUID().slice(0, 6)
 		invoiceId.value = localStorage.getItem('invoice') as string
-		userData.value = JSON.parse(localStorage.getItem('user_data') as string) as UserData
-
-		// console.log(userData.value, invoiceId.value);
+		const userData: UserData = JSON.parse(localStorage.getItem('user_data') as string) as UserData
 
 		const headers = {
 			method: 'GET',
@@ -32,54 +28,60 @@ try {
 		if(isFinished.value) {
 
 			const parsedResponse = JSON.parse(data.value as string)
-			statusResponce.value = parsedResponse.status
-			// console.log(parsedResponse, )
-			switch (statusResponce.value) {
+			const statusResponce = parsedResponse.status
+
+			switch (statusResponce) {
 				case "success":
 					
+					// status message
 					statusMessage.value = `
 					Дякуємо! 
 					Номер вашого замовлення: 
 					`
-
+					// order number 
+					orderNumber.value = crypto.randomUUID().slice(0, 6)
+					
+					// icon status
 					icon.value = 'IconSuccess'
 
-						// send form with products sendgrid
-					const emailToFireOn = useEmailTemplate(orderNumber.value)
-					const { response: emailResponse, error: emailError, data: emailData } = await useFetch('http://localhost:8888/.netlify/functions/chekout', emailToFireOn)
-
-					// console.log(emailData, emailError, emailResponse);
-
 					// create ttn
-					useCreateNP_TTN()
-
-					// console.log(emailResponse, createTTN);
+					const responseTTN = useCreateNP_TTN()
+					console.log(responseTTN);
 					
+					// send form with products sendgrid
+					const emailToFireOn = useEmailTemplate(orderNumber.value)
+					const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
+
+					// send data to crm
+
+					// clean localStorage or maybe for future we can store everything like 
+					// city , warehouse, user data, etc to not fetch it 
+					// but for now we cleaning after ourself
+
 					break
-			
-				case "failure":
+					
+					case "failure":
+						
+						statusMessage.value = parsedResponse.failureReason
+						icon.value = 'IconFailure'
+						break
 
-				statusMessage.value = parsedResponse.failureReason
-				icon.value = 'IconFailure'
-
-				default:
-					break;
+					default:
+						break;
 			}
 		}
 	}
 
-		// show result modal
-		// toggleResponse(response.value?.status)
-	} catch (error) {
-		console.log(error)
-	}
+} catch (error) {
+	console.log(error)
+}
 </script>
 
 <template>
 	<div class="response-page">
 
-		<h3>{{ statusMessage }}</h3> <!-- i18n -->
-		<h2 v-if="statusResponce === 'success'">{{ orderNumber }}</h2> 
+		<h3>{{ statusMessage }}</h3> 
+		<h2>{{ orderNumber }}</h2> 
 		<Icon class="success" :name="icon" />
 		<AppBtn value="Go home" />
 	</div>
@@ -100,6 +102,7 @@ try {
 
 	h3 {
 		margin-bottom: 1rem;
+		text-align: center;
 	}
 	h2 {
 		width: 60%;
