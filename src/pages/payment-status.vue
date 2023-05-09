@@ -2,6 +2,7 @@
 import { useFetch } from '@vueuse/core'
 import useCreateNP_TTN from '../composables/useCreateNP_TTN'
 import { UserData } from '../types'
+import createCRMtask from '../composables/createCRMtask'
 
 const statusMessage = ref('')
 const invoiceId = ref('')
@@ -53,6 +54,7 @@ try {
 					const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 
 					// send data to crm
+					const createCRMtaskResponse = createCRMtask(orderNumber.value);
 
 					// clean localStorage or maybe for future we can store everything like 
 					// city , warehouse, user data, etc to not fetch it 

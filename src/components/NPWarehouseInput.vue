@@ -61,7 +61,7 @@ const emit = defineEmits<{
 <template>
 	<div class="field">
 		<label for="warehouse"> Виберіть пункт отримання </label>
-		<input v-model="inputValue" @click.once="getWarehouses" v-on:focus="showWarehousesList" type="text" id="warehouse" name="warehouse" placeholder="Пункт отримання" />
+		<input v-model="inputValue" @click.once="getWarehouses" v-on:focus="showWarehousesList" type="text" id="warehouse" name="warehouse" placeholder="Пункт отримання" required />
 		<ul v-if="isWarehousesListActive" class="city_list">
 			<li v-for="wh in filteredWarehouses" @click="emit('selectedWarehouse', wh), isWarehousesListActive = false, inputValue = wh.Description">
 				{{ wh.Description }}

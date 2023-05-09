@@ -1,17 +1,21 @@
-export default function() {
-	const config = useRuntimeConfig()
+import { useFetch } from '@vueuse/core'
+import { UserData } from '../types'
 
+export default async function(orderNumber: string) {
+	const config = useRuntimeConfig()
+	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
+	
 		
 	const crmBodyParams = {
 		"title": "Запитання: Книга English is Easy",
-		"comment": "Чи можлива знижка?",
-		"deadline_at": "2018-01-01",
-		"time": "13:15",
+		"comment": user.comment,
+		"deadline_at": "",
+		"time": "",
 		"user_id": 1,
 		"custom_fields": [
 			{
-				"name": "Джерело",
-				"value": "Сайт"
+				"name": "Order number",
+				"value": orderNumber
 			}
 		],
 		"client_attributes": {
@@ -41,3 +45,15 @@ export default function() {
 		},
 		body: JSON.stringify(crmBodyParams),
 	}
+
+	try {
+		const { data: createdTaskData, isFinished: createTaskState, error: createTaskError } = await useFetch(config.public.crmEndpoint, crmRequestParams)
+		if(createTaskState) {
+			console.log(createdTaskData.value);
+			
+		}
+	} catch (err) {
+		console.error("Create CRM task err", err);
+		
+	}
+}
