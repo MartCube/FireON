@@ -174,7 +174,7 @@ export default async function() {
 		try {
 			const { data: createTTNdata, isFinished: createTTNstate, error: createTTNerror } = await useFetch(config.public.npEndpoint, npTTNRequestParams as object)
 			if(createTTNstate) {
-				// console.log("createTTNdata", createTTNdata.value);
+				console.log("createTTNdata", createTTNdata.value);
 				localStorage.setItem("createTTNdata", JSON.stringify(createTTNdata.value))
 				return createTTNdata.value
 			} else {

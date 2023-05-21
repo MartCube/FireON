@@ -11,6 +11,16 @@ const config = useRuntimeConfig()
 
 const { orderFormData: data, pending } = storeToRefs(useBasketStore())
 
+const promoCodes = [
+	{
+		code: 'fireOn-20',
+		discount: 20,
+	},
+	{
+		code: 'fireOn-10',
+		discount: 10,
+	}
+]
 const validationSchema = toFormValidator(
 	z.object({
 		// place: z.string(),
@@ -20,6 +30,9 @@ const validationSchema = toFormValidator(
 		lastname: z.string().min(1, 'Required'),
 		phone: z.number().int().min(1, 'Required'),
 		comment: z.string(),
+		// promoCode: z.union([z.string().refine((val) => {
+    //   return promoCodes.some(el => el.code === val)
+    // }, { message: "Invalid promotion code" }).optional(), z.literal("")]),
 	})
 )
 
@@ -94,6 +107,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			<VeeInput :data="data.email" />
 			<VeeInput :data="data.phone" />
 			<VeeInput :data="data.comment" />
+			<!-- <VeeInput :data="data.promoCode" /> -->
 			<button type="submit" :disabled="isSubmitting">
 				<span>{{ data.button }}</span>
 			</button>

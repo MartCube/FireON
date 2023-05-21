@@ -55,6 +55,7 @@ export const BasketQuery = groq`*[ _type == 'basket' && __i18n_lang == $lang ][0
 		email { label, placeholder, name },
 		phone { label, placeholder, name }, 
 		comment { label, placeholder, name },
+		promoCode { label, placeholder, name },
 		button,
 	},
 	response

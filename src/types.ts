@@ -108,6 +108,7 @@ export interface CheckoutForm {
 	email: TextField,
 	phone: TextField,
 	comment: TextField,
+	promoCode: TextField,
 	button: string,
 }
 export interface Basket {
@@ -150,7 +151,8 @@ export interface UserData {
 	warehouse: Warehouse,
 	phone: string,
 	comment: string,
-	products: Product[]
+	products: Product[],
+	// promoCode: {}
 } 
 
 export interface City {
@@ -284,4 +286,25 @@ export interface ContactPerson {
 	OwnershipForm: string,
 	OwnershipFormDescription: string,
 	Ref: string,
+}
+
+export interface ttnDataType {
+	success: boolean,
+	data:
+	[
+		{
+			Ref: string,
+			CostOnSite: number,
+			EstimatedDeliveryDate: string,
+			IntDocNumber: string,
+			TypeDocument: string
+		}
+	],
+	errors: any[],
+	warnings: any[],
+	info: any[],
+	messageCodes: any[],
+	errorCodes: any[],
+	warningCodes: any[],
+	infoCodes: any[]
 }

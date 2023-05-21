@@ -16,7 +16,7 @@ try {
 	if (process.client) {
 		
 		invoiceId.value = localStorage.getItem('invoice') as string
-		const userData: UserData = JSON.parse(localStorage.getItem('user_data') as string) as UserData
+		const userData: UserData = JSON.parse(localStorage.getItem('user_data') as string)
 
 		const headers = {
 			method: 'GET',
@@ -46,15 +46,17 @@ try {
 					icon.value = 'IconSuccess'
 
 					// create ttn
-					const responseTTN = await useCreateNP_TTN()
-					console.log("responseTTN", responseTTN);
+					// const responseTTN = await useCreateNP_TTN()
+					// console.log("responseTTN", responseTTN);
 					
 					// send form with products sendgrid
-					const emailToFireOn = useEmailTemplate(orderNumber.value)
-					const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
-
+					// const emailToFireOn = useEmailTemplate(orderNumber.value)
+					// console.log("emailToFireOn", emailToFireOn);
+					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
+					
 					// send data to crm
 					const createCRMtaskResponse = createCRMtask(orderNumber.value);
+					console.log("createCRMtaskResponse", createCRMtaskResponse);
 
 					// clean localStorage or maybe for future we can store everything like 
 					// city , warehouse, user data, etc to not fetch it 
