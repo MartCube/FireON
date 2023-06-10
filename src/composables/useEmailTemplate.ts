@@ -1,10 +1,11 @@
-import { UserData } from "../types"
+import { UserData, ttnDataType } from "../types"
 import { useFetch } from '@vueuse/core'
 
 export default async function(orderNumber: string) {
 	
 	const rawdata = localStorage.getItem('user_data')
 	const data: UserData = JSON.parse(rawdata as string)
+	const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
 
 	const config = useRuntimeConfig() 
 
@@ -18,6 +19,7 @@ export default async function(orderNumber: string) {
 				<td><div class="cell"><strong>Count:</stong> ${el.count}</div></td>
 				<td><div class="cell"><strong>Color:</stong> ${el.color}</div></td>
 				<td><div class="cell"><strong>Price:</stong> ${el.price}</div></td>
+				<td><div class="cell"><strong>Sku:</stong> ${el.sku}</div></td>
 			</tr>`
 			).join()
 		}
@@ -29,22 +31,25 @@ export default async function(orderNumber: string) {
 				<h4>Name: </h4><p>${data.firstname} ${data.middlename} ${data.lastname}</p>
 			</div>
 			<div class="info-item">
-				<h4>City: </h4><p>${data.place.Description}</p>
+			<h4>City: </h4><p>${data.place.Description}</p>
 			</div>
 			<div class="info-item">
-				<h4>Warehouse: </h4><p>${data.warehouse.Description}</p>
+			<h4>Warehouse: </h4><p>${data.warehouse.Description}</p>
 			</div>
 			<div class="info-item">
-				<h4>Phone: </h4><p>${data.phone}</p>
+			<h4>Phone: </h4><p>${data.phone}</p>
 			</div>
 			<div class="info-item">
-				<h4>Comment: </h4><p>${data.comment}</p>
+			<h4>Comment: </h4><p>${data.comment}</p>
+			</div>
+			<div class="info-item">
+			<h4>TTN: ${localStTTNdata.data[0].IntDocNumber}</h4>
 			</div>
 			<h4>Products:</h4>
 			<table class="products">
-				<tbody>
-					${productsEmailTemplate}
-				</tbody>
+			<tbody>
+			${productsEmailTemplate}
+			</tbody>
 			</table>
 		</div>
 	`
@@ -57,18 +62,18 @@ export default async function(orderNumber: string) {
 	// prepare product email html
 
 	
-	const fetch = async () => {
-		try {
-			const { response, error, data, isFinished } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, requestEmailOptions)
-			if(isFinished) {
-				return response
-			}
-		} catch(err) {
-			console.error("emailResponse err", err);
-			return err
+	// const fetch = async () => {
+	try {
+		const { response, error, data, isFinished } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, requestEmailOptions)
+		if(isFinished) {
+			return response
 		}
-		
+	} catch(err) {
+		console.error("emailResponse err", err);
+		return err
 	}
+		
+	// }
 
-	return await fetch
+	// return await fetch
 }

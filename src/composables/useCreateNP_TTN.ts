@@ -61,6 +61,12 @@ export default async function() {
 		}
 	}
 
+
+	// 1 пакет = 1кг
+	// 1 магазин = 0,4 кг 
+	// округлять до целых чисел 
+
+	// 
 	// get contactPerson
 	const getContactRecipient = async (user: ContactPerson) => {
 		// console.log(user);
