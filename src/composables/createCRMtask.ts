@@ -57,7 +57,7 @@ export default async function(orderNumber: string) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			'X-Auth-Token': "emDm2fpzETbz1bowHBx7NRC5",
+			'X-Auth-Token': config.public.crmkey,
 			'accept': 'application/json',
 		},
 		body: JSON.stringify(crmBodyParams),
