@@ -32,12 +32,20 @@ export interface App {
 export interface MagazineCard {
 	name: string,
 	svg: string,
+	// sku: number,
 	info: {
 		size: string,
 		rem: string,
 		blk: string,
 	},
 	image: string,
+}
+export interface colorMagazine{
+	color: string,
+	price: number,
+	sku: number,
+	gallery: string[],
+	isProductActive: boolean
 }
 export interface Magazine {
 	name: string,
@@ -47,12 +55,7 @@ export interface Magazine {
 		rem: string,
 		blk: string,
 	},
-	colorMagazines: [{
-		color: string,
-		price: number,
-		gallery: string[],
-		isProductActive: boolean
-	}],
+	colorMagazines: colorMagazine[],
 	colorTitle: string,
 	button: string,
 	description: any[],
@@ -66,6 +69,7 @@ export interface Product {
 	color: string,
 	price: number,
 	count: number,
+	sku: number,
 }
 
 // blocks 
@@ -108,6 +112,7 @@ export interface CheckoutForm {
 	email: TextField,
 	phone: TextField,
 	comment: TextField,
+	promoCode: TextField,
 	button: string,
 }
 export interface Basket {
@@ -150,7 +155,8 @@ export interface UserData {
 	warehouse: Warehouse,
 	phone: string,
 	comment: string,
-	products: Product[]
+	products: Product[],
+	// promoCode: {}
 } 
 
 export interface City {
@@ -284,4 +290,25 @@ export interface ContactPerson {
 	OwnershipForm: string,
 	OwnershipFormDescription: string,
 	Ref: string,
+}
+
+export interface ttnDataType {
+	success: boolean,
+	data:
+	[
+		{
+			Ref: string,
+			CostOnSite: number,
+			EstimatedDeliveryDate: string,
+			IntDocNumber: string,
+			TypeDocument: string
+		}
+	],
+	errors: any[],
+	warnings: any[],
+	info: any[],
+	messageCodes: any[],
+	errorCodes: any[],
+	warningCodes: any[],
+	infoCodes: any[]
 }

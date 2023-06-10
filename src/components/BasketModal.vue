@@ -113,7 +113,8 @@ onClickOutside(basketRef, () => toggleModal())
 
 				.image {
 					width: 40px;
-					height: 80px;
+					height: auto;
+					object-fit: contain;
 				}
 
 				.info {

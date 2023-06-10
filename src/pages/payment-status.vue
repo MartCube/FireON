@@ -2,6 +2,7 @@
 import { useFetch } from '@vueuse/core'
 import useCreateNP_TTN from '../composables/useCreateNP_TTN'
 import { UserData } from '../types'
+import createCRMtask from '../composables/createCRMtask'
 
 const statusMessage = ref('')
 const invoiceId = ref('')
@@ -15,7 +16,7 @@ try {
 	if (process.client) {
 		
 		invoiceId.value = localStorage.getItem('invoice') as string
-		const userData: UserData = JSON.parse(localStorage.getItem('user_data') as string) as UserData
+		const userData: UserData = JSON.parse(localStorage.getItem('user_data') as string)
 
 		const headers = {
 			method: 'GET',
@@ -45,15 +46,26 @@ try {
 					icon.value = 'IconSuccess'
 
 					// create ttn
-					const responseTTN = useCreateNP_TTN()
-					console.log(responseTTN);
+					const responseTTN = await useCreateNP_TTN()
+					console.log("responseTTN", responseTTN);
+					
+					// send data to crm
+					const createCRMtaskResponse = createCRMtask(orderNumber.value);
+					console.log("createCRMtaskResponse", createCRMtaskResponse);
 					
 					// send form with products sendgrid
 					const emailToFireOn = useEmailTemplate(orderNumber.value)
-					const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
+					console.log("emailToFireOn", emailToFireOn);
+					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
+					
 
-					// send data to crm
-
+					Promise.all([responseTTN, createCRMtaskResponse, emailToFireOn])
+					.then((values) => {
+						console.log(values);
+					})
+					.catch((error) => {
+						console.error(error.message);
+					});
 					// clean localStorage or maybe for future we can store everything like 
 					// city , warehouse, user data, etc to not fetch it 
 					// but for now we cleaning after ourself
@@ -79,11 +91,12 @@ try {
 
 <template>
 	<div class="response-page">
-
-		<h3>{{ statusMessage }}</h3> 
-		<h2>{{ orderNumber }}</h2> 
-		<Icon class="success" :name="icon" />
-		<AppBtn value="Go home" />
+		<ClientOnly>
+			<h3>{{ statusMessage }}</h3> 
+			<h2>{{ orderNumber }}</h2> 
+			<Icon class="success" :name="icon" />
+			<AppBtn value="Go home" />
+		</ClientOnly>
 	</div>
 </template>
 

@@ -1,11 +1,13 @@
 import { UserData } from "../types"
+import { useFetch } from '@vueuse/core'
 
-export default function(orderNumber: string) {
-	let data: UserData;
+export default async function(orderNumber: string) {
 	
 	const rawdata = localStorage.getItem('user_data')
-	data = JSON.parse(rawdata as string)
-	// move it to scoped function or so  
+	const data: UserData = JSON.parse(rawdata as string)
+
+	const config = useRuntimeConfig() 
+
 	// prepare product email html
 	let productsEmailTemplate: any;
 	if(data) {
@@ -27,7 +29,7 @@ export default function(orderNumber: string) {
 				<h4>Name: </h4><p>${data.firstname} ${data.middlename} ${data.lastname}</p>
 			</div>
 			<div class="info-item">
-			<h4>City: </h4><p>${data.place.Description}</p>
+				<h4>City: </h4><p>${data.place.Description}</p>
 			</div>
 			<div class="info-item">
 				<h4>Warehouse: </h4><p>${data.warehouse.Description}</p>
@@ -54,5 +56,19 @@ export default function(orderNumber: string) {
 	};
 	// prepare product email html
 
-	return requestEmailOptions
+	
+	const fetch = async () => {
+		try {
+			const { response, error, data, isFinished } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, requestEmailOptions)
+			if(isFinished) {
+				return response
+			}
+		} catch(err) {
+			console.error("emailResponse err", err);
+			return err
+		}
+		
+	}
+
+	return await fetch
 }

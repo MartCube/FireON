@@ -79,7 +79,7 @@ export default defineNuxtConfig({
 			monoEnpoint: 'https://api.monobank.ua/api/merchant/invoice/',
 			sendGrid: process.env.NUXT_SENDGRID_API_KEY,
 			crmkey: process.env.NUXT_CRM,
-			crmEndpoint: 'https://api.keepincrm.com/v1',
+			crmEndpoint: 'https://api.keepincrm.com/v1/',
 			domain: process.env.NUXT_DOMAIN,
     }
   },

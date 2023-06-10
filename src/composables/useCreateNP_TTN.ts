@@ -1,9 +1,11 @@
 import { useFetch } from '@vueuse/core'
 import { UserData, ContactPerson } from '../types'
 
-export default function() {
+export default async function() {
 	const config = useRuntimeConfig()
 	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
+	console.log(user);
+	
 	const endResponse = ref()
 	
 	// get recipient 
@@ -17,7 +19,8 @@ export default function() {
 				"FirstName": user.firstname,
 				"MiddleName": user.middlename,
 				"LastName": user.lastname,
-				"Phone": user.phone,
+				"Phone": `${user.phone}`,
+				// "Phone": user.phone,
 				"Email": user.email,
 				"CounterpartyType": "PrivatePerson",
 				"CounterpartyProperty": "Recipient"
@@ -33,16 +36,18 @@ export default function() {
 		}
 	
 		try {
-			const { data: createdUserData, isFinished: createUserState, error: createUserError } = await useFetch(config.public.npEndpoint, npUserRequestParams)
+			const { data: npUserData, isFinished: createUserState, error: createUserError } = await useFetch(config.public.npEndpoint, npUserRequestParams)
 			if(createUserState) {
-				const createUserResponse = JSON.parse(createdUserData.value as string)
+				const createUserResponse = JSON.parse(npUserData.value as string)
+				console.log("createUserResponse", createUserResponse);
 
-				// get Contact Pesson data
+				// get Contact Person data
 				const contactPersonData = await getContactRecipient(createUserResponse.data[0])
+				localStorage.setItem("contactPersonData", JSON.stringify(contactPersonData))
 				// console.log("contactPersonData", contactPersonData);
 				
 				// create TTN and return value back to frontend , to payment-status page
-				endResponse.value = await createTTN(createUserResponse.data[0].Ref, contactPersonData.Ref)
+				return await createTTN(createUserResponse.data[0].Ref, contactPersonData.Ref)
 				// return 
 
 			} else if (createUserError) {
@@ -92,7 +97,9 @@ export default function() {
 				
 				if(contactRecipientState) {
 					const parsedRecipirntData = JSON.parse(contactRecipientData.value as string)
-					console.log(parsedRecipirntData.data.Ref);
+
+					localStorage.setItem("parsedRecipirntData", JSON.stringify(parsedRecipirntData))
+					// console.log(parsedRecipirntData.data.Ref);
 					return parsedRecipirntData.data.Ref
 				}
 			} catch(err) {
@@ -171,7 +178,7 @@ export default function() {
 			const { data: createTTNdata, isFinished: createTTNstate, error: createTTNerror } = await useFetch(config.public.npEndpoint, npTTNRequestParams as object)
 			if(createTTNstate) {
 				console.log("createTTNdata", createTTNdata.value);
-
+				localStorage.setItem("createTTNdata", createTTNdata.value as string)
 				return createTTNdata.value
 			} else {
 				console.error("createTTNdata error", createTTNerror);
@@ -183,6 +190,10 @@ export default function() {
 		}
 	}
 
-	createUser()
+	endResponse.value = await createUser()
 
+	return endResponse.value
+	// if(endResponse.value !== undefined) {
+	// 	return await endResponse.value
+	// }
 }
