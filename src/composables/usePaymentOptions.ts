@@ -32,7 +32,7 @@ export default function(products: Product[]) {
 				"destination": "Магазин FireOn",
 				"basketOrder": paymentBillBasketData
 			},
-			"redirectUrl": "http://localhost:8888/payment-status",
+			"redirectUrl": `${config.public.domain}payment-status`,
 			// "webHookUrl": "https://f1de-213-135-161-93.eu.ngrok.io/server/api/payment-response",
 			"validity": 3600,
 			"paymentType": "debit",
