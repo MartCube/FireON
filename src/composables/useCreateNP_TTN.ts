@@ -4,6 +4,8 @@ import { UserData, ContactPerson } from '../types'
 export default async function() {
 	const config = useRuntimeConfig()
 	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
+	console.log(user);
+	
 	const endResponse = ref()
 	
 	// get recipient 
@@ -17,7 +19,8 @@ export default async function() {
 				"FirstName": user.firstname,
 				"MiddleName": user.middlename,
 				"LastName": user.lastname,
-				"Phone": user.phone,
+				"Phone": `${user.phone}`,
+				// "Phone": user.phone,
 				"Email": user.email,
 				"CounterpartyType": "PrivatePerson",
 				"CounterpartyProperty": "Recipient"
@@ -33,12 +36,12 @@ export default async function() {
 		}
 	
 		try {
-			const { data: createdUserData, isFinished: createUserState, error: createUserError } = await useFetch(config.public.npEndpoint, npUserRequestParams)
+			const { data: npUserData, isFinished: createUserState, error: createUserError } = await useFetch(config.public.npEndpoint, npUserRequestParams)
 			if(createUserState) {
-				const createUserResponse = JSON.parse(createdUserData.value as string)
-				// console.log("createUserResponse", createUserResponse);
+				const createUserResponse = JSON.parse(npUserData.value as string)
+				console.log("createUserResponse", createUserResponse);
 
-				// get Contact Pesson data
+				// get Contact Person data
 				const contactPersonData = await getContactRecipient(createUserResponse.data[0])
 				localStorage.setItem("contactPersonData", JSON.stringify(contactPersonData))
 				// console.log("contactPersonData", contactPersonData);
@@ -175,7 +178,7 @@ export default async function() {
 			const { data: createTTNdata, isFinished: createTTNstate, error: createTTNerror } = await useFetch(config.public.npEndpoint, npTTNRequestParams as object)
 			if(createTTNstate) {
 				console.log("createTTNdata", createTTNdata.value);
-				localStorage.setItem("createTTNdata", JSON.stringify(createTTNdata.value))
+				localStorage.setItem("createTTNdata", createTTNdata.value as string)
 				return createTTNdata.value
 			} else {
 				console.error("createTTNdata error", createTTNerror);

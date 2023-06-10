@@ -32,12 +32,20 @@ export interface App {
 export interface MagazineCard {
 	name: string,
 	svg: string,
+	// sku: number,
 	info: {
 		size: string,
 		rem: string,
 		blk: string,
 	},
 	image: string,
+}
+export interface colorMagazine{
+	color: string,
+	price: number,
+	sku: number,
+	gallery: string[],
+	isProductActive: boolean
 }
 export interface Magazine {
 	name: string,
@@ -47,12 +55,7 @@ export interface Magazine {
 		rem: string,
 		blk: string,
 	},
-	colorMagazines: [{
-		color: string,
-		price: number,
-		gallery: string[],
-		isProductActive: boolean
-	}],
+	colorMagazines: colorMagazine[],
 	colorTitle: string,
 	button: string,
 	description: any[],
@@ -66,6 +69,7 @@ export interface Product {
 	color: string,
 	price: number,
 	count: number,
+	sku: number,
 }
 
 // blocks 

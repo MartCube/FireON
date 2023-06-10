@@ -15,13 +15,12 @@ if (!data.value) throw createError({
 	fatal: true
 })
 
-
 const colors = data.value.colorMagazines.map((magazine) => magazine.color)
-const color = ref(data.value.colorMagazines[0].color)
-const isActive = ref(data.value.colorMagazines[0].isProductActive)
-const gallery = ref(data.value.colorMagazines[0].gallery)
-const price = ref(data.value.colorMagazines[0].price)
 const count = ref(1)
+
+// first colorMagazine is active
+const activeColorMagazine = ref(data.value.colorMagazines[0])
+const color = ref(data.value.colorMagazines[0].color)
 
 
 // Get selected color from Color Panel
@@ -31,11 +30,7 @@ function GetColor(value: string) {
 	// update gallery and price
 	for (let magazine of data.value.colorMagazines) {
 		if (magazine.color == value) {
-			console.log(magazine);
-			
-			price.value = magazine.price
-			gallery.value = magazine.gallery
-			isActive.value = magazine.isProductActive
+			activeColorMagazine.value = magazine
 			break
 		}
 	}
@@ -45,10 +40,11 @@ function AddToBasket() {
 	if (!data.value) return
 	const newProduct: Product = {
 		name: data.value.name,
-		image: gallery.value[0],
-		price: price.value,
+		image: activeColorMagazine.value.gallery[0],
+		price: activeColorMagazine.value.price,
 		color: color.value,
 		count: count.value,
+		sku: activeColorMagazine.value.sku
 	}
 	const { addProduct } = useBasketStore()
 	addProduct(newProduct)
@@ -67,7 +63,7 @@ function AddToBasket() {
 				<AppLink class="go_back" to="/" hash="#magazines">
 					<Icon name="IconArrow" />
 				</AppLink>
-				<ImageSlider :gallery="gallery" />
+				<ImageSlider :gallery="activeColorMagazine.gallery" />
 				<div class="wrap">
 					<div class="details">
 						<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
@@ -78,17 +74,17 @@ function AddToBasket() {
 						</ul>
 						<span class="price">
 							<Icon name="IconMoney" />
-							{{ price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
+							{{ activeColorMagazine.price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
 						</span>
 					</div>
 					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 					<RichText class="description" :blocks="data.description" />
-					<div v-if="isActive && color" class="to_basket">
+					<div v-if="activeColorMagazine.isProductActive && color" class="to_basket">
 						<CounterBtn :data="count" @dec="count--" @inc="count++" />
 						<AppBtn :value="data.button" @click="AddToBasket()" />
 					</div>
 					<div v-else class="not_available">
-						<AppBtn :value="locale === 'ua' ? 'незабаром' : 'Unvailable'"/>
+						<AppBtn :value="locale === 'ua' ? 'Оберіть колір' : 'Unvailable'"/>
 					</div>
 				</div>
 			</div>
@@ -102,20 +98,20 @@ function AddToBasket() {
 						<li>{{ data.info.blk }}BLK</li>
 					</ul>
 				</div>
-				<ImageSlider :gallery="gallery" />
+				<ImageSlider :gallery="activeColorMagazine.gallery" />
 				<div class="price">
 					<span>
-						<Icon name="IconMoney" />{{ price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
+						<Icon name="IconMoney" />{{ activeColorMagazine.price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
 					</span>
 				</div>
 				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 				<RichText class="description" :blocks="data.description" />
-				<div v-if="isActive && color" class="to_basket">
+				<div v-if="activeColorMagazine.isProductActive && color" class="to_basket">
 					<CounterBtn :data="count" @dec="count--" @inc="count++" />
 					<AppBtn :value="data.button" @click="AddToBasket()" />
 				</div>
 				<div v-else class="not_available">
-					<AppBtn :value="locale === 'ua' ? 'незабаром' : 'Unvailable'"/>
+					<AppBtn :value="locale === 'ua' ? 'Оберіть колір' : 'Unvailable'"/>
 				</div>
 			</div>
 		</template>

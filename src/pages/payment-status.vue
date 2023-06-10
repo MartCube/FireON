@@ -46,18 +46,26 @@ try {
 					icon.value = 'IconSuccess'
 
 					// create ttn
-					// const responseTTN = await useCreateNP_TTN()
-					// console.log("responseTTN", responseTTN);
-					
-					// send form with products sendgrid
-					// const emailToFireOn = useEmailTemplate(orderNumber.value)
-					// console.log("emailToFireOn", emailToFireOn);
-					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
+					const responseTTN = await useCreateNP_TTN()
+					console.log("responseTTN", responseTTN);
 					
 					// send data to crm
 					const createCRMtaskResponse = createCRMtask(orderNumber.value);
 					console.log("createCRMtaskResponse", createCRMtaskResponse);
+					
+					// send form with products sendgrid
+					const emailToFireOn = useEmailTemplate(orderNumber.value)
+					console.log("emailToFireOn", emailToFireOn);
+					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
+					
 
+					Promise.all([responseTTN, createCRMtaskResponse, emailToFireOn])
+					.then((values) => {
+						console.log(values);
+					})
+					.catch((error) => {
+						console.error(error.message);
+					});
 					// clean localStorage or maybe for future we can store everything like 
 					// city , warehouse, user data, etc to not fetch it 
 					// but for now we cleaning after ourself
@@ -83,11 +91,12 @@ try {
 
 <template>
 	<div class="response-page">
-
-		<h3>{{ statusMessage }}</h3> 
-		<h2>{{ orderNumber }}</h2> 
-		<Icon class="success" :name="icon" />
-		<AppBtn value="Go home" />
+		<ClientOnly>
+			<h3>{{ statusMessage }}</h3> 
+			<h2>{{ orderNumber }}</h2> 
+			<Icon class="success" :name="icon" />
+			<AppBtn value="Go home" />
+		</ClientOnly>
 	</div>
 </template>
 

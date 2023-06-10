@@ -28,6 +28,7 @@ const validationSchema = toFormValidator(
 		firstname: z.string().min(1, 'Required'),
 		middlename: z.string().min(1, 'Required'),
 		lastname: z.string().min(1, 'Required'),
+		// phone https://stackoverflow.com/questions/75531294/zod-checking-the-number-of-digits-on-a-number-type
 		phone: z.number().int().min(1, 'Required'),
 		comment: z.string(),
 		// promoCode: z.union([z.string().refine((val) => {

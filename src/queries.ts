@@ -31,6 +31,7 @@ export const MagazineQuery = groq`*[ _type == 'magazine' && name == $uid && __i1
 	colorMagazines[]{
 		color,
 		price,
+		sku,
 		"gallery": gallery[].asset._ref,
 		isProductActive,
 	},
