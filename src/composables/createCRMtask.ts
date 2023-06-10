@@ -16,12 +16,6 @@ export default async function(orderNumber: string) {
 			"price": number,
 			"currency": "UAH"
 		},
-		// "custom_fields": [
-		// 	{
-		// 		"name": string,
-		// 		"value": string
-		// 	}
-		// ]
 	}
 	let userProductsCrm: crmProduct[] = []
 
@@ -36,43 +30,19 @@ export default async function(orderNumber: string) {
 					"price": el.price,
 					"currency": "UAH"
 				},
-
 			},
 		)
 	});
 
 
-	// let ttnDataCrm = 	[{
-	// 	"name": "TTN Data",
-	// 	"type": "object",
-	// 	"fields": [
-	// 		{
-	// 			"name": "TTN Number",
-	// 			"value": localStTTNdata.data[0].IntDocNumber,
-	// 		},
-	// 		{
-	// 			"name": "Delivery cost",
-	// 			"value": localStTTNdata.data[0].CostOnSite,
-	// 		},
-	// 		{
-	// 			"name": "Delivery date",
-	// 			"value": localStTTNdata.data[0].EstimatedDeliveryDate,
-	// 		},
-	// 	]
-	// }]
-
 	const crmBodyParams = {
 		"title": `#${orderNumber} - Замовлення із сайту`,
 		"total": 500,
 		"currency": "UAH",
-		"stage_id": 1,
+		"stage_id": 0,
 		"source_id": 5,
 		"funnel_id": 1,
-		"comment": `
-				"TTN Number"
-				${localStTTNdata.data[0].IntDocNumber}
-		
-		`,
+		"comment": `"TTN Number": ${localStTTNdata.data[0].IntDocNumber}`,
 		"client_attributes": {
 			"person": `${user.firstname} ${user.lastname} ${user.middlename}`,
 			"email": user.email,
