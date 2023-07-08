@@ -7,6 +7,7 @@ export default async function() {
 	console.log(user);
 	
 	const endResponse = ref()
+	const error = ref('')
 	
 	// get recipient 
 	// Set up the request parameters
@@ -39,28 +40,21 @@ export default async function() {
 			const { data: npUserData, isFinished: createUserState, error: createUserError } = await useFetch(config.public.npEndpoint, npUserRequestParams)
 			if(createUserState) {
 				const createUserResponse = JSON.parse(npUserData.value as string)
-				console.log("createUserResponse", createUserResponse);
-
-				// get Contact Person data
-				const contactPersonData = await getContactRecipient(createUserResponse.data[0])
-				localStorage.setItem("contactPersonData", JSON.stringify(contactPersonData))
-				// console.log("contactPersonData", contactPersonData);
-				
-				// create TTN and return value back to frontend , to payment-status page
-				return await createTTN(createUserResponse.data[0].Ref, contactPersonData.Ref)
-				// return 
+				// console.log("createUserResponse", createUserResponse);
+				return createUserResponse
 
 			} else if (createUserError) {
 				console.error(createUserError);
+				error.value = `createUserError: ${createUserError}`
 				// return createUserError.value
 			}
 
-		} catch(error) {
-			console.error(error);
+		} catch(err) {
+			console.error(err);
+			error.value = String(err)
 			// return error
 		}
 	}
-
 
 	// 1 пакет = 1кг
 	// 1 магазин = 0,4 кг 
@@ -109,6 +103,7 @@ export default async function() {
 					return parsedRecipirntData.data.Ref
 				}
 			} catch(err) {
+				error.value = String(err)
 				console.error("getContactRecipient", err);
 			}
 
@@ -131,7 +126,7 @@ export default async function() {
 		// create date
 		const dateRaw = new Date()
 		const dateForTTN = `${dateRaw.getDate() < 10	? 0 : ''}${dateRaw.getDate()}.${dateRaw.getMonth() + 1 < 10 ? 0 : ''}${dateRaw.getMonth() + 1}.${dateRaw.getFullYear()}`
-
+		const weight = parselCount * 0.4
 		// configure request body params 
 		const createTTNrequestBodyOptions = {
 			"apiKey": config.public.novaposhta, // config
@@ -144,7 +139,7 @@ export default async function() {
 				"PaymentMethod" : "Cash", // +1 field to form
 				"DateTime" : dateForTTN, // ! create a date
 				"CargoType" : "Parcel",
-				"Weight" : parselCount,
+				"Weight" : weight,
 				"ServiceType" : "WarehouseWarehouse",
 				"SeatsAmount" : parselCount,
 				"Description" : "Додатковий опис відправлення", 
@@ -183,22 +178,46 @@ export default async function() {
 		try {
 			const { data: createTTNdata, isFinished: createTTNstate, error: createTTNerror } = await useFetch(config.public.npEndpoint, npTTNRequestParams as object)
 			if(createTTNstate) {
-				console.log("createTTNdata", createTTNdata.value);
+				// console.log("createTTNdata", createTTNdata.value);
 				localStorage.setItem("createTTNdata", createTTNdata.value as string)
 				return createTTNdata.value
 			} else {
-				console.error("createTTNdata error", createTTNerror);
-				return { "createTTNdata error": createTTNerror }
+				// console.error("createTTNdata error", createTTNerror);
+				return error.value = String(createTTNerror)
 			}
 		} catch(err) {
 			console.error("fetch error", err);
+			error.value = String(err)
 			return err
 		}
 	}
 
-	endResponse.value = await createUser()
+	new Promise((resolve, reject) => {
+		const user = createUser()
+		user.then(data => resolve(data)).catch(err => reject(err))
+	}).then(async (user: any) => {
+		// get Contact Person data
+		const recipient = await getContactRecipient(user.data[0])
+		localStorage.setItem("contactPersonData", JSON.stringify(recipient))
+		return {recipient, user}
+		
+	}).then(async ({recipient, user}: any) => {
+		const ttn = await createTTN(user.data[0].Ref, recipient.Ref)
+		// console.log(ttn);	
+		
+		endResponse.value = ttn
+		// create TTN and return value back to frontend , to payment-status page
+		return ttn
+	}).catch(err => {
+		error.value = err
+		console.error(err)
+	})
 
-	return endResponse.value
+
+
+	
+
+	return {endResponse, error}
 	// if(endResponse.value !== undefined) {
 	// 	return await endResponse.value
 	// }

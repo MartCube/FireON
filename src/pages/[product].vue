@@ -84,7 +84,7 @@ function AddToBasket() {
 						<AppBtn :value="data.button" @click="AddToBasket()" />
 					</div>
 					<div v-else class="not_available">
-						<AppBtn :value="locale === 'ua' ? 'Оберіть колір' : 'Unvailable'"/>
+						<AppBtn :value="locale === 'ua' ? 'Незабаром': 'Unvailable'"/>
 					</div>
 				</div>
 			</div>

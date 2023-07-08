@@ -29,8 +29,13 @@ const validationSchema = toFormValidator(
 		middlename: z.string().min(1, 'Required'),
 		lastname: z.string().min(1, 'Required'),
 		// phone https://stackoverflow.com/questions/75531294/zod-checking-the-number-of-digits-on-a-number-type
-		phone: z.number().int().min(1, 'Required'),
-		comment: z.string(),
+		phone: z.number().refine((val) => val.toString().length === 12, {
+			message: "Must have 12 digits"
+		}),
+		comment: z.string().optional(),
+	// 	phone: z.number().refine((value) => String(value).length === 12, {
+  //   message: "The number should be exactly 12 digits.",
+  // }),
 		// promoCode: z.union([z.string().refine((val) => {
     //   return promoCodes.some(el => el.code === val)
     // }, { message: "Invalid promotion code" }).optional(), z.literal("")]),
@@ -49,6 +54,8 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
 	// toggleModal()	// close basket modal
+	console.log(values);
+	
 
 	// create data for localStore
 	const UserData: UserData = {
@@ -59,8 +66,8 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		place: city.value as City,
 		warehouse: warehouse.value as Warehouse,
 		phone: values.phone.toString(),
-		comment: values.comment.toString(),
-		products: products.value
+		products: products.value,
+		comment: values.comment ? values.comment.toString() : '',
 	}
 
 	try {

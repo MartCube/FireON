@@ -2,6 +2,10 @@ import { Product } from './../types'
 
 export default function(products: Product[]) {
 		const config = useRuntimeConfig()
+		// const { locale } = useI18n()	
+		// console.log(locale);
+		
+		
 		//paymnet monobank
 		let paymentBillBasketTotalPrice = 0
 		// uah to coins
