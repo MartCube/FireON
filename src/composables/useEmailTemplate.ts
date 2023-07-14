@@ -40,7 +40,7 @@ export default async function(orderNumber: string) {
 			<h4>Phone: </h4><p>${data.phone}</p>
 			</div>
 			<div class="info-item">
-			<h4>Comment: </h4><p>${data.comment}</p>
+			<h4>Comment: </h4><p>${data.comment === undefined || data.comment === null ? '' : data.comment}</p>
 			</div>
 			<div class="info-item">
 			<h4>TTN: ${localStTTNdata.data[0].IntDocNumber}</h4>

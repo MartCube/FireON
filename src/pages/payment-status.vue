@@ -9,6 +9,14 @@ const invoiceId = ref('')
 const icon = ref('')
 const config = useRuntimeConfig();
 const orderNumber = ref('')
+// const ttn = ref({})
+
+
+const error = (text: string) => {
+	statusMessage.value = text
+	icon.value = 'IconFailure'
+
+}
 
 try {
 	// checking if window object is loaded and client side is available
@@ -46,8 +54,9 @@ try {
 					icon.value = 'IconSuccess'
 
 					// create ttn
-					const responseTTN = await useCreateNP_TTN()
-					console.log("responseTTN", responseTTN);
+					const { endResponse } = await reactive(useCreateNP_TTN())
+					// const data = toRefs(endResponse)
+					console.log("responseTTN", await endResponse);
 					
 					// send data to crm
 					// const createCRMtaskResponse = createCRMtask(orderNumber.value);
@@ -67,8 +76,7 @@ try {
 					
 					case "failure":
 						
-						statusMessage.value = parsedResponse.failureReason
-						icon.value = 'IconFailure'
+						 error(parsedResponse.failureReason)
 						break
 
 					default:
@@ -80,6 +88,9 @@ try {
 } catch (error) {
 	console.log(error)
 }
+
+
+
 </script>
 
 <template>

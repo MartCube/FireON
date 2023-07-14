@@ -1,12 +1,12 @@
 import { useFetch } from '@vueuse/core'
-import { UserData, ContactPerson } from '../types'
+import { UserData, ContactPerson, ttnDataType } from '../types'
 
 export default async function() {
 	const config = useRuntimeConfig()
 	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
-	console.log(user);
+	// console.log(user);
 	
-	const endResponse = ref()
+	const endResponse = ref('')
 	const error = ref('')
 	
 	// get recipient 
@@ -126,7 +126,20 @@ export default async function() {
 		// create date
 		const dateRaw = new Date()
 		const dateForTTN = `${dateRaw.getDate() < 10	? 0 : ''}${dateRaw.getDate()}.${dateRaw.getMonth() + 1 < 10 ? 0 : ''}${dateRaw.getMonth() + 1}.${dateRaw.getFullYear()}`
-		const weight = parselCount * 0.4
+		
+		let optionsSeat: any = []
+		user.products.forEach(element => {
+			optionsSeat.push({
+				"volumetricVolume":"1",
+				"volumetricWidth":"25",
+				"volumetricLength":"30",
+				"volumetricHeight":"5",
+				"weight":"1"
+			})
+		});
+
+		const volume = (25*30*5)*user.products.length;
+		// const weight = parselCount
 		// configure request body params 
 		const createTTNrequestBodyOptions = {
 			"apiKey": config.public.novaposhta, // config
@@ -138,12 +151,13 @@ export default async function() {
 				"PayerType" : "Recipient",
 				"PaymentMethod" : "Cash", // +1 field to form
 				"DateTime" : dateForTTN, // ! create a date
+				"VolumeGeneral": volume,
 				"CargoType" : "Parcel",
-				"Weight" : weight,
+				"Weight" : String(parselCount),
 				"ServiceType" : "WarehouseWarehouse",
-				"SeatsAmount" : parselCount,
+				"SeatsAmount" : String(parselCount),
 				"Description" : "Додатковий опис відправлення", 
-				"Cost" : paymentBillBasketTotalPrice, // store totalPcice to local storage 
+				"Cost" : String(paymentBillBasketTotalPrice), // store totalPcice to local storage 
 				"CitySender" : "8d5a980d-391c-11dd-90d9-001a92567626", // static value of the sender city 
 				"Sender" : "6a208b6d-c3e1-11ed-a60f-48df37b921db", // static value sender ref
 				"SenderAddress" : "", // 
@@ -154,15 +168,7 @@ export default async function() {
 				"RecipientAddress" : "", // 
 				"ContactRecipient" : contactRecipient, //  function getContactRecipient()
 				"RecipientsPhone" : user.phone, // from form, from localStorage
-				// "OptionsSeat" : [ // optional we can calcualte whole parsel а width = 30cm на height = 10cm на length = 5cm 
-				// 	{
-				// 		"volumetricVolume":"1",
-				// 		"volumetricWidth":"50",
-				// 		"volumetricLength":"50",
-				// 		"volumetricHeight":"50",
-				// 		"weight":"1"
-				// 	}
-				// ]
+				"OptionsSeat" : optionsSeat
 			}
 		}
 		
@@ -180,7 +186,7 @@ export default async function() {
 			if(createTTNstate) {
 				// console.log("createTTNdata", createTTNdata.value);
 				localStorage.setItem("createTTNdata", createTTNdata.value as string)
-				return createTTNdata.value
+				return createTTNdata.value as ttnDataType
 			} else {
 				// console.error("createTTNdata error", createTTNerror);
 				return error.value = String(createTTNerror)
@@ -203,9 +209,8 @@ export default async function() {
 		
 	}).then(async ({recipient, user}: any) => {
 		const ttn = await createTTN(user.data[0].Ref, recipient.Ref)
-		// console.log(ttn);	
-		
-		endResponse.value = ttn
+
+		endResponse.value = ttn as string
 		// create TTN and return value back to frontend , to payment-status page
 		return ttn
 	}).catch(err => {
@@ -214,7 +219,9 @@ export default async function() {
 	})
 
 
+	
 
+	// console.log(endResponse);
 	
 
 	return {endResponse, error}

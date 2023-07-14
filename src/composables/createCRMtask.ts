@@ -8,33 +8,68 @@ export default async function(orderNumber: string) {
 
 
 	interface crmProduct {
-		"amount": string,
-		"title":  string,
-		"product_attributes": {
-			"sku": string,
-			"title":  string,
-			"price": number,
-			"currency": "UAH"
-		},
+		price: number,
+		quantity: number,
+		name: string,
+		picture: string,
+		properties: <k, v>[],
 	}
+
 	let userProductsCrm: crmProduct[] = []
 
 	user.products.forEach( el => {
 		userProductsCrm.push(
 			{
-				"amount": `${el.count}`,
-				"title":  el.name,
-				"product_attributes": {
-					"sku": `${el.sku}`,
-					"title":  el.name,
-					"price": el.price,
-					"currency": "UAH"
-				},
+				price: el.price,
+				quantity: el.count,
+				name: el.name,
+				picture: el.image,
+				properties: [
+					{
+						name: "Sku",
+						value: el.sku,
+					},
+					
+					{
+						name: "Sku",
+						value: el.sku,
+					},
+					
+				]
 			},
 		)
 	});
 
 
+	const data = {
+		source_id: 22,
+		buyer: {
+			full_name: 'John Doe',
+			email: 'johndoe@example.com',
+			phone: '1234567890',
+		},
+		shipping: {
+			shipping_address_city: 'City',
+			shipping_receive_point: 'Street',
+			shipping_address_country: 'Country',
+			shipping_address_region: 'Region',
+			shipping_address_zip: '12345',
+		},
+		products: [
+			// {
+			// 	price: 10.99,
+			// 	quantity: 1,
+			// 	name: 'Product Name',
+			// 	picture: 'https://example.com/product.jpg',
+			// 	properties: [
+			// 		{
+			// 			name: 'Color',
+			// 			value: 'Space Gray',
+			// 		},
+			// 	],
+			// },
+		],
+	};
 	const crmBodyParams = {
 		"title": `#${orderNumber} - Замовлення із сайту`,
 		"total": 500,
