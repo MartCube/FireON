@@ -9,13 +9,11 @@ const invoiceId = ref('')
 const icon = ref('')
 const config = useRuntimeConfig();
 const orderNumber = ref('')
-// const ttn = ref({})
 
 
 const error = (text: string) => {
 	statusMessage.value = text
 	icon.value = 'IconFailure'
-
 }
 
 try {
@@ -53,10 +51,10 @@ try {
 					// icon status
 					icon.value = 'IconSuccess'
 
+					
 					// create ttn
-					const { endResponse } = await reactive(useCreateNP_TTN())
-					// const data = toRefs(endResponse)
-					console.log("responseTTN", await endResponse);
+					const {endResponse} = await useCreateNP_TTN()
+					console.log("responseTTN", JSON.parse(endResponse as string));
 					
 					// send data to crm
 					// const createCRMtaskResponse = createCRMtask(orderNumber.value);

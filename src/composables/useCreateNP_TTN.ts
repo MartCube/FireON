@@ -6,7 +6,8 @@ export default async function() {
 	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
 	// console.log(user);
 	
-	const endResponse = ref('')
+	// const endResponse = ref('')
+	let res = null
 	const error = ref('')
 	
 	// get recipient 
@@ -198,7 +199,7 @@ export default async function() {
 		}
 	}
 
-	new Promise((resolve, reject) => {
+	const endResponse = await new Promise((resolve, reject) => {
 		const user = createUser()
 		user.then(data => resolve(data)).catch(err => reject(err))
 	}).then(async (user: any) => {
@@ -209,23 +210,12 @@ export default async function() {
 		
 	}).then(async ({recipient, user}: any) => {
 		const ttn = await createTTN(user.data[0].Ref, recipient.Ref)
-
-		endResponse.value = ttn as string
-		// create TTN and return value back to frontend , to payment-status page
+		// console.log(ttn);
 		return ttn
 	}).catch(err => {
 		error.value = err
 		console.error(err)
 	})
 
-
-	
-
-	// console.log(endResponse);
-	
-
 	return {endResponse, error}
-	// if(endResponse.value !== undefined) {
-	// 	return await endResponse.value
-	// }
 }
