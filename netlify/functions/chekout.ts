@@ -7,7 +7,9 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 	sgMail.setApiKey(process.env.NUXT_SENDGRID_API_KEY)
 	const msg = {
 		to: 'devfireon97@gmail.com', // Change to your recipient
-		from: 'dev.fireon@gmail.com', // Change to your verified sender
+		//from: 'dev.fireon@gmail.com', // Change to your verified sender
+		from: 'sales@fireon.com.ua',
+		//sales@fireon.com.ua
 		subject: 'Sending with SendGrid is Fun',
 		text: 'and easy to do anywhere, even with Node.js',
 		html: event.body,
