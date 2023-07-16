@@ -121,6 +121,7 @@ export default async function() {
 		
 		// calculate how many parsels 
 		// we assume 1 parcel = 1 kg = 1 seat for now
+		// use reduce function
 		let parselCount = 0
 		user.products.map(el => parselCount += el.count)
 
@@ -131,9 +132,9 @@ export default async function() {
 		let optionsSeat: any = []
 		user.products.forEach(element => {
 			optionsSeat.push({
-				"volumetricVolume":"1",
-				"volumetricWidth":"25",
-				"volumetricLength":"30",
+				"volumetricVolume": `${(25*30*5)}`,
+				"volumetricWidth":"30",
+				"volumetricLength":"25",
 				"volumetricHeight":"5",
 				"weight":"1"
 			})
@@ -142,7 +143,7 @@ export default async function() {
 		const volume = (25*30*5)*user.products.length;
 		// const weight = parselCount
 		// configure request body params 
-		const createTTNrequestBodyOptions = {
+		const department = {
 			"apiKey": config.public.novaposhta, // config
 			"modelName": "InternetDocument",
 			"calledMethod": "save",
@@ -152,15 +153,44 @@ export default async function() {
 				"PayerType" : "Recipient",
 				"PaymentMethod" : "Cash", // +1 field to form
 				"DateTime" : dateForTTN, // ! create a date
+				"CargoType" : "Parcel",
 				"VolumeGeneral": volume,
+				"Weight" : String(parselCount),
+				"ServiceType" : "WarehouseWarehouse",
+				"SeatsAmount" : String(parselCount),
+				"Description" : "FireOn magazines", 
+				"Cost" : String(paymentBillBasketTotalPrice), // store totalPcice to local storage 
+				"Sender" : "6a208b6d-c3e1-11ed-a60f-48df37b921db", // static value sender ref
+				"CitySender" : "8d5a980d-391c-11dd-90d9-001a92567626", // static value of the sender city 
+				"SenderAddress" : "", // 
+				"ContactSender" : "6a215c26-c3e1-11ed-a60f-48df37b921db", // 
+				"SendersPhone" : "380933503569", // static value of sender Goncharenko
+				"CityRecipient" : user.place.Ref, // city from form , from localStorage
+				"Recipient" : userRef,  // create recipient function createUser()
+				"RecipientAddress" : "", // 
+				"ContactRecipient" : contactRecipient, //  function getContactRecipient()
+				"RecipientsPhone" : user.phone, // from form, from localStorage
+			}
+		}
+
+		const poshomat = {
+			"apiKey": config.public.novaposhta, // config
+			"modelName": "InternetDocument",
+			"calledMethod": "save",
+			"methodProperties": {
+				"SenderWarehouseIndex" : "11/225", // static value senders warehouse index
+				"RecipientWarehouseIndex" : user.warehouse.WarehouseIndex, // warehouse from form, from localStorage
+				"PayerType" : "Recipient",
+				"PaymentMethod" : "Cash", // +1 field to form
+				"DateTime" : dateForTTN, // ! create a date
 				"CargoType" : "Parcel",
 				"Weight" : String(parselCount),
 				"ServiceType" : "WarehouseWarehouse",
 				"SeatsAmount" : String(parselCount),
-				"Description" : "Додатковий опис відправлення", 
+				"Description" : "FireOn magazines", 
 				"Cost" : String(paymentBillBasketTotalPrice), // store totalPcice to local storage 
-				"CitySender" : "8d5a980d-391c-11dd-90d9-001a92567626", // static value of the sender city 
 				"Sender" : "6a208b6d-c3e1-11ed-a60f-48df37b921db", // static value sender ref
+				"CitySender" : "8d5a980d-391c-11dd-90d9-001a92567626", // static value of the sender city 
 				"SenderAddress" : "", // 
 				"ContactSender" : "6a215c26-c3e1-11ed-a60f-48df37b921db", // 
 				"SendersPhone" : "380933503569", // static value of sender Goncharenko
@@ -172,6 +202,8 @@ export default async function() {
 				"OptionsSeat" : optionsSeat
 			}
 		}
+
+		const requestParams = user.warehouse.CategoryOfWarehouse === "Postomat" ? poshomat : department
 		
 		// configure request params 
 		const npTTNRequestParams = {
@@ -179,7 +211,7 @@ export default async function() {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(createTTNrequestBodyOptions)
+			body: JSON.stringify(requestParams)
 		}
 
 		try {
@@ -215,6 +247,7 @@ export default async function() {
 	}).catch(err => {
 		error.value = err
 		console.error(err)
+		return err
 	})
 
 	return {endResponse, error}

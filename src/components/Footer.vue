@@ -8,12 +8,15 @@ const { smedias, logo, links } = storeToRefs(useAppStore())
 	<footer>
 		<div class="links">
 			<div class="link" v-for="link in links" :key="link.title">
-				<AppLink to="/" :hash="`#${link.hashtag}`">{{ link.title }}</AppLink>
+				<AppLink to="/" :hash="`/${link.hashtag}`">{{ link.title }}</AppLink>
 			</div>
 		</div>
 		<Logo v-if="logo" :src="logo" />
 		<div class="smedias">
-			<NuxtLink class="media" v-for="media in smedias" :to="media.link" external target="_blank">
+			<a href="tel:+380933503569" class="media">
+				<Icon name="IconPhone" />
+			</a>
+			<NuxtLink class="media" v-for="media in smedias" :to="media.link" external target="_blank" :key="media.name">
 				<Icon :name="media.icon" />
 			</NuxtLink>
 		</div>
@@ -77,7 +80,11 @@ footer {
 
 		.media {
 			margin-right: 1rem;
-
+			&:first-child {
+				svg {
+					width: 20px;
+				}
+			}
 			.icon {
 				width: 1.5rem;
 				height: 1.5rem;

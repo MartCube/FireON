@@ -1,9 +1,11 @@
 <script setup lang="ts">
 defineProps<{ src: string }>()
+const { locale } = useI18n()
+
 </script>
 
 <template>
-	<AppLink class="logo" to="/">
+	<AppLink class="logo" :to="`/${locale === 'ua' ? '' : 'en'}`">
 		<AppImg class="magazine" :src="src" :width="280" :height="48" />
 	</AppLink>
 </template>

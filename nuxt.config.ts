@@ -54,6 +54,14 @@ export default defineNuxtConfig({
 			locale: 'ua',
 			fallbackLocale: 'ua',
 			availableLocales: ['ua', 'en',],
+			messages: {
+        en: {
+          toHome: 'To Home'
+        },
+        ua: {
+          toHome: 'На головну'
+        },
+      }
 		}
 	},
 

@@ -1,25 +1,32 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
 import useCreateNP_TTN from '../composables/useCreateNP_TTN'
-import { UserData } from '../types'
+import { ttnDataType, UserData } from '../types'
 import createCRMtask from '../composables/createCRMtask'
+
 
 const statusMessage = ref('')
 const invoiceId = ref('')
 const icon = ref('')
 const config = useRuntimeConfig();
 const orderNumber = ref('')
+const { locale, t } = useI18n()
 
-
-const error = (text: string) => {
+const errorMessage = (text: string) => {
 	statusMessage.value = text
 	icon.value = 'IconFailure'
 }
+
+// const {localePath} = useI18n()
+// console.log(localePath);
+
 
 try {
 	// checking if window object is loaded and client side is available
 	// needed for localStorage and crypto 
 	if (process.client) {
+
+		
 		
 		invoiceId.value = localStorage.getItem('invoice') as string
 		const userData: UserData = JSON.parse(localStorage.getItem('user_data') as string)
@@ -53,7 +60,15 @@ try {
 
 					
 					// create ttn
-					const {endResponse} = await useCreateNP_TTN()
+					const {endResponse, error} = await useCreateNP_TTN()
+					const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
+					console.log(endResponse, error.value.length);
+					
+					if(!parsedResponce.success) {
+						errorMessage(parsedResponce.errors.join(","))
+					} else if(endResponse === undefined) {
+						errorMessage(String(endResponse))
+					}
 					console.log("responseTTN", JSON.parse(endResponse as string));
 					
 					// send data to crm
@@ -97,12 +112,50 @@ try {
 			<h3>{{ statusMessage }}</h3> 
 			<h2>{{ orderNumber }}</h2> 
 			<Icon class="success" :name="icon" />
-			<AppBtn value="Go home" />
+			<NuxtLink class="btn" :to="`/${locale === 'ua' ? '' : 'en'}`" >
+				<span>
+					{{ t('toHome') }}
+				</span>
+		</NuxtLink>
 		</ClientOnly>
 	</div>
 </template>
 
 <style lang="scss" scoped>
+.btn {
+	max-width: 200px;
+	height: 50px;
+
+	background: $primary;
+	transform: skew(-10deg);
+	cursor: pointer;
+	user-select: none;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 80%;
+
+	span {
+		z-index: 2;
+		transform: skew(10deg);
+
+		text-transform: uppercase;
+		color: $dark;
+		font-weight: 400;
+		font-size: .875rem;
+		line-height: 1.5rem;
+	}
+
+	&:hover {
+		background: $primary30;
+	}
+
+	&:active {
+		background: $primary50;
+	}
+
+}
 .response-page {
 	width: 100%;
 	height: calc(100vh - 128px);

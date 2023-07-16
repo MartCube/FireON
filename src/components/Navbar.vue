@@ -15,9 +15,13 @@ const { toggleModal } = useBasketStore()
 	<header>
 		<div class="links" :class="{ show: menuValue }">
 			<Icon class="close" @click="menuToggle()" name="IconClose" />
-			<div v-for="link in links" :key="link.title" class="link" @click="menuValue = false">
+			<a href="tel:+380933503569" class="phone">
+				<IconPhone />
+				+380 93 350 35 69
+			</a>
+			<!-- <div v-for="link in links" :key="link.title" class="link" @click="menuValue = false">
 				<AppLink to="/" :hash="`#${link.hashtag}`">{{ link.title }}</AppLink>
-			</div>
+			</div> -->
 		</div>
 		<div class="menu" @click="menuToggle()">
 			<Icon name="IconMenu" />
@@ -42,6 +46,21 @@ header {
 	align-items: center;
 	overflow: hidden;
 	position: relative;
+
+	.phone {
+		line-height: 1;
+		display: flex;
+		align-items: center;
+		color: $white50;
+		svg {
+			width: 1rem;
+			margin-right: 0.5rem;
+			fill: $primary;
+		}
+		&:hover {
+			color: $primary;
+		}
+	}
 
 	.links {
 		width: fit-content;
