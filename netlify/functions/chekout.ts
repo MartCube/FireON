@@ -16,22 +16,32 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 	}
 	let status: string = ''
 	let statusCode: number = 200
-	sgMail
-		.send(msg)
-		.then(() => {
-			console.log('Email sent')
-			status = JSON.stringify('Email sent')
+	try {
 
-		})
-		.catch((error: any) => {
-			console.error(error)
-			status = JSON.stringify(error)
-			statusCode = 500
-		})
+		await sgMail
+			.send(msg)
+			.then(() => {
+				console.log('Email sent')
+				status = JSON.stringify('Email sent')
+	
+			})
+			.catch((error: any) => {
+				console.error(error)
+				status = JSON.stringify(error)
+				statusCode = 500
+			})
+	
+		return {
+			statusCode: await statusCode,
+			body: status,
+		}
+	}
+	catch(err) {
+		return {
+			statusCode: 500,
+			body: JSON.stringify(err),
+		}
 
-	return {
-		statusCode: await statusCode,
-		body: status,
 	}
 }
 
