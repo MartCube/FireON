@@ -19,9 +19,12 @@ const { toggleModal } = useBasketStore()
 				<IconPhone />
 				+380 93 350 35 69
 			</a>
-			<!-- <div v-for="link in links" :key="link.title" class="link" @click="menuValue = false">
-				<AppLink to="/" :hash="`#${link.hashtag}`">{{ link.title }}</AppLink>
-			</div> -->
+			<div class="mobile">
+				<div v-for="link in links" :key="link.title" class="link" @click="menuValue = false">
+					<NuxtLink to="/" :hash="`/${link.hashtag}`">{{ link.title }}</NuxtLink>
+				</div>
+
+			</div>
 		</div>
 		<div class="menu" @click="menuToggle()">
 			<Icon name="IconMenu" />
@@ -71,6 +74,7 @@ header {
 		.link {
 			padding-right: 1rem;
 			overflow: hidden;
+			display: none;
 
 			&:last-of-type {
 				padding-right: 0;
@@ -156,6 +160,10 @@ header {
 
 @media (max-width: 1000px) {
 	header {
+		.phone {
+			// display: none;
+			margin-bottom: 4rem;
+		} 
 		.links {
 			z-index: 8;
 			position: fixed;
@@ -179,6 +187,7 @@ header {
 				padding: 0;
 				margin-bottom: 4rem;
 				user-select: none;
+				display: flex;
 
 				&:last-of-type {
 					margin-bottom: 0;
