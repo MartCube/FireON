@@ -30,11 +30,6 @@ export default async function(orderNumber: string) {
 						name: "Sku",
 						value: el.sku,
 					},
-					{
-						name: "Sku",
-						value: el.sku,
-					},
-					
 				]
 			},
 		)
