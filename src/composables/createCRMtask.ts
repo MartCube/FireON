@@ -1,18 +1,19 @@
 import { useFetch } from '@vueuse/core'
-import { UserData, ttnDataType, Product } from '../types'
+import { UserData, ttnDataType } from '../types'
 
 export default async function(orderNumber: string) {
 	const config = useRuntimeConfig()
 	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
 	const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
-
+	let response;
+	let error;
 
 	interface crmProduct {
 		price: number,
 		quantity: number,
 		name: string,
 		picture: string,
-		properties: <k, v>[],
+		properties: Array<{name: string, value: number}>,
 	}
 
 	let userProductsCrm: crmProduct[] = []
@@ -29,7 +30,6 @@ export default async function(orderNumber: string) {
 						name: "Sku",
 						value: el.sku,
 					},
-					
 					{
 						name: "Sku",
 						value: el.sku,
@@ -41,59 +41,40 @@ export default async function(orderNumber: string) {
 	});
 
 
-	const data = {
-		source_id: 22,
-		buyer: {
-			full_name: 'John Doe',
-			email: 'johndoe@example.com',
-			phone: '1234567890',
-		},
-		shipping: {
-			shipping_address_city: 'City',
-			shipping_receive_point: 'Street',
-			shipping_address_country: 'Country',
-			shipping_address_region: 'Region',
-			shipping_address_zip: '12345',
-		},
-		products: [
-			// {
-			// 	price: 10.99,
-			// 	quantity: 1,
-			// 	name: 'Product Name',
-			// 	picture: 'https://example.com/product.jpg',
-			// 	properties: [
-			// 		{
-			// 			name: 'Color',
-			// 			value: 'Space Gray',
-			// 		},
-			// 	],
-			// },
-		],
-	};
 	const crmBodyParams = {
-		"title": `#${orderNumber} - Замовлення із сайту`,
-		"total": 500,
-		"currency": "UAH",
-		"stage_id": 0,
-		"source_id": 5,
-		"funnel_id": 1,
-		"comment": `"TTN Number": ${localStTTNdata.data[0].IntDocNumber}`,
-		"client_attributes": {
-			"person": `${user.firstname} ${user.lastname} ${user.middlename}`,
+		"source_id": 1,
+		"manager_comment": `#${orderNumber} - Замовлення із сайту`,
+		"shipping_price": `${localStTTNdata.data[0].CostOnSite}`,
+		"ordered_at": `${localStTTNdata.data[0].EstimatedDeliveryDate}`,
+		"buyer": {
+			"full_name": `${user.firstname} ${user.lastname} ${user.middlename}`,
 			"email": user.email,
-			"status_id": 1,
-			"lead": true,
-			"phones": [`${user.phone}`, ],
+			'phone': `${user.phone}`
 		},
-		"jobs_attributes": userProductsCrm,
+		"shipping": {
+			"delivery_service_id": 1,
+			"tracking_code": `${localStTTNdata.data[0].IntDocNumber}`,
+			"shipping_service": "Нова Пошта",
+			"shipping_address_city": user.warehouse.CityDescription,
+			"shipping_address_country": "Ukraine",
+			"shipping_address_zip": user.warehouse.PostalCodeUA,
+			"shipping_secondary_line": "string",
+			"shipping_receive_point": user.warehouse.Description,
+			"recipient_full_name": `${user.firstname} ${user.lastname} ${user.middlename}`,
+			"recipient_phone": `${user.phone}`,
+			"warehouse_ref": user.warehouse.Ref,
+		},
+		"products": userProductsCrm
 	}
-	
+
 	const crmRequestParams = {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			'X-Auth-Token': config.public.crmkey,
-			'accept': 'application/json',
+			'Accept': 'application/json',
+			'Cache-Control': 'no-cache',
+			'Pragma': 'no-cache',
+			'Authorization': `Bearer ${config.public.crmkey}`,
 		},
 		body: JSON.stringify(crmBodyParams),
 	}
@@ -102,16 +83,21 @@ export default async function(orderNumber: string) {
 	
 
 	try {
-		const { data: createdTaskData, isFinished: createTaskState, error: createTaskError } = await useFetch(`${config.public.crmEndpoint}agreements`, crmRequestParams as object)
+		const { data: createdTaskData, isFinished: createTaskState, error: createTaskError } = await useFetch('https://openapi.keycrm.app/v1/order', crmRequestParams as object)
 		if(createTaskState) {
 			console.log(createdTaskData.value);
+			response = createdTaskData.value
 			return createdTaskData.value
 		}
 		else {
+			error = createTaskError
 			console.error(createTaskError);
 		}
 	} catch (err) {
+		error = err
 		console.error("Create CRM task err", err);
 		
 	}
+
+	return {response, error}
 }

@@ -21,7 +21,7 @@ const { toggleModal } = useBasketStore()
 			</a>
 			<div class="mobile">
 				<div v-for="link in links" :key="link.title" class="link" @click="menuValue = false">
-					<NuxtLink to="/" :hash="`/${link.hashtag}`">{{ link.title }}</NuxtLink>
+					<NuxtLink :to="`/${link.hashtag}`">{{ link.title }}</NuxtLink>
 				</div>
 
 			</div>

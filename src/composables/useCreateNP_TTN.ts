@@ -241,6 +241,7 @@ export default async function() {
 		return {recipient, user}
 		
 	}).then(async ({recipient, user}: any) => {
+		// debugger
 		const ttn = await createTTN(user.data[0].Ref, recipient.Ref)
 		// console.log(ttn);
 		return ttn

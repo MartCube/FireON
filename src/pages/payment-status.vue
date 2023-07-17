@@ -59,28 +59,32 @@ try {
 					icon.value = 'IconSuccess'
 
 					
-					// create ttn
-					const {endResponse, error} = await useCreateNP_TTN()
-					const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
-					console.log(endResponse, error.value.length);
+					// // create ttn
+					// const {endResponse, error} = await useCreateNP_TTN()
+					// if(endResponse === undefined) {
+					// 	errorMessage(String(endResponse))
+					// } else {
+					// 	const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
+					// 	console.log(endResponse, error.value.length);
+						
+					// 	if(!parsedResponce.success) {
+					// 		errorMessage(parsedResponce.errors.join(","))
+					// 	} else if(endResponse === undefined) {
+					// 		errorMessage(String(endResponse))
+					// 	}
+					// 	console.log("responseTTN", JSON.parse(endResponse as string));
+
+					// }
 					
-					if(!parsedResponce.success) {
-						errorMessage(parsedResponce.errors.join(","))
-					} else if(endResponse === undefined) {
-						errorMessage(String(endResponse))
-					}
-					console.log("responseTTN", JSON.parse(endResponse as string));
 					
-					// send data to crm
-					// const createCRMtaskResponse = createCRMtask(orderNumber.value);
-					// console.log("createCRMtaskResponse", createCRMtaskResponse);
-					
-					// send form with products sendgrid
-					const emailToFireOn = await useEmailTemplate(orderNumber.value)
-					console.log("emailToFireOn", emailToFireOn);
+					// // send form with products sendgrid
+					// const emailToFireOn = await useEmailTemplate(orderNumber.value)
+					// console.log("emailToFireOn", emailToFireOn);
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 					
-
+					// send data to crm
+					const createCRMtaskResponse = createCRMtask(orderNumber.value);
+					console.log("createCRMtaskResponse", createCRMtaskResponse);
 					// clean localStorage or maybe for future we can store everything like 
 					// city , warehouse, user data, etc to not fetch it 
 					// but for now we cleaning after ourself
@@ -89,7 +93,7 @@ try {
 					
 					case "failure":
 						
-						 error(parsedResponse.failureReason)
+						 errorMessage(parsedResponse.failureReason)
 						break
 
 					default:

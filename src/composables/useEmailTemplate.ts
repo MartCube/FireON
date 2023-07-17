@@ -66,7 +66,7 @@ export default async function(orderNumber: string) {
 	try {
 		const { response, error, data, isFinished } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, requestEmailOptions)
 		if(isFinished) {
-			return response
+			return response.value
 		}
 	} catch(err) {
 		console.error("emailResponse err", err);
