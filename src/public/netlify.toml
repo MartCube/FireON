@@ -1,4 +1,6 @@
 [[headers]]
   for = "/*"
   [headers.values]
-     Access-Control-Allow-Origin = "https://openapi.keycrm.app/"
+    Access-Control-Allow-Origin = "https://openapi.keycrm.app/"
+		Access-Control-Allow-Methods = "POST"
+		Access-Control-Allow-Headers = "Content-type"
