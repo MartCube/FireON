@@ -73,6 +73,7 @@ export default async function(orderNumber: string) {
 			'Content-Type': 'application/json',
 			'Accept': 'application/json',
 			'Cache-Control': 'no-cache',
+			'mode': 'no-cors',
 			'Pragma': 'no-cache',
 			'Authorization': `Bearer ${config.public.crmkey}`,
 		},
