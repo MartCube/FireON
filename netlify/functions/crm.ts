@@ -1,5 +1,5 @@
 import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
-const fetch = require('node-fetch')
+import fetch from 'node-fetch'
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
 
@@ -13,19 +13,28 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 			'Accept': 'application/json',
 			'Cache-Control': 'no-cache',
 			'Pragma': 'no-cache',
-			'Authorization': `Bearer ${process.env.crmkey}`,
+			'Authorization': `Bearer ${process.env.NUXT_CRM}`,
 		},
-		body: JSON.stringify(event.body),
+		body: JSON.parse(event.body as string),
 	}
 
 	try {
 		
-		console.log(await event.body);
-		// const url = "https://openapi.keycrm.app/v1/order"
+		const url = "https://openapi.keycrm.app/v1/order"
 
-		// const response = await fetch(url, crmRequestParams)
+		await fetch(url, crmRequestParams).then((el: any) => {
+			console.log('response ', el);
+			
+			status = JSON.stringify(el)
+			
+		}).catch(err => {
+			console.error('err', err);
+			return {
+				statusCode: 404,
+				body: JSON.stringify(err),
+			}
+		})
 
-		status = JSON.stringify(crmRequestParams)
 		return {
 			statusCode: await statusCode,
 			body: status,
