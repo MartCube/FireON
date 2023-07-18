@@ -83,8 +83,8 @@ try {
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 					
 					// send data to crm
-					const createCRMtaskResponse = createCRMtask(orderNumber.value);
-					console.log("createCRMtaskResponse", createCRMtaskResponse);
+					// const createCRMtaskResponse = createCRMtask(orderNumber.value);
+					// console.log("createCRMtaskResponse", createCRMtaskResponse);
 					// clean localStorage or maybe for future we can store everything like 
 					// city , warehouse, user data, etc to not fetch it 
 					// but for now we cleaning after ourself
