@@ -77,7 +77,7 @@ try {
 					}
 					
 					
-					// send form with products sendgrid
+					// // send form with products sendgrid
 					const emailToFireOn = await useEmailTemplate(orderNumber.value)
 					console.log("emailToFireOn", emailToFireOn);
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
