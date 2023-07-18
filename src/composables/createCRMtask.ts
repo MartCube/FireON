@@ -64,35 +64,29 @@ export default async function(orderNumber: string) {
 
 	const crmRequestParams = {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json',
-			'Cache-Control': 'no-cache',
-			'Pragma': 'no-cache',
-			'Authorization': `Bearer ${config.public.crmkey}`,
-		},
+		headers: {},
 		body: JSON.stringify(crmBodyParams),
 	}
 
-	console.log(crmBodyParams);
-	
+	console.log(crmRequestParams);
 
 	try {
-		const { data: createdTaskData, isFinished: createTaskState, error: createTaskError } = await useFetch('https://openapi.keycrm.app/v1/order', crmRequestParams as object)
+		const { data: createdTaskData, isFinished: createTaskState, error: createTaskError } = await useFetch(`${config.public.domain}.netlify/functions/crm`, crmRequestParams as object)
+		// const { data: createdTaskData, isFinished: createTaskState, error: createTaskError } = await useFetch('https://openapi.keycrm.app/v1/order', crmRequestParams as object)
 		if(createTaskState) {
 			console.log(createdTaskData.value);
 			response = createdTaskData.value
-			return createdTaskData.value
+			// return createdTaskData.value
 		}
 		else {
 			error = createTaskError
-			console.error(createTaskError);
+			console.error("crmResponse err", error);
 		}
 	} catch (err) {
 		error = err
 		console.error("Create CRM task err", err);
-		
+		// return error
 	}
 
-	return {response, error}
+	return await {response, error}
 }

@@ -60,26 +60,26 @@ try {
 
 					
 					// create ttn
-					const {endResponse, error} = await useCreateNP_TTN()
-					if(endResponse === undefined) {
-						errorMessage(String(endResponse))
-					} else {
-						const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
-						console.log(endResponse, error.value.length);
+					// const {endResponse, error} = await useCreateNP_TTN()
+					// if(endResponse === undefined) {
+					// 	errorMessage(String(endResponse))
+					// } else {
+					// 	const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
+					// 	console.log(endResponse, error.value.length);
 						
-						if(!parsedResponce.success) {
-							errorMessage(parsedResponce.errors.join(","))
-						} else if(endResponse === undefined) {
-							errorMessage(String(endResponse))
-						}
-						console.log("responseTTN", JSON.parse(endResponse as string));
+					// 	if(!parsedResponce.success) {
+					// 		errorMessage(parsedResponce.errors.join(","))
+					// 	} else if(endResponse === undefined) {
+					// 		errorMessage(String(endResponse))
+					// 	}
+					// 	console.log("responseTTN", JSON.parse(endResponse as string));
 
-					}
+					// }
 					
 					
 					// send form with products sendgrid
-					const emailToFireOn = await useEmailTemplate(orderNumber.value)
-					console.log("emailToFireOn", emailToFireOn);
+					// const emailToFireOn = await useEmailTemplate(orderNumber.value)
+					// console.log("emailToFireOn", emailToFireOn);
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 					
 					// send data to crm
