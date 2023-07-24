@@ -68,6 +68,7 @@ const validationSchema = toFormValidator(
 const city = ref<City>()
 const warehouse = ref<Warehouse>()
 const statusMessage = ref('')
+const externalURL = ref('')
 
 const { handleSubmit, isSubmitting } = useForm<CheckoutForm>({ validationSchema })
 
@@ -134,11 +135,15 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 			// redirect user to monobank payment page
 			// window.open(parsedValue.pageUrl)
-			const anchor = document.createElement('a');
-      anchor.href = parsedValue.pageUrl;
-      anchor.target = '_blank'; // Open link in a new tab
-      anchor.rel = 'noopener noreferrer'; // Recommended for security reasons when opening in a new tab
-      anchor.click();
+			// const anchor = document.createElement('a');
+      // anchor.href = parsedValue.pageUrl;
+      // anchor.target = '_blank'; // Open link in a new tab
+      // anchor.rel = 'noopener noreferrer'; // Recommended for security reasons when opening in a new tab
+      // anchor.click();
+			
+			// externalURL.value = parsedValue.pageUrl;
+			// window.location.replace(externalURL.value);
+			window.location.href = parsedValue.pageUrl;
 		}
 
 		// show result modal 
@@ -156,6 +161,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 <template>
 	<form id="form" @submit="onSubmit" autocomplete="off">
+		<!-- <button @click="externalURL">Redirect to External Link</button> -->
 		<div v-if="statusMessage !== ''" class="error-message">{{ statusMessage }}</div>
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
