@@ -23,7 +23,18 @@ const promoCodes = [
 ]
 const validationSchema = toFormValidator(
 	z.object({
-		// place: z.string(),
+		// city: z.object({
+    //   Ref: z.string().min(1, "City Ref is required"),
+    //   // Add other validations for other properties of the City type if needed
+    // }) as unknown as z.ZodType<City>,
+		city: z.any(),
+
+		// city: z.any().refine(async (val: any) => {
+		// 	console.log(await val.value);
+			
+		// 	return val
+		// }),
+		warehouse: z.any(),
 		email: z.string().min(1, { message: "Required" }).email("This is not a valid email."),
 		firstname: z.string().min(1, 'Required'),
 		middlename: z.string().optional(),
@@ -48,7 +59,7 @@ const city = ref<City>()
 const warehouse = ref<Warehouse>()
 const statusMessage = ref('')
 
-const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
+const { handleSubmit, isSubmitting } = useForm<CheckoutForm>({ validationSchema })
 
 // send form
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
@@ -60,9 +71,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	
 	const errorMessage = async (text: string) => {
 		statusMessage.value = text
-		await promiseTimeout(2200)
+		await promiseTimeout(4000)
 		statusMessage.value = ''
-		resetForm() 
+		// resetForm() 
 	}
 
 	// create data for localStore

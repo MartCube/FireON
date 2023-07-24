@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { watchDebounced } from '@vueuse/core'
+import { onClickOutside, watchDebounced } from '@vueuse/core'
 import type { TextField, City } from "~~/src/types";
 import { useFetch } from '@vueuse/core'
+import { useField } from 'vee-validate';
 
 
-defineProps<{ data: TextField }>()
+const props = defineProps<{ data: TextField }>()
+const nameRef = toRef(props.data, 'name')
+const { errorMessage, value } = useField(nameRef)
+
 const config = useRuntimeConfig()
+const field = ref<HTMLElement>() 
 
+onClickOutside(field, (event) => {
+	isCitiesListActive.value = false
+})
 
 // novaposhta api
 const npEndpoint = config.public.npEndpoint;
@@ -61,11 +69,15 @@ const emit = defineEmits<{
 </script>
 
 <template>
-	<div class="field">
+	<div class="field" ref="field" >
 		<label :for="data.name">{{ data.label }}</label>
+		<div class="error">
+			<span v-show="errorMessage"> {{ errorMessage }} </span>
+		</div>
+		<!-- <div class="error" v-if="isErrorActive">{{ errorMessage }}</div> -->
 		<input v-model="inputValue" @click.once="getCities" v-on:focus="toggleCitiesList" type="text" :id="data.name" :name="data.name" :placeholder="data.placeholder" required  :autocomplete="data.name"/>
 		<ul v-if="isCitiesListActive" class="city_list">
-			<li v-for="city in filteredCities" @click="emit('selectedCity', city), isCitiesListActive = false, inputValue = city.Description" :key="city.CityID" >
+			<li v-for="city in filteredCities" @click="emit('selectedCity', city), isCitiesListActive = false, inputValue = city.Description, value = city" :key="city.CityID" >
 				{{ city.Description }}
 			</li>
 		</ul>

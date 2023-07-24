@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { watchDebounced } from '@vueuse/core'
+import { onClickOutside, watchDebounced } from '@vueuse/core'
 
 import { useFetch } from '@vueuse/core'
-import { City, Warehouse } from "~~/src/types"
+import { useField } from 'vee-validate'
+import { City, TextField, Warehouse } from "~~/src/types"
 
 
-const props = defineProps<{ city: City }>()
+const props = defineProps<{ city: City , data: TextField}>()
+const nameRef = toRef(props.data, 'name')
+const { errorMessage, value } = useField(nameRef)
+
 const config = useRuntimeConfig()
-
-
+const field = ref<HTMLElement>() 
+onClickOutside(field, (event) => {
+	isWarehousesListActive.value = false
+})
 // novaposhta api
 const npEndpoint = config.public.npEndpoint;
 const npBodyParams = {
@@ -59,11 +65,14 @@ const emit = defineEmits<{
 </script>
 
 <template>
-	<div class="field">
-		<label for="warehouse"> Виберіть пункт отримання </label>
-		<input v-model="inputValue" @click.once="getWarehouses" v-on:focus="togggleWarehousesList" type="text" id="warehouse" name="warehouse" placeholder="Пункт отримання" required  autocomplete="warehouse"/>
+	<div ref="field" class="field">
+		<label for="warehouse">{{ data.label }}</label>
+		<div class="error">
+			<span v-show="errorMessage"> {{ errorMessage }} </span>
+		</div>
+		<input v-model="inputValue" @click.once="getWarehouses" v-on:focus="togggleWarehousesList" type="text" :id="data.name" :name="data.name" :placeholder="data.placeholder" required  :autocomplete="data.name"/>
 		<ul v-if="isWarehousesListActive" class="city_list">
-			<li v-for="wh in filteredWarehouses" @click="emit('selectedWarehouse', wh), isWarehousesListActive = false, inputValue = wh.Description" :key="wh.Ref">
+			<li v-for="wh in filteredWarehouses" @click="emit('selectedWarehouse', wh), isWarehousesListActive = false, inputValue = wh.Description, value = wh" :key="wh.Ref">
 				{{ wh.Description }}
 			</li>
 		</ul>

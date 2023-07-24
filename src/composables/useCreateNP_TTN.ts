@@ -41,7 +41,7 @@ export default async function() {
 			const { data: npUserData, isFinished: createUserState, error: createUserError } = await useFetch(config.public.npEndpoint, npUserRequestParams)
 			if(createUserState) {
 				const createUserResponse = JSON.parse(npUserData.value as string)
-				// console.log("createUserResponse", createUserResponse);
+				console.log("createUserResponse", npUserData.value);
 				localStorage.setItem("createdUserResponse", JSON.stringify(npUserData.value));
 				return createUserResponse
 
@@ -136,7 +136,8 @@ export default async function() {
 		// create date
 		const dateRaw = new Date()
 		const dateForTTN = `${dateRaw.getDate() < 10	? 0 : ''}${dateRaw.getDate()}.${dateRaw.getMonth() + 1 < 10 ? 0 : ''}${dateRaw.getMonth() + 1}.${dateRaw.getFullYear()}`
-		const volume = (25*30*5)*user.products.length;
+		const volume = 0.3*0.25*0.05;
+		const volumeGeneral = (0.3*0.25*0.05)*user.products.length;
 
 		let optionsSeat: any = []
 		user.products.forEach(element => {
@@ -162,8 +163,8 @@ export default async function() {
 				"PayerType" : "Recipient",
 				"PaymentMethod" : "Cash", // +1 field to form
 				"DateTime" : dateForTTN, // ! create a date
-				"CargoType" : "Cargo",
-				"VolumeGeneral": String(volume/100),
+				"CargoType" : "Parcel",
+				"VolumeGeneral": volumeGeneral,
 				"Weight" : String(parselCount*0.4),
 				"ServiceType" : "WarehouseWarehouse",
 				"SeatsAmount" : String(parselCount),
