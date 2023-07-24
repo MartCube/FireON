@@ -27,14 +27,24 @@ const validationSchema = toFormValidator(
     //   Ref: z.string().min(1, "City Ref is required"),
     //   // Add other validations for other properties of the City type if needed
     // }) as unknown as z.ZodType<City>,
-		city: z.any(),
+			place: z.any().refine(async (val: any) => {
+			const data = await val;
+			console.log(data);
+			
+			
+			return val
+		}),
 
 		// city: z.any().refine(async (val: any) => {
 		// 	console.log(await val.value);
 			
 		// 	return val
 		// }),
-		warehouse: z.any(),
+		warehouse: z.any().refine(async (val: any) => {
+			console.log(await val);
+			
+			return val
+		}),
 		email: z.string().min(1, { message: "Required" }).email("This is not a valid email."),
 		firstname: z.string().min(1, 'Required'),
 		middlename: z.string().optional(),
@@ -123,7 +133,12 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			localStorage.setItem('invoice', parsedValue.invoiceId)
 
 			// redirect user to monobank payment page
-			window.open(parsedValue.pageUrl)
+			// window.open(parsedValue.pageUrl)
+			const anchor = document.createElement('a');
+      anchor.href = parsedValue.pageUrl;
+      anchor.target = '_blank'; // Open link in a new tab
+      anchor.rel = 'noopener noreferrer'; // Recommended for security reasons when opening in a new tab
+      anchor.click();
 		}
 
 		// show result modal 
@@ -144,13 +159,13 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		<div v-if="statusMessage !== ''" class="error-message">{{ statusMessage }}</div>
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
-			<NPCityInput @selected-city="(e) => city = e" :data="data.place" />
-			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  />
 			<VeeInput :data="data.firstname" />
 			<VeeInput :data="data.lastname" />
 			<VeeInput :data="data.middlename" />
 			<VeeInput :data="data.email" />
 			<VeeInput :data="data.phone" />
+			<NPCityInput @selected-city="(e) => city = e" :data="data.place" />
+			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  />
 			<VeeInput :data="data.comment" />
 			<!-- <VeeInput :data="data.promoCode" /> -->
 			<button type="submit" :disabled="isSubmitting">
@@ -169,6 +184,9 @@ form {
 	display: flex;
 	flex-direction: column;
 	position: relative;
+	.link {
+		display: none;
+	}
 	.error-message {
 		position: absolute;
 		background-color: $dark;
