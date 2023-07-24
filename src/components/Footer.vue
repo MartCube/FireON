@@ -13,7 +13,7 @@ const { smedias, logo, links } = storeToRefs(useAppStore())
 		</div>
 		<Logo v-if="logo" :src="logo" />
 		<div class="smedias">
-			<a href="tel:+380933503569" class="media">
+			<a href="tel:+380977620000" class="media">
 				<Icon name="IconPhone" />
 			</a>
 			<NuxtLink class="media" v-for="media in smedias" :to="media.link" external target="_blank" :key="media.name">

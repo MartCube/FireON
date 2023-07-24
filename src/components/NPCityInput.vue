@@ -43,8 +43,8 @@ async function getCities() {
 const isCitiesListActive = ref(false)
 const inputValue = ref('')
 
-const showCitiesList = () => {
-	isCitiesListActive.value = true
+const toggleCitiesList = () => {
+	isCitiesListActive.value = !isCitiesListActive.value
 }
 
 let filteredCities = ref<City[]>([])
@@ -63,7 +63,7 @@ const emit = defineEmits<{
 <template>
 	<div class="field">
 		<label :for="data.name">{{ data.label }}</label>
-		<input v-model="inputValue" @click.once="getCities" v-on:focus="showCitiesList" type="text" :id="data.name" :name="data.name" :placeholder="data.placeholder" required  :autocomplete="data.name"/>
+		<input v-model="inputValue" @click.once="getCities" v-on:blur="toggleCitiesList" v-on:focus="toggleCitiesList" type="text" :id="data.name" :name="data.name" :placeholder="data.placeholder" required  :autocomplete="data.name"/>
 		<ul v-if="isCitiesListActive" class="city_list">
 			<li v-for="city in filteredCities" @click="emit('selectedCity', city), isCitiesListActive = false, inputValue = city.Description" :key="city.CityID" >
 				{{ city.Description }}

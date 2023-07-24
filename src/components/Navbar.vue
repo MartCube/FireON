@@ -15,9 +15,9 @@ const { toggleModal } = useBasketStore()
 	<header>
 		<div class="links" :class="{ show: menuValue }">
 			<Icon class="close" @click="menuToggle()" name="IconClose" />
-			<a href="tel:+380933503569" class="phone">
+			<a href="tel:+380977620000" class="phone">
 				<IconPhone />
-				+380 93 350 35 69
+				+38097 762 0000
 			</a>
 			<div class="mobile">
 				<div v-for="link in links" :key="link.title" class="link" @click="menuValue = false">

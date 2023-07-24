@@ -239,11 +239,11 @@ export default async function() {
 			return err
 		}
 	}
-
-	const endResponse = await new Promise((resolve, reject) => {
-		const user = createUser()
-		user.then(data => resolve(data)).catch(err => reject(err))
-	}).then(async (user: any) => {
+// await new Promise((resolve, reject) => {
+// 		const user = createUser().then
+// 		user.then(data => resolve(data)).catch(err => reject(err))
+// 	})
+	const endResponse = await createUser().then(async (user: any) => {
 		// get Contact Person data
 		const recipient = await getContactRecipient(user.data[0])
 		localStorage.setItem("contactPersonData", JSON.stringify(recipient))

@@ -28,17 +28,16 @@ const validationSchema = toFormValidator(
 		firstname: z.string().min(1, 'Required'),
 		middlename: z.string().optional(),
 		lastname: z.string().min(1, 'Required'),
-		phone: z.string().min(13, 'Required')
+		phone: z.string().min(10, 'Required')
       .refine((val) => {
-				return /^\+\d{1,12}$/.test(val)
+				return /^\d{1,12}$/.test(String(val))
 			}, {
-        message: "Phone is required",
+        message: "Only numbers please",
       }),
-		comment: z.string().optional(),
 		// phone: z.number().refine((val) => val.toString().length === 12, {
 		// 	message: "Must have 12 digits"
 		// }),
-		
+		comment: z.string().optional(),
 		// promoCode: z.union([z.string().refine((val) => {
     //   return promoCodes.some(el => el.code === val)
     // }, { message: "Invalid promotion code" }).optional(), z.literal("")]),
@@ -90,9 +89,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			return
 		} else {
 			const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
-			console.log(parsedResponce, error.value.length);
+			console.log('parsedResponce.success', parsedResponce.success , 'parsedResponce.success === false', parsedResponce.success === false, '!!parsedResponce.success',!!parsedResponce.success);
 			
-			if(!!parsedResponce.success) {
+			if(parsedResponce.success === false) {
 				errorMessage(parsedResponce.errors.join(","))
 				return
 			} 
