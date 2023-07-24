@@ -59,22 +59,22 @@ try {
 					icon.value = 'IconSuccess'
 
 					
-					// create ttn
-					const {endResponse, error} = await useCreateNP_TTN()
-					if(endResponse === undefined) {
-						errorMessage(String(endResponse))
-					} else {
-						const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
-						console.log(endResponse, error.value.length);
+					// // create ttn
+					// const {endResponse, error} = await useCreateNP_TTN()
+					// if(endResponse === undefined) {
+					// 	errorMessage(String(endResponse))
+					// } else {
+					// 	const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
+					// 	console.log(endResponse, error.value.length);
 						
-						if(!parsedResponce.success) {
-							errorMessage(parsedResponce.errors.join(","))
-						} else if(endResponse === undefined) {
-							errorMessage(String(endResponse))
-						}
-						console.log("responseTTN", JSON.parse(endResponse as string));
+					// 	if(!parsedResponce.success) {
+					// 		errorMessage(parsedResponce.errors.join(","))
+					// 	} else if(endResponse === undefined) {
+					// 		errorMessage(String(endResponse))
+					// 	}
+					// 	console.log("responseTTN", JSON.parse(endResponse as string));
 
-					}
+					// }
 					
 					
 					// // send form with products sendgrid

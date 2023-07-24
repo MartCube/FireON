@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate';
 import { toFormValidator } from '@vee-validate/zod';
-import { object, z } from 'zod';
-import type { CheckoutForm, City, UserData, Warehouse } from "~~/src/types";
+import { z } from 'zod';
+import type { CheckoutForm, City, UserData, Warehouse, ttnDataType } from "~~/src/types";
 import { storeToRefs } from 'pinia'
-import { useFetch } from '@vueuse/core'
-
+import { promiseTimeout, useFetch, useTimeout } from '@vueuse/core'
+import useCreateNP_TTN from '../composables/useCreateNP_TTN'
 // 4441 1144 3585 8681
 const config = useRuntimeConfig()
 
@@ -26,16 +26,19 @@ const validationSchema = toFormValidator(
 		// place: z.string(),
 		email: z.string().min(1, { message: "Required" }).email("This is not a valid email."),
 		firstname: z.string().min(1, 'Required'),
-		middlename: z.string().min(1, 'Required'),
+		middlename: z.string().optional(),
 		lastname: z.string().min(1, 'Required'),
-		// phone https://stackoverflow.com/questions/75531294/zod-checking-the-number-of-digits-on-a-number-type
-		phone: z.number().refine((val) => val.toString().length === 12, {
-			message: "Must have 12 digits"
-		}),
+		phone: z.string().min(13, 'Required')
+      .refine((val) => {
+				return /^\+\d{1,12}$/.test(val)
+			}, {
+        message: "Phone is required",
+      }),
 		comment: z.string().optional(),
-	// 	phone: z.number().refine((value) => String(value).length === 12, {
-  //   message: "The number should be exactly 12 digits.",
-  // }),
+		// phone: z.number().refine((val) => val.toString().length === 12, {
+		// 	message: "Must have 12 digits"
+		// }),
+		
 		// promoCode: z.union([z.string().refine((val) => {
     //   return promoCodes.some(el => el.code === val)
     // }, { message: "Invalid promotion code" }).optional(), z.literal("")]),
@@ -44,7 +47,7 @@ const validationSchema = toFormValidator(
 
 const city = ref<City>()
 const warehouse = ref<Warehouse>()
-
+const statusMessage = ref('')
 
 const { handleSubmit, isSubmitting, } = useForm<CheckoutForm>({ validationSchema })
 
@@ -56,24 +59,47 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	// toggleModal()	// close basket modal
 	console.log(values);
 	
+	const errorMessage = async (text: string) => {
+		statusMessage.value = text
+		await promiseTimeout(2200)
+		statusMessage.value = ''
+		resetForm() 
+	}
 
 	// create data for localStore
 	const UserData: UserData = {
 		firstname: values.firstname.toString(),
 		lastname: values.lastname.toString(),
-		middlename:  values.middlename.toString(),
 		email: values.email.toString(),
 		place: city.value as City,
 		warehouse: warehouse.value as Warehouse,
 		phone: values.phone.toString(),
 		products: products.value,
+		middlename:  values.middlename ? values.middlename.toString() : '',
 		comment: values.comment ? values.comment.toString() : '',
 	}
 
-	try {
-		// save email data to localStorage
-		localStorage.setItem('user_data', JSON.stringify(UserData))
+	// save email data to localStorage
+	localStorage.setItem('user_data', JSON.stringify(UserData))
 
+	// create ttn
+	const {endResponse, error} = await useCreateNP_TTN()
+	
+		if(endResponse instanceof Error || endResponse instanceof TypeError) {
+			errorMessage(String("Щось пішло не так будь ласка спробуйте ще раз"))
+			return
+		} else {
+			const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
+			console.log(parsedResponce, error.value.length);
+			
+			if(!!parsedResponce.success) {
+				errorMessage(parsedResponce.errors.join(","))
+				return
+			} 
+		}
+					
+
+	try {
 		const paymentRequestOptions = usePaymentOptions(products.value);
 		const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
 		if (isFinished.value) {
@@ -105,6 +131,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 <template>
 	<form id="form" @submit="onSubmit" autocomplete="off">
+		<div v-if="statusMessage !== ''" class="error-message">{{ statusMessage }}</div>
 		<template v-if="data && !pending">
 			<h3>{{ data.title }}</h3>
 			<NPCityInput @selected-city="(e) => city = e" :data="data.place" />
@@ -132,6 +159,17 @@ form {
 	display: flex;
 	flex-direction: column;
 	position: relative;
+	.error-message {
+		position: absolute;
+		background-color: $dark;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: $error;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+	}
 
 	h3 {
 		margin-bottom: 2rem;

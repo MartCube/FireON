@@ -4,3 +4,6 @@
     Access-Control-Allow-Origin = "https://fireon.com.ua"
 		Access-Control-Allow-Methods = "POST"
 		Access-Control-Allow-Headers = "Content-type"
+
+ [functions]
+    node_bundler = "esbuild"
