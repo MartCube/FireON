@@ -1,5 +1,5 @@
 import { useFetch } from '@vueuse/core'
-import { UserData, ttnDataType } from '../types'
+import { UserData, ttnDataType, Product } from '../types'
 
 export default async function(orderNumber: string) {
 	const config = useRuntimeConfig()
@@ -12,39 +12,38 @@ export default async function(orderNumber: string) {
 		price: number,
 		quantity: number,
 		name: string,
-		picture: string,
+		// picture: string,
 		properties: Array<{name: string, value: number}>,
 	}
 
-	let userProductsCrm: crmProduct[] = []
-
-	user.products.forEach( el => {
-		userProductsCrm.push(
-			{
+	const userProductsCrm: crmProduct[] = user.products.map((el: Product) => {
+		return {
 				price: el.price,
 				quantity: el.count,
 				name: el.name,
-				picture: el.image,
 				properties: [
 					{
 						name: "Sku",
 						value: el.sku,
 					},
 				]
-			},
-		)
+			}
 	});
-
-
+// picture: `https://fireon.com.ua/${el.image}`,
+	
+	const totalPrice: number = user.products.reduce((acc: number, cur: Product) => acc + (cur.price*cur.count), 0)
+	
 	const crmBodyParams = {
-		"source_id": 1,
+		"source_id": "1",
 		"manager_comment": `#${orderNumber} - Замовлення із сайту`,
 		"shipping_price": `${localStTTNdata.data[0].CostOnSite}`,
-		"ordered_at": `${localStTTNdata.data[0].EstimatedDeliveryDate}`,
+		"manager_id": 3,
+		"ordered_at": new Date().toISOString().slice(0, -5).split("T").join(" "),
+		"wrap_price": totalPrice,
 		"buyer": {
-			"full_name": `${user.firstname} ${user.lastname} ${user.middlename}`,
+			"full_name": `${user.firstname} ${user.lastname} ${user.middlename === undefined || user.lastname === null ? '' : user.lastname}`,
 			"email": user.email,
-			'phone': `${user.phone}`
+			'phone': `${user.phone}`,
 		},
 		"shipping": {
 			"delivery_service_id": 1,
@@ -57,8 +56,18 @@ export default async function(orderNumber: string) {
 			"shipping_receive_point": user.warehouse.Description,
 			"recipient_full_name": `${user.firstname} ${user.lastname} ${user.middlename}`,
 			"recipient_phone": `${user.phone}`,
-			"warehouse_ref": user.warehouse.Ref,
+			// "warehouse_ref": user.warehouse.Ref,
 		},
+		"payments": [
+			{
+				"payment_method_id": 3,
+				"payment_method": "Банківська картка",
+				"amount": 850,
+				"description": "платіж",
+				"payment_date": new Date().toISOString().slice(0, -5).split("T").join(" "),
+				"status": "paid"
+			}
+		],
 		"products": userProductsCrm
 	}
 

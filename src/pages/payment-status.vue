@@ -59,7 +59,7 @@ try {
 					icon.value = 'IconSuccess'
 
 					
-					// create ttn
+					// // create ttn
 					// const {endResponse, error} = await useCreateNP_TTN()
 					// if(endResponse === undefined) {
 					// 	errorMessage(String(endResponse))

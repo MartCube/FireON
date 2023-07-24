@@ -20,6 +20,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 
 	try {
 		
+		// const url = "https://openapi.keycrm.app/v1/pipelines/cards"
 		const url = "https://openapi.keycrm.app/v1/order"
 
 		await fetch(url, crmRequestParams).then((el: any) => {

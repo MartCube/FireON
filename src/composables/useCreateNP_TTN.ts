@@ -19,7 +19,7 @@ export default async function() {
 			"calledMethod": "save",
 			"methodProperties": {
 				"FirstName": user.firstname,
-				"MiddleName": user.middlename,
+				"MiddleName": user.middlename === undefined || user.lastname === null ? '' : user.lastname,
 				"LastName": user.lastname,
 				"Phone": `${user.phone}`,
 				// "Phone": user.phone,
@@ -42,6 +42,7 @@ export default async function() {
 			if(createUserState) {
 				const createUserResponse = JSON.parse(npUserData.value as string)
 				// console.log("createUserResponse", createUserResponse);
+				localStorage.setItem("createdUserResponse", JSON.stringify(npUserData.value));
 				return createUserResponse
 
 			} else if (createUserError) {
@@ -53,7 +54,7 @@ export default async function() {
 		} catch(err) {
 			console.error(err);
 			error.value = String(err)
-			// return error
+			return err
 		}
 	}
 
@@ -100,12 +101,21 @@ export default async function() {
 					const parsedRecipirntData = JSON.parse(contactRecipientData.value as string)
 
 					localStorage.setItem("parsedRecipirntData", JSON.stringify(parsedRecipirntData))
+
+					if(parsedRecipirntData.data.length > 0) {
+						const contactPersonRef =  parsedRecipirntData.data.filter( (el: any) => el.LastName === user.LastName)[0]
+						return contactPersonRef.data.Ref
+					
+					} else {
+						return parsedRecipirntData.data.Ref
+						
+					}
 					// console.log(parsedRecipirntData.data.Ref);
-					return parsedRecipirntData.data.Ref
 				}
 			} catch(err) {
 				error.value = String(err)
 				console.error("getContactRecipient", err);
+				return err
 			}
 
 		}
@@ -116,31 +126,30 @@ export default async function() {
 	const createTTN = async (userRef: string, contactRecipient: string) => {
 
 		// calculate total price
-		let paymentBillBasketTotalPrice = 0
-		user.products.map(el => paymentBillBasketTotalPrice += el.price * el.count)
+		const paymentBillBasketTotalPrice = user.products.reduce((acc, cur) => acc + cur.price * cur.count, 0)
 		
 		// calculate how many parsels 
 		// we assume 1 parcel = 1 kg = 1 seat for now
 		// use reduce function
-		let parselCount = 0
-		user.products.map(el => parselCount += el.count)
+		const parselCount = user.products.reduce((acc, cur) => acc + cur.count, 0)
 
 		// create date
 		const dateRaw = new Date()
 		const dateForTTN = `${dateRaw.getDate() < 10	? 0 : ''}${dateRaw.getDate()}.${dateRaw.getMonth() + 1 < 10 ? 0 : ''}${dateRaw.getMonth() + 1}.${dateRaw.getFullYear()}`
-		
+		const volume = (25*30*5)*user.products.length;
+
 		let optionsSeat: any = []
 		user.products.forEach(element => {
 			optionsSeat.push({
-				"volumetricVolume": `${(25*30*5)}`,
+				"volumetricVolume": volume,
 				"volumetricWidth":"30",
 				"volumetricLength":"25",
 				"volumetricHeight":"5",
-				"weight":"1"
+				"weight":"0.4"
 			})
 		});
 
-		const volume = (25*30*5)*user.products.length;
+	
 		// const weight = parselCount
 		// configure request body params 
 		const department = {
@@ -153,9 +162,9 @@ export default async function() {
 				"PayerType" : "Recipient",
 				"PaymentMethod" : "Cash", // +1 field to form
 				"DateTime" : dateForTTN, // ! create a date
-				"CargoType" : "Parcel",
-				"VolumeGeneral": volume,
-				"Weight" : String(parselCount),
+				"CargoType" : "Cargo",
+				"VolumeGeneral": String(volume/100),
+				"Weight" : String(parselCount*0.4),
 				"ServiceType" : "WarehouseWarehouse",
 				"SeatsAmount" : String(parselCount),
 				"Description" : "FireOn magazines", 
@@ -248,7 +257,7 @@ export default async function() {
 	}).catch(err => {
 		error.value = err
 		console.error(err)
-		return err
+		return new Error(err)
 	})
 
 	return {endResponse, error}

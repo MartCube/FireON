@@ -28,7 +28,7 @@ export default async function(orderNumber: string) {
 		<div class="wrapper">
 			<h3><strong>Номер замовлення:</stong> ${orderNumber}</h3>
 			<div class="info-item">
-				<h4>Name: </h4><p>${data.firstname} ${data.middlename} ${data.lastname}</p>
+				<h4>Name: </h4><p>${data.firstname} ${data.middlename} ${data.lastname === undefined || data.lastname === null ? '' : data.lastname}</p>
 			</div>
 			<div class="info-item">
 			<h4>City: </h4><p>${data.place.Description}</p>
