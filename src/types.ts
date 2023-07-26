@@ -261,6 +261,22 @@ export interface Warehouse {
 		WarehouseIndex: string
 }
 
+export interface Payment {
+	amount: number
+	ccy: number
+	createdDate: string
+	finalAmount: number
+	invoiceId: string
+	modifiedDate: string
+	reference: string
+	status: string
+}
+
+export interface CrmResponse {
+	data: {}, 
+	res: string, 
+	err: string
+}
 export interface ContactPerson {
 	ContactPerson: {
 		data: {

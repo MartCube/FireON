@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
-import useCreateNP_TTN from '../composables/useCreateNP_TTN'
-import { ttnDataType, UserData } from '../types'
 import createCRMtask from '../composables/createCRMtask'
+import { CrmResponse } from '../types'
 
 
 const statusMessage = ref('')
@@ -29,7 +28,6 @@ try {
 		
 		
 		invoiceId.value = localStorage.getItem('invoice') as string
-		const userData: UserData = JSON.parse(localStorage.getItem('user_data') as string)
 
 		const headers = {
 			method: 'GET',
@@ -40,7 +38,7 @@ try {
 		// monobank create invoice
 		const { data, isFinished } = await useFetch(`${config.public.monoEnpoint}status?invoiceId=${invoiceId.value}`, headers)
 		if(isFinished.value) {
-
+			localStorage.setItem("invoiceData", data.value as string)
 			const parsedResponse = JSON.parse(data.value as string)
 			const statusResponce = parsedResponse.status
 
@@ -57,25 +55,6 @@ try {
 					
 					// icon status
 					icon.value = 'IconSuccess'
-
-					
-					// // create ttn
-					// const {endResponse, error} = await useCreateNP_TTN()
-					// if(endResponse === undefined) {
-					// 	errorMessage(String(endResponse))
-					// } else {
-					// 	const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
-					// 	console.log(endResponse, error.value.length);
-						
-					// 	if(!parsedResponce.success) {
-					// 		errorMessage(parsedResponce.errors.join(","))
-					// 	} else if(endResponse === undefined) {
-					// 		errorMessage(String(endResponse))
-					// 	}
-					// 	console.log("responseTTN", JSON.parse(endResponse as string));
-
-					// }
-					
 					
 					// // send form with products sendgrid
 					const emailToFireOn = await useEmailTemplate(orderNumber.value)
@@ -83,8 +62,8 @@ try {
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 					
 					// send data to crm
-					// const createCRMtaskResponse = createCRMtask(orderNumber.value);
-					// console.log("createCRMtaskResponse", createCRMtaskResponse);
+					const createCRMtaskResponse: CrmResponse = await createCRMtask(orderNumber.value) as CrmResponse;
+					console.log("createCRMtaskResponse", createCRMtaskResponse.data, createCRMtaskResponse.err , createCRMtaskResponse.res);
 					// clean localStorage or maybe for future we can store everything like 
 					// city , warehouse, user data, etc to not fetch it 
 					// but for now we cleaning after ourself

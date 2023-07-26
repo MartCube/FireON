@@ -1,8 +1,9 @@
 import { useFetch } from '@vueuse/core'
-import { UserData, ttnDataType, Product } from '../types'
+import { UserData, ttnDataType, Product, Payment } from '../types'
 
 export default async function(orderNumber: string) {
 	const config = useRuntimeConfig()
+	const paymentData = JSON.parse(localStorage.getItem('invoiceData') as string ) as Payment
 	const user = JSON.parse(localStorage.getItem('user_data') as string ) as UserData
 	const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
 	let response;
@@ -13,18 +14,18 @@ export default async function(orderNumber: string) {
 		quantity: number,
 		name: string,
 		// picture: string,
-		properties: Array<{name: string, value: number}>,
+		properties: Array<{name: string, value: string}>,
 	}
 
 	const userProductsCrm: crmProduct[] = user.products.map((el: Product) => {
 		return {
-				price: el.price,
-				quantity: el.count,
-				name: el.name,
-				properties: [
+				"price": el.price,
+				"quantity": el.count,
+				"name": el.name,
+				"properties": [
 					{
-						name: "Sku",
-						value: el.sku,
+						"name": "Sku",
+						"value": `${el.sku}`,
 					},
 				]
 			}
@@ -32,13 +33,15 @@ export default async function(orderNumber: string) {
 // picture: `https://fireon.com.ua/${el.image}`,
 	
 	const totalPrice: number = user.products.reduce((acc: number, cur: Product) => acc + (cur.price*cur.count), 0)
+	const dateObj = new Date()
+	const today = `${dateObj.getFullYear()}-${dateObj.getMonth() < 10 ? '0' + dateObj.getMonth() : dateObj.getMonth()}-${dateObj.getDate()} ${dateObj.getHours()}:${dateObj.getMinutes()}:${dateObj.getSeconds() < 10 ? '' + dateObj.getSeconds() : dateObj.getSeconds()}` 
 	
 	const crmBodyParams = {
-		"source_id": "1",
+		"source_id": 1,
 		"manager_comment": `#${orderNumber} - Замовлення із сайту`,
-		"shipping_price": `${localStTTNdata.data[0].CostOnSite}`,
+		"shipping_price": localStTTNdata.data[0].CostOnSite,
 		"manager_id": 3,
-		"ordered_at": new Date().toISOString().slice(0, -5).split("T").join(" "),
+		"ordered_at": today,
 		"wrap_price": totalPrice,
 		"buyer": {
 			"full_name": `${user.firstname} ${user.lastname} ${user.middlename === undefined || user.lastname === null ? '' : user.lastname}`,
@@ -56,15 +59,14 @@ export default async function(orderNumber: string) {
 			"shipping_receive_point": user.warehouse.Description,
 			"recipient_full_name": `${user.firstname} ${user.lastname} ${user.middlename}`,
 			"recipient_phone": `${user.phone}`,
-			// "warehouse_ref": user.warehouse.Ref,
 		},
 		"payments": [
 			{
 				"payment_method_id": 3,
 				"payment_method": "Банківська картка",
-				"amount": 850,
+				"amount": paymentData.finalAmount,
 				"description": "платіж",
-				"payment_date": new Date().toISOString().slice(0, -5).split("T").join(" "),
+				"payment_date": paymentData.createdDate.slice(0, -1).split("T").join(" "),
 				"status": "paid"
 			}
 		],
@@ -77,24 +79,30 @@ export default async function(orderNumber: string) {
 		body: JSON.stringify(crmBodyParams),
 	}
 
-	console.log(crmRequestParams);
+	// console.log(crmRequestParams);
 
 	try {
-		const { data: createdTaskData, isFinished: createTaskState, error: createTaskError } = await useFetch(`${config.public.domain}.netlify/functions/crm`, crmRequestParams as object)
-		// const { data: createdTaskData, isFinished: createTaskState, error: createTaskError } = await useFetch('https://openapi.keycrm.app/v1/order', crmRequestParams as object)
-		if(createTaskState) {
-			console.log(createdTaskData.value);
-			response = createdTaskData.value
-			// return createdTaskData.value
+		const { data: createdTaskData, isFinished: createTaskState, error: createTaskError, response } = await useFetch(`${config.public.domain}.netlify/functions/crm`, crmRequestParams as object)
+
+		
+		if(createTaskState && response.value?.status === 201) {
+			console.log(createdTaskData.value, response.value?.status);
+			const data = await createdTaskData.value
+			const res = ''
+			const err = ''
+			return {data, res, err}
 		}
 		else {
-			error = createTaskError
-			console.error("crmResponse err", error);
+			const err = await response.value?.statusText
+			const res = await response.value?.status
+			const data = ''
+			console.error("crmResponse err", createTaskError);
+			return {data, res, err}
 		}
 	} catch (err) {
 		error = err
 		console.error("Create CRM task err", err);
-		// return error
+		return error
 	}
 
 	return await {response, error}

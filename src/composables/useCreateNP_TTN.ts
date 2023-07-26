@@ -48,7 +48,7 @@ export default async function() {
 			} else if (createUserError) {
 				console.error(createUserError);
 				error.value = `createUserError: ${createUserError}`
-				// return createUserError.value
+				return createUserError
 			}
 
 		} catch(err) {

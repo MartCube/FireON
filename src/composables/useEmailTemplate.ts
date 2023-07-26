@@ -4,7 +4,9 @@ import { useFetch } from '@vueuse/core'
 export default async function(orderNumber: string) {
 	
 	const rawdata = localStorage.getItem('user_data')
+	
 	const data: UserData = JSON.parse(rawdata as string)
+	const invoice: string = localStorage.getItem('invoice') as string
 	const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
 
 	const config = useRuntimeConfig() 
@@ -44,6 +46,9 @@ export default async function(orderNumber: string) {
 			</div>
 			<div class="info-item">
 			<h4>TTN: ${localStTTNdata.data[0].IntDocNumber}</h4>
+			</div>
+			<div class="info-item">
+			<h4>Invoice: ${invoice}</h4>
 			</div>
 			<h4>Products:</h4>
 			<table class="products">
