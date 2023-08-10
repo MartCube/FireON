@@ -28,7 +28,7 @@ export default (data: MetaTags) => {
 		meta: [
 			{ "charset": "utf-8" },
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-			{ name: "author", content: "Mart Cube" },
+			{ name: "author", content: "Fire On" },
 			{ name: 'title', content: data.title },
 			{ name: 'description', content: data.description },
 			// { name: 'robots', content: 'all' },

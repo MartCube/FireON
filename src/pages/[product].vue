@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { boolean } from "zod"
 import { MagazineQuery } from "~~/src/queries"
 import type { Magazine, Product } from "~~/src/types"
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCycleList, onKeyStroke, onClickOutside, useSwipe } from '@vueuse/core'
+import { useCycleList, onKeyStroke, onClickOutside } from '@vueuse/core'
 import { ColorWord } from '~~/src/types'
 
 const props = defineProps<{
@@ -76,7 +76,7 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 
 	.lightbox {
 		position: fixed;
-		z-index: 2;
+		z-index: 5;
 		top: 0;
 		left: 0;
 		width: 100%;
