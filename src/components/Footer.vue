@@ -16,6 +16,9 @@ const { smedias, logo, links } = storeToRefs(useAppStore())
 			<a href="tel:+380977620000" class="media">
 				<Icon name="IconPhone" />
 			</a>
+			<a href="mailto:info@fireon.com.ua" class="media">
+				<Icon name="IconMail" />
+			</a>
 			<NuxtLink class="media" v-for="media in smedias" :to="media.link" external target="_blank" :key="media.name">
 				<Icon :name="media.icon" />
 			</NuxtLink>
