@@ -10,8 +10,8 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 		//to: 'devfireon97@gmail.com', 
 		from: 'dev.fireon@gmail.com', // Change to your verified sender
 		//sales@fireon.com.ua
-		subject: 'Sending with SendGrid is Fun',
-		text: 'and easy to do anywhere, even with Node.js',
+		subject: 'Нове замовлення із з сайту',
+		text: 'FireOn',
 		html: event.body,
 	}
 	let status: string = ''

@@ -18,7 +18,7 @@ defineExpose({ reset })
 <template>
 	<div class="panel">
 		<h4>{{ title }}</h4> <!-- i18n const -->
-		<label v-for="(color, i) in colors" :key="color" @click.stop="$emit('color', color)">
+		<label v-for="(color, i) in colors" :key="color" :class="`wrapper-${color}`" @click.stop="$emit('color', color)">
 			<input v-model="activeColor" :value="color" type="radio" :class="color" />
 			<span class="name">{{ color }}</span>
 			<Icon name="IconCheck" />
@@ -94,6 +94,40 @@ defineExpose({ reset })
 
 			&.Sand {
 				background: $product_sand;
+			}
+			&[class="Black/Red"] {
+				background: $product_black;
+			}
+		}
+
+		&[class="wrapper-Black/Red"]{
+			position: relative;
+			&::after {
+				content: '';
+				position: absolute;
+				z-index: 2;
+				background-color: $error;
+				left: 4.7px;
+				top: 50%;
+				transform: translate(0, -50%);
+				width: 7px;
+				border-radius: 50%;
+				height: 7px;
+			}
+		}
+		&[class="wrapper-Black"]{
+			position: relative;
+			&::after {
+				content: '';
+				position: absolute;
+				z-index: 2;
+				background-color: $primary;
+				left: 4.7px;
+				top: 50%;
+				transform: translate(0, -50%);
+				width: 7px;
+				border-radius: 50%;
+				height: 7px;
 			}
 		}
 

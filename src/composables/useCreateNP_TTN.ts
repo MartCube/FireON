@@ -9,7 +9,7 @@ export default async function() {
 	// const endResponse = ref('')
 	let res = null
 	const error = ref('')
-	
+	// "MiddleName": user.middlename === undefined || user.middlename === null ? '' : user.middlename,
 	// get recipient 
 	// Set up the request parameters
 	const createUser = async () => {
@@ -19,7 +19,7 @@ export default async function() {
 			"calledMethod": "save",
 			"methodProperties": {
 				"FirstName": user.firstname,
-				"MiddleName": user.middlename === undefined || user.lastname === null ? '' : user.lastname,
+				"MiddleName": user.middlename === undefined || user.middlename === null ? '' : user.middlename,
 				"LastName": user.lastname,
 				"Phone": `${user.phone}`,
 				// "Phone": user.phone,
@@ -146,7 +146,7 @@ export default async function() {
 				"volumetricWidth":"30",
 				"volumetricLength":"25",
 				"volumetricHeight":"5",
-				"weight":"0.4"
+				"weight":"1"
 			})
 		});
 
@@ -165,11 +165,11 @@ export default async function() {
 				"DateTime" : dateForTTN, // ! create a date
 				"CargoType" : "Parcel",
 				"VolumeGeneral": volumeGeneral,
-				"Weight" : String(parselCount*0.4),
+				"Weight" : String(1),
 				"ServiceType" : "WarehouseWarehouse",
-				"SeatsAmount" : String(parselCount),
-				"Description" : "FireOn magazines", 
-				"Cost" : String(paymentBillBasketTotalPrice), // store totalPcice to local storage 
+				"SeatsAmount" : String(1),
+				"Description" : "Спортивне спорядження", 
+				"Cost" : String(parselCount*100), // store totalPcice to local storage 
 				"Sender" : "6a208b6d-c3e1-11ed-a60f-48df37b921db", // static value sender ref
 				"CitySender" : "8d5a980d-391c-11dd-90d9-001a92567626", // static value of the sender city 
 				"SenderAddress" : "", // 
@@ -194,11 +194,11 @@ export default async function() {
 				"PaymentMethod" : "Cash", // +1 field to form
 				"DateTime" : dateForTTN, // ! create a date
 				"CargoType" : "Parcel",
-				"Weight" : String(parselCount),
+				"Weight" : String(1),
 				"ServiceType" : "WarehouseWarehouse",
-				"SeatsAmount" : String(parselCount),
-				"Description" : "FireOn magazines", 
-				"Cost" : String(paymentBillBasketTotalPrice), // store totalPcice to local storage 
+				"SeatsAmount" : String(1),
+				"Description" : "Спортивне спорядження", 
+				"Cost" : String(parselCount*100), // store totalPcice to local storage 
 				"Sender" : "6a208b6d-c3e1-11ed-a60f-48df37b921db", // static value sender ref
 				"CitySender" : "8d5a980d-391c-11dd-90d9-001a92567626", // static value of the sender city 
 				"SenderAddress" : "", // 
