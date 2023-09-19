@@ -83,9 +83,10 @@ onClickOutside(lightbox, (event) => {
 	.active_image {
 		width: 100%;
 		height: auto;
-		max-width: 500px;
-		max-height: 500px;
+		max-width: 450px;
+		max-height: 450px;
 		object-fit: contain;
+		margin-bottom: 5rem;
 		&:hover {
 			cursor: pointer;
 		}
@@ -134,7 +135,7 @@ onClickOutside(lightbox, (event) => {
 	}
 	.lightbox {
 		position: fixed;
-		z-index: 2;
+		z-index: 10;
 		top: 0;
 		left: 0;
 		width: 100vw;
