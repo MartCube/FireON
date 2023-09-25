@@ -7,7 +7,7 @@ const props = defineProps<{
 
 const galleryRef = toRef(props, 'gallery')
 const activeImage = ref(galleryRef.value[0])
-const { state, next, prev } = useCycleList(galleryRef)
+const { state, next, prev } = useCycleList(props.gallery)
 
 // when gallery change
 watch(galleryRef, (a, b) => {
