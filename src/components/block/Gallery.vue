@@ -76,7 +76,7 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 
 	.lightbox {
 		position: fixed;
-		z-index: 5;
+		z-index: 10;
 		top: 0;
 		left: 0;
 		width: 100%;

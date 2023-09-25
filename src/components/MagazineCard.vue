@@ -46,6 +46,7 @@ defineProps<{
 			object-fit: contain;
 			width: 100%;
 			height: 100%;
+			filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%))
 		}
 	}
 

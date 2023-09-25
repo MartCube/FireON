@@ -32,7 +32,7 @@ try {
 		const headers = {
 			method: 'GET',
 			headers: {
-				'X-Token': config.mono
+				'X-Token': config.public.mono
 			},
 		};
 		// monobank create invoice
