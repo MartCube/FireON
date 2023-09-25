@@ -54,20 +54,22 @@ onClickOutside(lightbox, (event) => {
 
 <template>
 	<div class="image_slider">
-		<div class="lightbox" v-if="isOpen">
-			<div class="wrapper" ref="lightbox">
-				<AppImg class="active_image" 
-					:src="state" 
-					:key="lightboxImage" 
-					:width="3000" 
-					:height="6000"
-				/>
-				<Icon class="prev" @click="prev()" name="IconArrow" />
-				<Icon class="next" @click="next()" name="IconArrow" />
-				<Icon class="close" @click="CloseLightbox()" name="IconClose" />
-				<div class="lds-ripple"><div></div><div></div></div>
+		<ClientOnly>
+			<div class="lightbox" v-if="isOpen">
+				<div class="wrapper" ref="lightbox">
+					<AppImg class="active_image" 
+						:src="state" 
+						:key="lightboxImage" 
+						:width="3000" 
+						:height="6000"
+					/>
+					<Icon class="prev" @click="prev()" name="IconArrow" />
+					<Icon class="next" @click="next()" name="IconArrow" />
+					<Icon class="close" @click="CloseLightbox()" name="IconClose" />
+					<div class="lds-ripple"><div></div><div></div></div>
+				</div>
 			</div>
-		</div>
+		</ClientOnly>
 		<AppImg class="active_image" 
 			:src="activeImage" 
 			:width="500" 
