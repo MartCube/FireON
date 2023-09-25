@@ -12,7 +12,6 @@ const { state, next, prev } = useCycleList(galleryRef)
 // when gallery change
 watch(galleryRef, (a, b) => {
 	activeImage.value = props.gallery[0]
-	galleryRef.value = props.gallery
 })
 
 
