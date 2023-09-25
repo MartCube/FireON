@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { string } from "zod"
-import { useCycleList, onKeyStroke, onClickOutside, useSwipe } from '@vueuse/core'
+import { useCycleList, onKeyStroke, onClickOutside } from '@vueuse/core'
 
-const props = defineProps<{ gallery: string[] }>()
+const props = defineProps<{ 
+	gallery: string[] 
+}>()
 
 const galleryRef = toRef(props, 'gallery')
-const activeImage = ref(props.gallery[0])
-watch(galleryRef, (a, b) => activeImage.value = props.gallery[0])
-const { state, next, prev, index } = useCycleList(props.gallery)
+const activeImage = ref(galleryRef.value[0])
+const { state, next, prev } = useCycleList(galleryRef)
+
+// when gallery change
+watch(galleryRef, (a, b) => {
+	activeImage.value = props.gallery[0]
+	galleryRef.value = props.gallery
+})
+
 
 // lightbox
 const isOpen = ref(false) // toggle lightbox
@@ -15,11 +22,11 @@ const lightboxImage = ref('')
 const lightbox = ref(null)	// lightbox ref
 
 // open lightbox
-function Open(image: string) {
+function OpenLightbox(image: string) {
 	isOpen.value = true
 	state.value = image
 }
-function Close() {
+function CloseLightbox() {
 	isOpen.value = false
 	lightboxImage.value = ''
 }
@@ -44,26 +51,45 @@ onClickOutside(lightbox, (event) => {
 	isOpen.value = false
 	lightboxImage.value = ''
 })
-
 </script>
 
 <template>
 	<div class="image_slider">
-		<div v-show="isOpen" class="lightbox" >
+		<div class="lightbox" v-if="isOpen">
 			<div class="wrapper" ref="lightbox">
-				<AppImg class="active_image" :src="state" :key="lightboxImage" :width="3000" :height="6000"/>
+				<AppImg class="active_image" 
+					:src="state" 
+					:key="lightboxImage" 
+					:width="3000" 
+					:height="6000"
+				/>
 				<Icon class="prev" @click="prev()" name="IconArrow" />
 				<Icon class="next" @click="next()" name="IconArrow" />
-				<Icon class="close" @click="Close" name="IconClose" />
+				<Icon class="close" @click="CloseLightbox()" name="IconClose" />
 				<div class="lds-ripple"><div></div><div></div></div>
 			</div>
 		</div>
-		<AppImg class="active_image" :src="activeImage" @click="Open(activeImage)" :width="500" :height="500" />
-		<div class="icon_full_screen" @click="isOpen = true">
+		<AppImg class="active_image" 
+			:src="activeImage" 
+			:width="500" 
+			:height="500"
+			@click="OpenLightbox(activeImage)" 
+		/>
+		<div class="icon_full_screen" 
+			@click="isOpen = true"
+		>
 			<Icon name="IconOpenFullScreen" />
 		</div>
 		<div class="slider">
-			<AppImg v-for="(image, i) in gallery" :key="image+i" :class="{ active: image == activeImage }" :src="image" @click="activeImage = image" :width="100" :height="100" />
+			<AppImg 
+				v-for="(image, i) in gallery" 
+				:class="{ active: image == activeImage }"
+				:key="image+i"  
+				:src="image"
+				:width="100" 
+				:height="100"
+				@click="activeImage = image" 
+			/>
 		</div>
 	</div>
 </template>
