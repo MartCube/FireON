@@ -55,7 +55,7 @@ onClickOutside(lightbox, (event) => {
 <template>
 	<div class="image_slider">
 		<ClientOnly>
-			<div class="lightbox" v-if="isOpen">
+			<div class="lightbox" v-show="isOpen">
 				<div class="wrapper" ref="lightbox">
 					<AppImg class="active_image" 
 						:src="state" 
