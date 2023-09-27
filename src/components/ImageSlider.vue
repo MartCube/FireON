@@ -10,7 +10,7 @@ const activeImage = ref(galleryRef.value[0])
 const { state, next, prev } = useCycleList(galleryRef)
 
 // when gallery change
-watch(galleryRef, (a, b) => {
+watch(galleryRef, () => {
 	activeImage.value = props.gallery[0]
 })
 
@@ -60,8 +60,8 @@ onClickOutside(lightbox, (event) => {
 					<AppImg class="active_image" 
 						:src="state" 
 						:key="lightboxImage" 
-						:width="3000" 
-						:height="6000"
+						:width="300" 
+						:height="600"
 					/>
 					<Icon class="prev" @click="prev()" name="IconArrow" />
 					<Icon class="next" @click="next()" name="IconArrow" />
