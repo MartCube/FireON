@@ -1,95 +1,105 @@
 <script setup lang="ts">
-import { useCycleList, onKeyStroke, onClickOutside } from '@vueuse/core'
+import { onKeyStroke, onClickOutside } from '@vueuse/core'
 
 const props = defineProps<{ 
 	gallery: string[] 
 }>()
 
 const galleryRef = toRef(props, 'gallery')
+const activeIndex = ref(0)
 const activeImage = ref(galleryRef.value[0])
-const { state, next, prev } = useCycleList(galleryRef)
 
 // when gallery change
 watch(galleryRef, () => {
+	activeIndex.value = 0
 	activeImage.value = props.gallery[0]
 })
 
 
 // lightbox
-const isOpen = ref(false) // toggle lightbox
-const lightboxImage = ref('')
+const lightboxToggle = ref(false) // toggle lightbox
 const lightbox = ref(null)	// lightbox ref
 
-// open lightbox
-function OpenLightbox(image: string) {
-	isOpen.value = true
-	state.value = image
+
+function UpdateActiveImage(index: number,image: string){
+	activeIndex.value = index
+	activeImage.value = image
 }
-function CloseLightbox() {
-	isOpen.value = false
-	lightboxImage.value = ''
+function Next(){
+	activeIndex.value++
+	activeImage.value = galleryRef.value[activeIndex.value]
+}
+function Prev(){
+	activeIndex.value--
+	activeImage.value = galleryRef.value[activeIndex.value]
 }
 
 // onKeyStroke
 onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
-	if (!isOpen.value) return
+	if (!lightboxToggle.value) return
 	switch (e.key) {
 		case 'Escape':
-			isOpen.value = false
+			lightboxToggle.value = false
 			break
 		case 'ArrowLeft':
-			prev()
+			if( activeIndex.value <= 0 ) break
+			Prev()
 			break
 		case 'ArrowRight':
-			next()
+			if( activeIndex.value >= galleryRef.value.length-1 ) break
+			Next()
 			break
 	}
 })
 // close lightbox
 onClickOutside(lightbox, (event) => {
-	isOpen.value = false
-	lightboxImage.value = ''
+	lightboxToggle.value = false
 })
 </script>
 
 <template>
 	<div class="image_slider">
-		<ClientOnly>
-			<div class="lightbox" v-show="isOpen">
-				<div class="wrapper" ref="lightbox">
-					<AppImg class="active_image" 
-						:src="state" 
-						:key="lightboxImage" 
-						:width="300" 
-						:height="600"
-					/>
-					<Icon class="prev" @click="prev()" name="IconArrow" />
-					<Icon class="next" @click="next()" name="IconArrow" />
-					<Icon class="close" @click="CloseLightbox()" name="IconClose" />
-					<div class="lds-ripple"><div></div><div></div></div>
-				</div>
+		<div class="lightbox" v-if="lightboxToggle">
+			<div class="wrapper" ref="lightbox">
+				<AppImg class="active_image" 
+					:src="activeImage" 
+					:width="3000" 
+					:height="6000"
+				/>
+				<Icon 
+					:class="['prev', { disabled: activeIndex <= 0 }]"
+					name="IconArrow" 
+					@click="Prev()" 
+				/>
+				<Icon 
+					:class="['next', { disabled: activeIndex >= galleryRef.length-1 }]" 
+					name="IconArrow"  
+					@click="Next()"  
+				/>
+				<Icon class="close" name="IconClose" @click="lightboxToggle = false"  />
+				<div class="lds-ripple"><div></div><div></div></div>
 			</div>
-		</ClientOnly>
+		</div>
 		<AppImg class="active_image" 
 			:src="activeImage" 
 			:width="500" 
 			:height="500"
-			@click="OpenLightbox(activeImage)" 
+			@click="lightboxToggle = true" 
 		/>
 		<div class="icon_full_screen" 
-			@click="isOpen = true"
+			@click="lightboxToggle = true"
 		>
 			<Icon name="IconOpenFullScreen" />
 		</div>
 		<div class="slider">
 			<AppImg 
-				v-for="(image, i) in gallery" 
+				v-for="(image, index) in gallery" 
 				:class="{ active: image == activeImage }"
-				:key="image+i"  
+				:key="image+index"  
 				:src="image"
 				:width="100" 
 				:height="100"
-				@click="activeImage = image" 
+				@click="UpdateActiveImage(index, image)" 
 			/>
 		</div>
 	</div>
@@ -270,6 +280,10 @@ onClickOutside(lightbox, (event) => {
 			.close {
 				top: 1rem;
 				right: 2rem;
+			}
+
+			.disabled{
+				display: none;
 			}
 		}
 	}
