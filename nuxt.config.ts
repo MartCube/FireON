@@ -30,6 +30,7 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 		'@nuxtjs/i18n',
 		'nuxt-icon',
+		'nuxt-gtag',
 		// '~/modules/purge-comments'
 		// '~/modules/style-inlining',
 	],
@@ -101,5 +102,10 @@ export default defineNuxtConfig({
 				},
 			},
 		},
+	},
+
+	gtag: {
+		id: 'GTM-K49KX72B',
+		loadingStrategy: 'defer',
 	},
 })
