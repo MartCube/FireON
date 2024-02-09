@@ -27,25 +27,27 @@ const validationSchema = toFormValidator(
     //   Ref: z.string().min(1, "City Ref is required"),
     //   // Add other validations for other properties of the City type if needed
     // }) as unknown as z.ZodType<City>,
-			place: z.any().refine(async (val: any) => {
-			const data = await val;
-			console.log(data);
+		// 	place: z.any().refine(async (val: any) => {
+		// 	const data = await val;
+		// 	console.log(data);
 			
 			
-			return val
-		}),
+		// 	return val
+		// }),
 
 		// city: z.any().refine(async (val: any) => {
 		// 	console.log(await val.value);
 			
 		// 	return val
 		// }),
-		warehouse: z.any().refine(async (val: any) => {
-			console.log(await val);
+		// warehouse: z.any().refine(async (val: any) => {
+		// 	console.log(await val);
 			
-			return val
-		}),
+		// 	return val
+		// }),
 		email: z.string().min(1, { message: "Required" }).email("This is not a valid email."),
+		place: z.string().min(1, 'Required'),
+		warehouse: z.string().min(1, 'Required'),
 		firstname: z.string().min(1, 'Required'),
 		middlename: z.string().optional(),
 		lastname: z.string().min(1, 'Required'),
@@ -65,8 +67,8 @@ const validationSchema = toFormValidator(
 	})
 )
 
-const city = ref<City>()
-const warehouse = ref<Warehouse>()
+// const city = ref<City>()
+// const warehouse = ref<Warehouse>()
 const statusMessage = ref('')
 const externalURL = ref('')
 
@@ -92,8 +94,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		firstname: values.firstname.toString(),
 		lastname: values.lastname.toString(),
 		email: values.email.toString(),
-		place: city.value as City,
-		warehouse: warehouse.value as Warehouse,
+		place: values.place.toString(),
+		// place: city.value as City,
+		warehouse: values.warehouse.toString(),
 		phone: values.phone.toString(),
 		products: products.value,
 		middlename:  values.middlename ? values.middlename.toString() : '',
@@ -104,20 +107,20 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	localStorage.setItem('user_data', JSON.stringify(UserData))
 
 	// create ttn
-	const {endResponse, error} = await useCreateNP_TTN()
+	// const {endResponse, error} = await useCreateNP_TTN()
 	
-		if(endResponse instanceof Error || endResponse instanceof TypeError) {
-			errorMessage(String("Щось пішло не так будь ласка спробуйте ще раз"))
-			return
-		} else {
-			const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
-			console.log('parsedResponce.success', parsedResponce.success , 'parsedResponce.success === false', parsedResponce.success === false, '!!parsedResponce.success',!!parsedResponce.success);
+	// 	if(endResponse instanceof Error || endResponse instanceof TypeError) {
+	// 		errorMessage(String("Щось пішло не так будь ласка спробуйте ще раз"))
+	// 		return
+	// 	} else {
+	// 		const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
+	// 		console.log('parsedResponce.success', parsedResponce.success , 'parsedResponce.success === false', parsedResponce.success === false, '!!parsedResponce.success',!!parsedResponce.success);
 			
-			if(parsedResponce.success === false) {
-				errorMessage(parsedResponce.errors.join(","))
-				return
-			} 
-		}
+	// 		if(parsedResponce.success === false) {
+	// 			errorMessage(parsedResponce.errors.join(","))
+	// 			return
+	// 		} 
+	// 	}
 					
 
 	try {
@@ -170,8 +173,10 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			<VeeInput :data="data.middlename" />
 			<VeeInput :data="data.email" />
 			<VeeInput :data="data.phone" />
-			<NPCityInput @selected-city="(e) => city = e" :data="data.place" />
-			<NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  />
+			<VeeInput :data="data.place" />
+			<VeeInput :data="data.warehouse" />
+			<!-- <NPCityInput @selected-city="(e) => city = e" :data="data.place" /> -->
+			<!-- <NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  /> -->
 			<VeeInput :data="data.comment" />
 			<!-- <VeeInput :data="data.promoCode" /> -->
 			<button type="submit" :disabled="isSubmitting">

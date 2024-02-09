@@ -40,6 +40,8 @@ let citiesArray = shallowRef<City[]>([])
 
 async function getCities() {
 	const { data: cities, isFinished, error: npError } = await useFetch(npEndpoint, npRequestParams as object)
+	console.log(cities);
+	
 	if(isFinished.value) {
 		citiesArray.value = JSON.parse(cities.value as string).data
 	} else if (npError) {

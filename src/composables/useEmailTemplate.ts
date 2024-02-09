@@ -33,19 +33,16 @@ export default async function(orderNumber: string) {
 				<h4>Name: </h4><p>${data.firstname} ${data.middlename} ${data.lastname === undefined || data.lastname === null ? '' : data.lastname}</p>
 			</div>
 			<div class="info-item">
-			<h4>City: </h4><p>${data.place.Description}</p>
+			<h4>City: </h4><p>${data.place}</p>
 			</div>
 			<div class="info-item">
-			<h4>Warehouse: </h4><p>${data.warehouse.Description}</p>
+			<h4>Warehouse: </h4><p>${data.warehouse}</p>
 			</div>
 			<div class="info-item">
 			<h4>Phone: </h4><p>${data.phone}</p>
 			</div>
 			<div class="info-item">
 			<h4>Comment: </h4><p>${data.comment === undefined || data.comment === null ? '' : data.comment}</p>
-			</div>
-			<div class="info-item">
-			<h4>TTN: ${localStTTNdata.data[0].IntDocNumber}</h4>
 			</div>
 			<div class="info-item">
 			<h4>Invoice: ${invoice}</h4>
