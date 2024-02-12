@@ -91,7 +91,7 @@ export default defineNuxtConfig({
 			crmkey: process.env.NUXT_CRM,
 			crmEndpoint: 'https://api.keepincrm.com/v1/',
 			domain: process.env.NUXT_DOMAIN,
-			gtagId: 'GTM-K49KX72B',
+			gtagId: 'G-WN7B494RN5',
     }
   },
 
@@ -107,7 +107,7 @@ export default defineNuxtConfig({
 	},
 
 	gtag: {
-		id: 'GTM-K49KX72B',
+		id: 'G-WN7B494RN5',
 	},
 	// googleAnalytics: {
   //   id: 'GTM-K49KX72B'
