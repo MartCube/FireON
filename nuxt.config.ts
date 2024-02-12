@@ -30,6 +30,7 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 		'@nuxtjs/i18n',
 		'nuxt-icon',
+		// '@nuxtjs/google-analytics',
 		'nuxt-gtag',
 		// '~/modules/purge-comments'
 		// '~/modules/style-inlining',
@@ -90,6 +91,7 @@ export default defineNuxtConfig({
 			crmkey: process.env.NUXT_CRM,
 			crmEndpoint: 'https://api.keepincrm.com/v1/',
 			domain: process.env.NUXT_DOMAIN,
+			gtagId: 'GTM-K49KX72B',
     }
   },
 
@@ -106,6 +108,8 @@ export default defineNuxtConfig({
 
 	gtag: {
 		id: 'GTM-K49KX72B',
-		loadingStrategy: 'defer',
 	},
+	// googleAnalytics: {
+  //   id: 'GTM-K49KX72B'
+  // }
 })
