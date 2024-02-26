@@ -6,7 +6,7 @@ export default async function(orderNumber: string) {
 	const rawdata = localStorage.getItem('user_data')
 	
 	const data: UserData = JSON.parse(rawdata as string)
-	const invoice: string = localStorage.getItem('invoice') as string
+	const invoice: string = localStorage.getItem('invoice') as string || ''
 	const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
 
 	const config = useRuntimeConfig() 

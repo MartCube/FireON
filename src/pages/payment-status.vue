@@ -50,14 +50,13 @@ try {
 					Дякуємо! 
 					Номер вашого замовлення: 
 					`
-					// order number 
-					orderNumber.value = crypto.randomUUID().slice(0, 6)
+					const orderNumber = localStorage.getItem('orderNumber') as string
 					
 					// icon status
 					icon.value = 'IconSuccess'
 					
 					// // send form with products sendgrid
-					const emailToFireOn = await useEmailTemplate(orderNumber.value)
+					const emailToFireOn = await useEmailTemplate(orderNumber)
 					console.log("emailToFireOn", emailToFireOn);
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 					

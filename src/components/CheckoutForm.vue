@@ -81,72 +81,67 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	const { products } = storeToRefs(useBasketStore())
 	// toggleModal()	// close basket modal
 	console.log(values);
-	
-	const errorMessage = async (text: string) => {
-		statusMessage.value = text
-		await promiseTimeout(4000)
-		statusMessage.value = ''
-		// resetForm() 
-	}
-
-	// create data for localStore
-	const UserData: UserData = {
-		firstname: values.firstname.toString(),
-		lastname: values.lastname.toString(),
-		email: values.email.toString(),
-		place: values.place.toString(),
-		// place: city.value as City,
-		warehouse: values.warehouse.toString(),
-		phone: values.phone.toString(),
-		products: products.value,
-		middlename:  values.middlename ? values.middlename.toString() : '',
-		comment: values.comment ? values.comment.toString() : '',
-	}
-
+		// order number 
+		const errorMessage = async (text: string) => {
+			statusMessage.value = text
+			await promiseTimeout(4000)
+			statusMessage.value = ''
+			// resetForm() 
+		}
+		
+		// create data for localStore
+		const UserData: UserData = {
+			firstname: values.firstname.toString(),
+			lastname: values.lastname.toString(),
+			email: values.email.toString(),
+			place: values.place.toString(),
+			// place: city.value as City,
+			warehouse: values.warehouse.toString(),
+			phone: values.phone.toString(),
+			products: products.value,
+			middlename:  values.middlename ? values.middlename.toString() : '',
+			comment: values.comment ? values.comment.toString() : '',
+		}
+		
 	// save email data to localStorage
 	localStorage.setItem('user_data', JSON.stringify(UserData))
-
 	// create ttn
 	// const {endResponse, error} = await useCreateNP_TTN()
 	
 	// 	if(endResponse instanceof Error || endResponse instanceof TypeError) {
-	// 		errorMessage(String("Щось пішло не так будь ласка спробуйте ще раз"))
-	// 		return
-	// 	} else {
-	// 		const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
-	// 		console.log('parsedResponce.success', parsedResponce.success , 'parsedResponce.success === false', parsedResponce.success === false, '!!parsedResponce.success',!!parsedResponce.success);
+		// 		errorMessage(String("Щось пішло не так будь ласка спробуйте ще раз"))
+		// 		return
+		// 	} else {
+			// 		const parsedResponce: ttnDataType  = JSON.parse(endResponse as string)
+			// 		console.log('parsedResponce.success', parsedResponce.success , 'parsedResponce.success === false', parsedResponce.success === false, '!!parsedResponce.success',!!parsedResponce.success);
 			
-	// 		if(parsedResponce.success === false) {
-	// 			errorMessage(parsedResponce.errors.join(","))
-	// 			return
-	// 		} 
-	// 	}
-					
+			// 		if(parsedResponce.success === false) {
+				// 			errorMessage(parsedResponce.errors.join(","))
+				// 			return
+				// 		} 
+				// 	}
+				
+				
+				try {
+					const paymentRequestOptions = usePaymentOptions(products.value);
+					const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
+					if (isFinished.value) {
+						const parsedValue: {
+							invoiceId: string,
+							pageUrl: string
+						} = JSON.parse(data.value as string)
+						// console.log(parsedValue)
+						
+						// store invoice data
+						localStorage.setItem('invoice', parsedValue.invoiceId)
+						
+						const orderNumber = crypto.randomUUID().slice(0, 6)
+						useEmailTemplate(orderNumber);
+						localStorage.setItem('orderNumber', orderNumber)
 
-	try {
-		const paymentRequestOptions = usePaymentOptions(products.value);
-		const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
-		if (isFinished.value) {
-			const parsedValue: {
-				invoiceId: string,
-				pageUrl: string
-			} = JSON.parse(data.value as string)
-			// console.log(parsedValue)
-
-			// store invoice data
-			localStorage.setItem('invoice', parsedValue.invoiceId)
-
-			// redirect user to monobank payment page
-			// window.open(parsedValue.pageUrl)
-			// const anchor = document.createElement('a');
-      // anchor.href = parsedValue.pageUrl;
-      // anchor.target = '_blank'; // Open link in a new tab
-      // anchor.rel = 'noopener noreferrer'; // Recommended for security reasons when opening in a new tab
-      // anchor.click();
-			
-			// externalURL.value = parsedValue.pageUrl;
-			// window.location.replace(externalURL.value);
-			window.location.href = parsedValue.pageUrl;
+						// redirect user to monobank payment page
+						
+						window.location.href = parsedValue.pageUrl;
 		}
 
 		// show result modal 
