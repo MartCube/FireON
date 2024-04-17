@@ -8,9 +8,17 @@ const props = defineProps<{
 	button: string,
 }>()
 
+const initialSize = ref(6) // how many image to show on start
+const imageList = computed(() => props.list.slice(0, initialSize.value))
+
 const lightbox = ref(null)	// lightbox ref
 const isOpen = ref(false) // toggle lightbox
 const { state, next, prev, index } = useCycleList(props.list)
+
+// load more images
+function LoadMore() {
+	initialSize.value = props.list.length
+}
 
 // open lightbox
 function Open(value: number) {
@@ -39,21 +47,25 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 	}
 })
 
+
 // TODO
 // add swipe
 // const { isSwiping, direction } = useSwipe(img)
-
-
-// TODO
 // add loading spinner animation
-
 </script>
 
 <template>
 	<section id="gallery">
 		<TitleBlock :src="title" :mode="ColorWord.first" />
 		<div class="grid">
-			<AppImg v-for="(image, index) in list" :key="index" @click="Open(index)" :src="image" :width="740" :height="526" />
+			<AppImg
+				v-for="(image, index) in imageList" 
+				:key="index" 
+				:src="image" 
+				:width="740" 
+				:height="526"
+				@click="Open(index)" 
+			/>
 		</div>
 		<div v-if="isOpen" class="lightbox">
 			<div class="wrapper" ref="lightbox">
@@ -63,6 +75,12 @@ onKeyStroke(['Escape', 'ArrowLeft', 'ArrowRight'], (e: KeyboardEvent) => {
 				<Icon class="close" @click="isOpen = false" name="IconClose" />
 			</div>
 		</div>
+		<AppBtn 
+			v-if="list.length > initialSize" 
+			:value="button" 
+			@click="LoadMore()" 
+			class="load-more" 
+		/>
 	</section>
 </template>
 
