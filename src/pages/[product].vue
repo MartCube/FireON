@@ -143,8 +143,6 @@ function AddToBasket() {
 				stroke: $primary30;
 				fill: none;
 				transform: rotate(180deg);
-
-
 			}
 
 			&:hover .icon {

@@ -116,6 +116,7 @@ onClickOutside(lightbox, (event) => {
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
+	align-self: start;
 
 	.active_image {
 		width: 100%;
