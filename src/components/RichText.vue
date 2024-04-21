@@ -1,11 +1,17 @@
 <template>
 	<div class="rich_text">
-		<SanityContent :blocks="blocks" />
+		<SanityContent :blocks="blocks" :serializers="serializers"/>
 	</div>
 </template>
 
 <script setup lang="ts">
 defineProps<{ blocks: any[] }>()
+
+const serializers = {
+	types: {
+		youtube: resolveComponent('Youtube'),
+	},
+}
 </script>
 
 <style lang="scss">
