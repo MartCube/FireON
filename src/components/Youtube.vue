@@ -12,7 +12,6 @@
 			v-if="showFrame" 
 			:src="src" 
 			frameborder="0" 
-			loading="lazy"
 		/>
 	</div>
 </template>
@@ -22,7 +21,7 @@ const props = defineProps<{
 	id: string;
 }>()
 // http://www.get-youtube-thumbnail.com/
-const src = `https://www.youtube.com/embed/${props.id}`
+const src = `https://www.youtube.com/embed/${props.id}?autoplay=1`
 const img = `https://i3.ytimg.com/vi/${props.id}/maxresdefault.jpg`
 const showFrame = ref(false)
 </script>
