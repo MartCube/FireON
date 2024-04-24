@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
 import createCRMtask from '../composables/createCRMtask'
-import { CrmResponse } from '../types'
 
 
 const statusMessage = ref('')
@@ -94,9 +93,9 @@ try {
 			<h3>{{ statusMessage }}</h3> 
 			<h2>{{ orderNumber }}</h2> 
 			<Icon class="success" :name="icon" />
-			<NuxtLink class="btn" :to="`/${locale === 'ua' ? '' : 'en'}`" >
+			<NuxtLink class="btn" to="/" >
 				<span>
-					{{ t('toHome') }}
+					Do Domu
 				</span>
 		</NuxtLink>
 		</ClientOnly>

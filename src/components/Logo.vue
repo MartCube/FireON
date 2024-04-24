@@ -5,7 +5,7 @@ const { locale } = useI18n()
 </script>
 
 <template>
-	<AppLink class="logo" :to="`/${locale === 'ua' ? '' : 'en'}`">
+	<AppLink class="logo" to="/">
 		<AppImg class="magazine" :src="src" :width="280" :height="48" />
 	</AppLink>
 </template>

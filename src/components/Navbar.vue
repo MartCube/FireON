@@ -30,7 +30,7 @@ const { toggleModal } = useBasketStore()
 			<Icon name="IconMenu" />
 		</div>
 		<Logo v-if="logo" :src="logo" />
-		<SwitchLocale @click="menuValue = false" :class="{ show: menuValue }" />
+		<!-- <SwitchLocale @click="menuValue = false" :class="{ show: menuValue }" /> -->
 		<div class="basket" @click="toggleModal()">
 			<Icon name="IconBasket" />
 		</div>

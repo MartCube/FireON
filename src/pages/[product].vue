@@ -73,7 +73,7 @@ function AddToBasket() {
 						</ul>
 						<span class="price">
 							<Icon name="IconMoney" />
-							{{ activeColorMagazine.price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
+							{{ activeColorMagazine.price }} Złoty
 						</span>
 					</div>
 					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
@@ -83,7 +83,7 @@ function AddToBasket() {
 						<AppBtn :value="data.button" @click="AddToBasket()" />
 					</div>
 					<div v-else class="not_available">
-						<AppBtn :value="locale === 'ua' ? 'Незабаром': 'Unvailable'"/>
+						<AppBtn value="Niedostępne"/>
 					</div>
 				</div>
 			</div>
@@ -100,7 +100,7 @@ function AddToBasket() {
 				<ImageSlider :gallery="activeColorMagazine.gallery" />
 				<div class="price">
 					<span>
-						<Icon name="IconMoney" />{{ activeColorMagazine.price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
+						<Icon name="IconMoney" />{{ activeColorMagazine.price }} Złoty
 					</span>
 				</div>
 				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
@@ -110,7 +110,7 @@ function AddToBasket() {
 					<AppBtn :value="data.button" @click="AddToBasket()" />
 				</div>
 				<div v-else class="not_available">
-					<AppBtn :value="locale === 'ua' ? 'Незабаром' : 'Unvailable'"/>
+					<AppBtn value="Niedostępne"/>
 				</div>
 			</div>
 		</template>

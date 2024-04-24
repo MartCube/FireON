@@ -63,28 +63,16 @@ export const BasketQuery = groq`*[ _type == 'basket' && __i18n_lang == $lang ][0
 }`
 
 export const Sitemap_Q = groq`*[ _type in ["app", "magazine",] ]{
-	_type == "app" && __i18n_lang == 'ua' => {
+	_type == "app" && __i18n_lang == 'pl' => {
 		"url": "/",
 		"changefreq": "monthly",
 		"priority": 1,
 		"lastmod" :_updatedAt,
     },
-    _type == "app" && __i18n_lang == 'en' => {
-		"url": "/en/",
-		"changefreq": "monthly",
-		"priority": 1,
-		"lastmod" :_updatedAt,
-    },
-    _type == "magazine" && __i18n_lang == 'ua' => {
+  _type == "magazine" && __i18n_lang == 'pl' => {
 		"url": "/" + name + "/",
 		"changefreq": "monthly",
 		"priority": 0.9,
 		"lastmod" :_updatedAt,
-    },
-    _type == "magazine" && __i18n_lang == 'en' => {
-		"url": "/" + name + "/",
-		"changefreq": "monthly",
-		"priority": 0.9,
-		"lastmod" :_updatedAt,
-    },
+  },
 }`

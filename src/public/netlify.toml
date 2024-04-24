@@ -1,7 +1,7 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    Access-Control-Allow-Origin = "https://fireon.com.ua"
+    Access-Control-Allow-Origin = "https://fireon.com.pl"
 		Access-Control-Allow-Methods = "POST"
 		Access-Control-Allow-Headers = "Content-type"
 

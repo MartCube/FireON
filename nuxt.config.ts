@@ -39,31 +39,19 @@ export default defineNuxtConfig({
 	i18n: {
 		locales: [
 			{
-				code: 'ua',
-				name: 'Ukrainian',
+				code: 'pl',
+				name: 'Poland',
 			},
-			{
-				code: 'en',
-				name: 'English',
-			}
 		],
-		defaultLocale: 'ua',
+		defaultLocale: 'pl',
 		strategy: 'prefix_except_default',
 		// lazy: true,
 		// langDir: 'locales/',
 		vueI18n: {
 			legacy: false,
-			locale: 'ua',
-			fallbackLocale: 'ua',
-			availableLocales: ['ua', 'en',],
-			messages: {
-        en: {
-          toHome: 'To Home'
-        },
-        ua: {
-          toHome: 'На головну'
-        },
-      }
+			locale: 'pl',
+			fallbackLocale: 'pl',
+			availableLocales: ['pl'],
 		}
 	},
 
