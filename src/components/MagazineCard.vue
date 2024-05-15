@@ -15,8 +15,8 @@ defineProps<{
 			<AppImg class="name" :src="data.svg" :width="220" :height="72" />
 			<ul class="info">
 				<li>{{ data.info.size }}</li>
-				<li v-if="data.info.rem">{{ data.info.rem }}REM</li>
-				<li v-if="data.info.blk">{{ data.info.blk }}BLK</li>
+				<li v-if="data.info.rem">{{ data.info.rem }}</li>
+				<li v-if="data.info.blk">{{ data.info.blk }}</li>
 			</ul>
 			<!-- i18n -->
 			<AppLink class="btn" :to="data.name" hash="#product">{{ button }}</AppLink>
