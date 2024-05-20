@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { useClipboard } from '@vueuse/core'
 
 const { smedias, logo, links } = storeToRefs(useAppStore())
+
+const source = ref('Hello')
+const { copy, copied } = useClipboard({ source })
 </script>
 
 <template>
@@ -16,12 +20,15 @@ const { smedias, logo, links } = storeToRefs(useAppStore())
 			<a href="tel:+380977620000" class="media">
 				<Icon name="IconPhone" />
 			</a>
-			<a href="mailto:info@fireon.com.ua" class="media">
+			<a @click="copy()" class="media">
 				<Icon name="IconMail" />
 			</a>
 			<NuxtLink class="media" v-for="media in smedias" :to="media.link" external target="_blank" :key="media.name">
 				<Icon :name="media.icon" />
 			</NuxtLink>
+			<div :class="['alert', { show: copied }]">
+				<p>email copied</p>
+			</div>
 		</div>
 	</footer>
 </template>
@@ -36,7 +43,6 @@ footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	overflow: hidden;
 	position: relative;
 
 	.links {
@@ -80,7 +86,21 @@ footer {
 	.smedias {
 		width: fit-content;
 		display: flex;
+		position: relative;
 
+		.alert{
+			position: absolute;
+			top: -2rem;
+			left: 0;
+			width: 100%;
+
+			color: $primary;
+			font-size: .75rem;
+			display: none;
+			&.show {
+				display: initial;
+			}
+		}
 		.media {
 			margin-right: 1rem;
 			&:first-child {

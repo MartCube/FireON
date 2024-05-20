@@ -59,9 +59,6 @@ function AddToBasket() {
 		<template v-if="data && !pending">
 
 			<div class="desktop">
-				<AppLink class="go_back" to="/" hash="#magazines">
-					<Icon name="IconArrow" />
-				</AppLink>
 				<ImageSlider :gallery="activeColorMagazine.gallery" />
 				<div class="wrap">
 					<div class="details">
@@ -77,7 +74,7 @@ function AddToBasket() {
 						</span>
 					</div>
 					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
-					<RichText class="description" :blocks="data.description" />
+
 					<div v-if="activeColorMagazine.isProductActive && color" class="to_basket">
 						<CounterBtn :data="count" @dec="count--" @inc="count++" />
 						<AppBtn :value="data.button" @click="AddToBasket()" />
@@ -85,10 +82,13 @@ function AddToBasket() {
 					<div v-else class="not_available">
 						<AppBtn :value="locale === 'ua' ? 'Незабаром': 'Unvailable'"/>
 					</div>
+
+					<RichText class="description" :blocks="data.description" />
 				</div>
 			</div>
 
 			<div class="mobile">
+				
 				<div class="details">
 					<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
 					<ul class="info">
@@ -104,7 +104,7 @@ function AddToBasket() {
 					</span>
 				</div>
 				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
-				<RichText class="description" :blocks="data.description" />
+				
 				<div v-if="activeColorMagazine.isProductActive && color" class="to_basket">
 					<CounterBtn :data="count" @dec="count--" @inc="count++" />
 					<AppBtn :value="data.button" @click="AddToBasket()" />
@@ -112,6 +112,8 @@ function AddToBasket() {
 				<div v-else class="not_available">
 					<AppBtn :value="locale === 'ua' ? 'Незабаром' : 'Unvailable'"/>
 				</div>
+
+				<RichText class="description" :blocks="data.description" />
 			</div>
 		</template>
 	</div>
@@ -131,25 +133,7 @@ function AddToBasket() {
 		align-items: center;
 		position: relative;
 
-		.go_back {
-			z-index: 2;
-			position: absolute;
-			top: 2rem;
-			left: 0;
-
-			.icon {
-				width: 3rem;
-				height: 3rem;
-				stroke: $primary30;
-				fill: none;
-				transform: rotate(180deg);
-			}
-
-			&:hover .icon {
-				stroke: $primary;
-			}
-
-		}
+		
 
 		.wrap {
 			width: 50%;
@@ -158,6 +142,7 @@ function AddToBasket() {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
+			gap: 2rem;
 
 			.details {
 				width: 100%;
@@ -215,7 +200,6 @@ function AddToBasket() {
 
 			.to_basket {
 				width: 100%;
-				margin-top: 2rem;
 				display: flex;
 
 				.counter_btn {
@@ -234,10 +218,8 @@ function AddToBasket() {
 		display: none;
 		flex-direction: column;
 		align-items: center;
-
-		.go_back {
-			display: none;
-		}
+		gap: 2rem;
+		
 		.details {
 			width: 100%;
 			display: flex;

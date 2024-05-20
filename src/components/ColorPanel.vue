@@ -31,7 +31,6 @@ defineExpose({ reset })
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	margin: 2rem 0;
 
 	label {
 		width: fit-content;

@@ -25,12 +25,12 @@ const serializers = {
 	}
 
 	p {
-		max-width: 32rem;
-		margin-bottom: 2rem;
-		color: $white50;
+		margin-bottom: 1rem;
+		color: $white30;
 
-		font-size: .875rem;
-		line-height: 1.8125rem;
+		font-size: 12px;
+		line-height: 1.25rem;
+
 
 		&:last-of-type {
 			margin-bottom: 0;

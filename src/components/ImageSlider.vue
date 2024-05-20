@@ -91,6 +91,9 @@ onClickOutside(lightbox, (event) => {
 		>
 			<Icon name="IconOpenFullScreen" />
 		</div>
+		<AppLink class="go_back" to="/" hash="#magazines">
+			<Icon name="IconArrow" />
+		</AppLink>
 		<div class="slider">
 			<AppImg 
 				v-for="(image, index) in gallery" 
@@ -118,6 +121,8 @@ onClickOutside(lightbox, (event) => {
 	align-items: center;
 	align-self: start;
 
+	
+
 	.active_image {
 		width: 100%;
 		height: auto;
@@ -132,8 +137,8 @@ onClickOutside(lightbox, (event) => {
 
 	.icon_full_screen {
 		position: absolute;
-		top: 2rem;
-		right: 2rem;
+		top: 2.5rem;
+		right: 2.5rem;
 		opacity: 0;
 		transition: opacity 0.4s linear;
 		svg {
@@ -145,6 +150,25 @@ onClickOutside(lightbox, (event) => {
 		&:hover {
 			cursor: pointer;
 		}
+	}
+	.go_back {
+		z-index: 2;
+		position: absolute;
+		top: 2rem;
+		left: 0;
+
+		.icon {
+			width: 3rem;
+			height: 3rem;
+			stroke: $primary30;
+			fill: none;
+			transform: rotate(180deg);
+		}
+
+		&:hover .icon {
+			stroke: $primary;
+		}
+
 	}
 	.active_image:hover ~ .icon_full_screen {
 		opacity: 1;
@@ -294,7 +318,6 @@ onClickOutside(lightbox, (event) => {
 	.image_slider {
 		height: auto;
 		.icon_full_screen {
-			right: 1rem;
 			opacity: 1;
 		}
 		.active_image {
