@@ -58,10 +58,12 @@ export default defineNuxtConfig({
 			availableLocales: ['ua', 'en',],
 			messages: {
         en: {
-          toHome: 'To Home'
+          toHome: 'To Home',
+					emailCopied: 'email copied'
         },
         ua: {
-          toHome: 'На головну'
+          toHome: 'На головну',
+					emailCopied: 'адресу скопійовано'
         },
       }
 		}

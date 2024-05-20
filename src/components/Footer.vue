@@ -4,7 +4,8 @@ import { useClipboard } from '@vueuse/core'
 
 const { smedias, logo, links } = storeToRefs(useAppStore())
 
-const source = ref('Hello')
+const { t } = useI18n()
+const source = ref('info@fireon.com.ua')
 const { copy, copied } = useClipboard({ source })
 </script>
 
@@ -27,7 +28,7 @@ const { copy, copied } = useClipboard({ source })
 				<Icon :name="media.icon" />
 			</NuxtLink>
 			<div :class="['alert', { show: copied }]">
-				<p>email copied</p>
+				<p>{{ t('emailCopied') }}</p>
 			</div>
 		</div>
 	</footer>
@@ -53,6 +54,7 @@ footer {
 		.link {
 			padding-right: 1rem;
 			overflow: hidden;
+
 
 			&:last-of-type {
 				padding-right: 0;
@@ -90,12 +92,13 @@ footer {
 
 		.alert{
 			position: absolute;
-			top: -2rem;
+			top: -1.5rem;
 			left: 0;
 			width: 100%;
 
 			color: $primary;
 			font-size: .75rem;
+			text-transform: capitalize;
 			display: none;
 			&.show {
 				display: initial;
@@ -103,6 +106,8 @@ footer {
 		}
 		.media {
 			margin-right: 1rem;
+			cursor: pointer;
+
 			&:first-child {
 				svg {
 					width: 20px;
