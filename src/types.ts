@@ -158,7 +158,10 @@ export interface UserData {
 	phone: string,
 	comment: string,
 	products: Product[],
-	// promoCode: {}
+	orderNumber?: string,
+	invoiceId?: string,
+	type?: string,
+	status?: string,
 } 
 
 export interface City {
@@ -329,4 +332,31 @@ export interface ttnDataType {
 	errorCodes: any[],
 	warningCodes: any[],
 	infoCodes: any[]
+}
+
+
+export interface IMonobankResponse {
+	type?: string,
+  invoiceId: string,
+  status: string,
+  payMethod: string,
+  amount: number,
+  ccy: number,
+  finalAmount: number,
+  createdDate: string,
+  modifiedDate: string,
+  reference: string,
+  destination: string,
+  paymentInfo: {
+    rrn: string,
+    approvalCode: string,
+    tranId: string,
+    terminal: string,
+    bank: string,
+    paymentSystem: string,
+    country: string,
+    fee: number,
+    paymentMethod: string,
+    maskedPan: string
+  }
 }

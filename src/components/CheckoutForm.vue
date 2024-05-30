@@ -80,14 +80,14 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
 	// toggleModal()	// close basket modal
-	console.log(values);
+
 		// order number 
-		const errorMessage = async (text: string) => {
-			statusMessage.value = text
-			await promiseTimeout(4000)
-			statusMessage.value = ''
-			// resetForm() 
-		}
+		// const errorMessage = async (text: string) => {
+		// 	statusMessage.value = text
+		// 	await promiseTimeout(4000)
+		// 	statusMessage.value = ''
+		// 	resetForm() 
+		// }
 		
 		// create data for localStore
 		const UserData: UserData = {
@@ -104,7 +104,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 		}
 		
 	// save email data to localStorage
-	localStorage.setItem('user_data', JSON.stringify(UserData))
+	// localStorage.setItem('user_data', JSON.stringify(UserData))
 	// create ttn
 	// const {endResponse, error} = await useCreateNP_TTN()
 	
@@ -124,24 +124,36 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 				
 				try {
 					const paymentRequestOptions = usePaymentOptions(products.value);
-					const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
+					const { data: monoData, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
 					if (isFinished.value) {
 						const parsedValue: {
 							invoiceId: string,
 							pageUrl: string
-						} = JSON.parse(data.value as string)
-						// console.log(parsedValue)
+						} = JSON.parse(monoData.value as string)
 						
 						// store invoice data
-						localStorage.setItem('invoice', parsedValue.invoiceId)
+						localStorage.setItem('invoice', parsedValue.invoiceId);
 						
-						const orderNumber = crypto.randomUUID().slice(0, 6)
-						useEmailTemplate(orderNumber);
-						localStorage.setItem('orderNumber', orderNumber)
+						const orderNumber = crypto.randomUUID().slice(0, 6);
+						localStorage.setItem('orderNumber', orderNumber);
 
-						// redirect user to monobank payment page
-						
-						window.location.href = parsedValue.pageUrl;
+						UserData.orderNumber = orderNumber;
+						UserData.invoiceId = parsedValue.invoiceId;
+						UserData.type = 'user';
+
+						const { data: serverData, error } = await useFetch('/api/payment', {
+							method: 'POST',
+							body: JSON.stringify(UserData),
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						});
+
+						const anchor = document.createElement('a');
+						anchor.href = parsedValue.pageUrl;
+						anchor.target = "_blank";
+						document.body.appendChild(anchor);
+						anchor.click();
 		}
 
 		// show result modal 
