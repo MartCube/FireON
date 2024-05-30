@@ -37,7 +37,7 @@ export default function(products: Product[]) {
 				"basketOrder": paymentBillBasketData
 			},
 			"redirectUrl": `${config.public.domain}payment-status`,
-			"webHookUrl": "https://gone-dean-tigers-weight.trycloudflare.com/api/payment",
+			"webHookUrl": "https://fireon.com.ua/api/payment",
 			"validity": 3600,
 			"paymentType": "debit",
 		}
