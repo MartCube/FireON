@@ -59,11 +59,17 @@ export default defineNuxtConfig({
 			messages: {
         en: {
           toHome: 'To Home',
-					emailCopied: 'email copied'
+					emailCopied: 'email copied',
+					callme: 'Call me',
+					iban: 'Iban',
+					payment: 'Payment',
         },
         ua: {
           toHome: 'На головну',
-					emailCopied: 'адресу скопійовано'
+					emailCopied: 'адресу скопійовано',
+					callme: 'перезвоните мне',
+					iban: 'оплата по IBAN',
+					payment: 'наложенный платеж',
         },
       }
 		}

@@ -8,6 +8,7 @@ import { promiseTimeout, useFetch, useTimeout } from '@vueuse/core'
 // import useCreateNP_TTN from '../composables/useCreateNP_TTN'
 // 4441 1144 3585 8681
 const config = useRuntimeConfig()
+const { t } = useI18n()
 
 const { orderFormData: data, pending } = storeToRefs(useBasketStore())
 
@@ -199,9 +200,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			<!-- <NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  /> -->
 			<VeeInput :data="data.comment" />
 			<!-- <VeeInput :data="data.promoCode" /> -->
-			<VeeCheckbox :data="{name:'callme', label:'call me', value: false}" />
-			<VeeCheckbox :data="{name:'iban', label:'iban', value: false}" />
-			<VeeCheckbox :data="{name:'payment', label:'payment', value: false}" />
+			<VeeCheckbox :data="{name:'callme', label:t('callme') , value: false}" />
+			<VeeCheckbox :data="{name:'iban', label:t('iban') , value: false}" />
+			<VeeCheckbox :data="{name:'payment', label:t('payment') , value: false}" />
 			<button type="submit" :disabled="isSubmitting">
 				<span>{{ data.button }}</span>
 			</button>
