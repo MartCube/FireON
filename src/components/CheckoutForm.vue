@@ -81,8 +81,6 @@ const { handleSubmit, isSubmitting } = useForm<CheckoutForm>({ validationSchema 
 // send form
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
-	console.log(values.callme);
-	
 	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
 	// toggleModal()	// close basket modal
@@ -146,7 +144,8 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 						
 						const orderNumber = crypto.randomUUID().slice(0, 6);
 						localStorage.setItem('orderNumber', orderNumber);
-
+						const emailToFireOn = await useEmailTemplate()
+						console.log("emailToFireOn", emailToFireOn);
 						// redirect user to monobank payment page
 						
 						// window.location.href = parsedValue.pageUrl;
