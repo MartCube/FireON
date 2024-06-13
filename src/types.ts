@@ -102,6 +102,11 @@ export interface ContactForm {
 	message: TextField,
 	button: string,
 }
+export interface CheckboxField {
+	name: string,
+	label: string,
+}
+
 export interface CheckoutForm {
 	title: string,
 	place: TextField,
@@ -113,6 +118,9 @@ export interface CheckoutForm {
 	phone: TextField,
 	comment: TextField,
 	promoCode: TextField,
+	callme: CheckboxField,
+	iban: CheckboxField,
+	payment: CheckboxField,
 	button: string,
 }
 export interface Basket {
@@ -158,6 +166,9 @@ export interface UserData {
 	phone: string,
 	comment: string,
 	products: Product[],
+	callme?: boolean,
+	iban?: boolean,
+	payment?: boolean,
 	// promoCode: {}
 } 
 

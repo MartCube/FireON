@@ -5,7 +5,7 @@ import { z } from 'zod';
 import type { CheckoutForm, City, UserData, Warehouse, ttnDataType } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { promiseTimeout, useFetch, useTimeout } from '@vueuse/core'
-import useCreateNP_TTN from '../composables/useCreateNP_TTN'
+// import useCreateNP_TTN from '../composables/useCreateNP_TTN'
 // 4441 1144 3585 8681
 const config = useRuntimeConfig()
 
@@ -57,10 +57,14 @@ const validationSchema = toFormValidator(
 			}, {
         message: "Only numbers please",
       }),
+		
 		// phone: z.number().refine((val) => val.toString().length === 12, {
 		// 	message: "Must have 12 digits"
 		// }),
 		comment: z.string().optional(),
+		callme: z.boolean().optional(),
+		iban: z.boolean().optional(),
+		payment: z.boolean().optional(),
 		// promoCode: z.union([z.string().refine((val) => {
     //   return promoCodes.some(el => el.code === val)
     // }, { message: "Invalid promotion code" }).optional(), z.literal("")]),
@@ -77,6 +81,8 @@ const { handleSubmit, isSubmitting } = useForm<CheckoutForm>({ validationSchema 
 // send form
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
+	console.log(values);
+	
 	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
 	// toggleModal()	// close basket modal
@@ -101,6 +107,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			products: products.value,
 			middlename:  values.middlename ? values.middlename.toString() : '',
 			comment: values.comment ? values.comment.toString() : '',
+			// callme: values.callme.toBo
 		}
 		
 	// save email data to localStorage
@@ -123,17 +130,17 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 				
 				
 				try {
-					const paymentRequestOptions = usePaymentOptions(products.value);
-					const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
-					if (isFinished.value) {
-						const parsedValue: {
-							invoiceId: string,
-							pageUrl: string
-						} = JSON.parse(data.value as string)
+					// const paymentRequestOptions = usePaymentOptions(products.value);
+					// const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
+					// if (isFinished.value) {
+					// 	const parsedValue: {
+					// 		invoiceId: string,
+					// 		pageUrl: string
+					// 	} = JSON.parse(data.value as string)
 						// console.log(parsedValue)
 						
 						// store invoice data
-						localStorage.setItem('invoice', parsedValue.invoiceId)
+						// localStorage.setItem('invoice', parsedValue.invoiceId)
 						
 						const orderNumber = crypto.randomUUID().slice(0, 6)
 						useEmailTemplate(orderNumber);
@@ -141,8 +148,8 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
 						// redirect user to monobank payment page
 						
-						window.location.href = parsedValue.pageUrl;
-		}
+						// window.location.href = parsedValue.pageUrl;
+		// }
 
 		// show result modal 
 		// there is no result modal anymore we redierect user to payment-status page
@@ -174,6 +181,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			<!-- <NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  /> -->
 			<VeeInput :data="data.comment" />
 			<!-- <VeeInput :data="data.promoCode" /> -->
+			<VeeCheckbox :data="{name:'callme', label:'call me'}" />
+			<VeeCheckbox :data="{name:'iban', label:'iban'}" />
+			<VeeCheckbox :data="{name:'payment', label:'payment'}" />
 			<button type="submit" :disabled="isSubmitting">
 				<span>{{ data.button }}</span>
 			</button>
