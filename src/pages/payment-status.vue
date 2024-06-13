@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
 import createCRMtask from '../composables/createCRMtask'
-import { CrmResponse } from '../types'
+import { CrmResponse, UserData } from '../types'
 
 
 const statusMessage = ref('')
@@ -50,13 +50,17 @@ try {
 					Дякуємо! 
 					Номер вашого замовлення: 
 					`
-					orderNumber.value = localStorage.getItem('orderNumber') as string
+					const rawdata = localStorage.getItem('user_data');
+
+					const data: UserData = JSON.parse(rawdata as string);
+					data.invoiceId = localStorage.getItem('invoice') as string || '';
+					data.orderNumber = localStorage.getItem('orderNumber') as string || '';
 					
 					// icon status
 					icon.value = 'IconSuccess'
 					
 					// // send form with products sendgrid
-					const emailToFireOn = await useEmailTemplate(orderNumber.value)
+					const emailToFireOn = await useEmailTemplate(data)
 					console.log("emailToFireOn", emailToFireOn);
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 					

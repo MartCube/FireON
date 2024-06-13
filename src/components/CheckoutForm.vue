@@ -81,19 +81,19 @@ const { handleSubmit, isSubmitting } = useForm<CheckoutForm>({ validationSchema 
 // send form
 const onSubmit = handleSubmit(async (values, { resetForm }) => {
 
-	console.log(values);
+	console.log(values.callme);
 	
 	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
 	// toggleModal()	// close basket modal
-	console.log(values);
+
 		// order number 
-		const errorMessage = async (text: string) => {
-			statusMessage.value = text
-			await promiseTimeout(4000)
-			statusMessage.value = ''
-			// resetForm() 
-		}
+		// const errorMessage = async (text: string) => {
+		// 	statusMessage.value = text
+		// 	await promiseTimeout(4000)
+		// 	statusMessage.value = ''
+		// 	resetForm() 
+		// }
 		
 		// create data for localStore
 		const UserData: UserData = {
@@ -107,7 +107,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			products: products.value,
 			middlename:  values.middlename ? values.middlename.toString() : '',
 			comment: values.comment ? values.comment.toString() : '',
-			// callme: values.callme.toBo
+			callme: values.callme as unknown as boolean,
+			iban: values.iban as unknown as boolean,
+			payment: values.payment as unknown as boolean
 		}
 		
 	// save email data to localStorage
@@ -142,13 +144,29 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 						// store invoice data
 						// localStorage.setItem('invoice', parsedValue.invoiceId)
 						
-						const orderNumber = crypto.randomUUID().slice(0, 6)
-						useEmailTemplate(orderNumber);
-						localStorage.setItem('orderNumber', orderNumber)
+						const orderNumber = crypto.randomUUID().slice(0, 6);
+						localStorage.setItem('orderNumber', orderNumber);
 
 						// redirect user to monobank payment page
 						
 						// window.location.href = parsedValue.pageUrl;
+						// UserData.orderNumber = orderNumber;
+						// UserData.invoiceId = parsedValue.invoiceId;
+						// UserData.type = 'user';
+
+						// const { data: serverData, error } = await useFetch('/api/payment', {
+						// 	method: 'POST',
+						// 	body: JSON.stringify(UserData),
+						// 	headers: {
+						// 		'Content-Type': 'application/json'
+						// 	}
+						// });
+
+						// const anchor = document.createElement('a');
+						// anchor.href = parsedValue.pageUrl;
+						// anchor.target = "_blank";
+						// document.body.appendChild(anchor);
+						// anchor.click();
 		// }
 
 		// show result modal 
@@ -181,9 +199,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			<!-- <NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  /> -->
 			<VeeInput :data="data.comment" />
 			<!-- <VeeInput :data="data.promoCode" /> -->
-			<VeeCheckbox :data="{name:'callme', label:'call me'}" />
-			<VeeCheckbox :data="{name:'iban', label:'iban'}" />
-			<VeeCheckbox :data="{name:'payment', label:'payment'}" />
+			<VeeCheckbox :data="{name:'callme', label:'call me', value: false}" />
+			<VeeCheckbox :data="{name:'iban', label:'iban', value: false}" />
+			<VeeCheckbox :data="{name:'payment', label:'payment', value: false}" />
 			<button type="submit" :disabled="isSubmitting">
 				<span>{{ data.button }}</span>
 			</button>

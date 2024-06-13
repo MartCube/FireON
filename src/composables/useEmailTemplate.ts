@@ -1,20 +1,22 @@
 import { UserData, ttnDataType } from "../types"
 import { useFetch } from '@vueuse/core'
 
-export default async function(orderNumber: string) {
+export default async function(user: UserData) {
 	
-	const rawdata = localStorage.getItem('user_data')
+	// const rawdata = localStorage.getItem('user_data');
 	
-	const data: UserData = JSON.parse(rawdata as string)
-	const invoice: string = localStorage.getItem('invoice') as string || ''
-	const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
+	// const data: UserData = JSON.parse(rawdata as string);
+	// const invoice: string = localStorage.getItem('invoice') as string || '';
+	// const orderNumber: string = localStorage.getItem('orderNumber') as string || '';
+	// const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
+	console.log('email');
 
 	const config = useRuntimeConfig() 
 
 	// prepare product email html
 	let productsEmailTemplate: any;
-	if(data) {
-		productsEmailTemplate = data.products.map( el => 
+	if(user) {
+		productsEmailTemplate = user.products.map( el => 
 			`<tr class="item">
 				<td><div class="cell"><strong>Name:</stong> ${el.name}</div></td>
 				<td><div class="cell"><strong>Image:</stong> <img src="https://cdn.sanity.io/images/okruw9dl/production/${el.image.slice(6, el.image.length - 4)}.png?h=100&w=250" ></div></td>
@@ -28,24 +30,24 @@ export default async function(orderNumber: string) {
 		// console.log(productsEmailTemplate);
 		const emailTemplate = `
 		<div class="wrapper">
-			<h3><strong>Номер замовлення:</stong> ${orderNumber}</h3>
+			<h3><strong>Номер замовлення:</stong> ${user.orderNumber}</h3>
 			<div class="info-item">
-				<h4>Name: </h4><p>${data.firstname} ${data.middlename} ${data.lastname === undefined || data.lastname === null ? '' : data.lastname}</p>
+				<h4>Name: </h4><p>${user.firstname} ${user.middlename} ${user.lastname === undefined || user.lastname === null ? '' : user.lastname}</p>
 			</div>
 			<div class="info-item">
-			<h4>City: </h4><p>${data.place}</p>
+			<h4>City: </h4><p>${user.place}</p>
 			</div>
 			<div class="info-item">
-			<h4>Warehouse: </h4><p>${data.warehouse}</p>
+			<h4>Warehouse: </h4><p>${user.warehouse}</p>
 			</div>
 			<div class="info-item">
-			<h4>Phone: </h4><p>${data.phone}</p>
+			<h4>Phone: </h4><p>${user.phone}</p>
 			</div>
 			<div class="info-item">
-			<h4>Comment: </h4><p>${data.comment === undefined || data.comment === null ? '' : data.comment}</p>
+			<h4>Comment: </h4><p>${user.comment === undefined || user.comment === null ? '' : user.comment}</p>
 			</div>
 			<div class="info-item">
-			<h4>Invoice: ${invoice}</h4>
+			<h4>Invoice: ${user.invoiceId}</h4>
 			</div>
 			<h4>Products:</h4>
 			<table class="products">
@@ -64,7 +66,6 @@ export default async function(orderNumber: string) {
 	// prepare product email html
 
 	
-	// const fetch = async () => {
 	try {
 		const { response, error, data, isFinished } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, requestEmailOptions)
 		if(isFinished) {
@@ -75,7 +76,4 @@ export default async function(orderNumber: string) {
 		return err
 	}
 		
-	// }
-
-	// return await fetch
 }
