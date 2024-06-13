@@ -60,6 +60,9 @@ const { value } = useField(nameRef)
 		border-width: 0 2px 2px 0;
 		transform: rotate(45deg);
 	}
+	label {
+		color: $white30;
+	}
 
 }
 </style>

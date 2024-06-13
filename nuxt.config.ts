@@ -67,9 +67,9 @@ export default defineNuxtConfig({
         ua: {
           toHome: 'На головну',
 					emailCopied: 'адресу скопійовано',
-					callme: 'перезвоните мне',
-					iban: 'оплата по IBAN',
-					payment: 'наложенный платеж',
+					callme: 'Передзвоніть мені',
+					iban: 'Сплата по IBAN',
+					payment: 'Накладений платіж',
         },
       }
 		}
