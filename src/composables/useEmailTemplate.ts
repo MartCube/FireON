@@ -8,7 +8,7 @@ export default async function() {
 	
 	const data: UserData = JSON.parse(rawdata as string);
 	// const invoice: string = localStorage.getItem('invoice') as string || '';
-	const orderNumber: string = localStorage.getItem('orderNumber') as string || '';
+	const orderNumber: string = localStorage.getItem('orderNumber') as string;
 	// const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
 	console.log('email');
 

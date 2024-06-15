@@ -145,11 +145,11 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 						
 						const orderNumber = crypto.randomUUID().slice(0, 6);
 						localStorage.setItem('orderNumber', orderNumber);
-						const emailToFireOn = await useEmailTemplate()
-						console.log("emailToFireOn", emailToFireOn);
+						// const emailToFireOn = await useEmailTemplate()
+						// console.log("emailToFireOn", emailToFireOn);
 						// redirect user to monobank payment page
 						
-						// window.location.href = parsedValue.pageUrl;
+						window.location.href = `${config.public.domain}/payment-status`;
 						// UserData.orderNumber = orderNumber;
 						// UserData.invoiceId = parsedValue.invoiceId;
 						// UserData.type = 'user';
