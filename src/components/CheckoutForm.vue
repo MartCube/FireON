@@ -149,7 +149,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 						// console.log("emailToFireOn", emailToFireOn);
 						// redirect user to monobank payment page
 						
-						window.location.href = `${config.public.domain}/payment-status`;
+						window.location.href = `${config.public.domain}payment-status`;
 						// UserData.orderNumber = orderNumber;
 						// UserData.invoiceId = parsedValue.invoiceId;
 						// UserData.type = 'user';
