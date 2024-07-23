@@ -48,9 +48,6 @@ export default async function() {
 			<h4>Comment: </h4><p>${data.comment === undefined || data.comment === null ? '' : data.comment}</p>
 			</div>
 			<div class="info-item">
-			<h4>Invoice: ${data.invoiceId}</h4>
-			</div>
-			<div class="info-item">
 			<h4>Call back: ${data.callme ?? ''}</h4>
 			</div>
 			<div class="info-item">

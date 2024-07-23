@@ -50,11 +50,11 @@ try {
 					Дякуємо! 
 					Номер вашого замовлення: 
 					`
-					// const rawdata = localStorage.getItem('user_data');
+					const rawdata = localStorage.getItem('user_data');
 
-					// const data: UserData = JSON.parse(rawdata as string);
-					// data.invoiceId = localStorage.getItem('invoice') as string || '';
-					// data.orderNumber = localStorage.getItem('orderNumber') as string || '';
+					const data: UserData = JSON.parse(rawdata as string);
+					//data.invoiceId = localStorage.getItem('invoice') as string || '';
+					orderNumber.value = localStorage.getItem('orderNumber') as string || '';
 					
 					// icon status
 					icon.value = 'IconSuccess'
