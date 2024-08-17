@@ -50,7 +50,7 @@ const { locale, t } = useI18n()
 					Дякуємо! 
 					Номер вашого замовлення: 
 					`
-					const rawdata = localStorage.getItem('user_data');
+					// const rawdata = localStorage.getItem('user_data');
 
 					// const data: UserData = JSON.parse(rawdata as string);
 					//data.invoiceId = localStorage.getItem('invoice') as string || '';
