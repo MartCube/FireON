@@ -1,49 +1,49 @@
 <script setup lang="ts">
-import { useFetch } from '@vueuse/core'
-import createCRMtask from '../composables/createCRMtask'
-import { CrmResponse, UserData } from '../types'
+// import { useFetch } from '@vueuse/core'
+// import createCRMtask from '../composables/createCRMtask'
+// import { CrmResponse, UserData } from '../types'
 
 
 const statusMessage = ref('')
-const invoiceId = ref('')
+// const invoiceId = ref('')
 const icon = ref('')
-const config = useRuntimeConfig();
+// const config = useRuntimeConfig();
 const orderNumber = ref('')
 const { locale, t } = useI18n()
 
-const errorMessage = (text: string) => {
-	statusMessage.value = text
-	icon.value = 'IconFailure'
-}
+// const errorMessage = (text: string) => {
+// 	statusMessage.value = text
+// 	icon.value = 'IconFailure'
+// }
 
 // const {localePath} = useI18n()
 // console.log(localePath);
 
 
-try {
+// try {
 	// checking if window object is loaded and client side is available
 	// needed for localStorage and crypto 
 	if (process.client) {
 
 		
 		
-		invoiceId.value = localStorage.getItem('invoice') as string
+	// 	invoiceId.value = localStorage.getItem('invoice') as string
 
-		const headers = {
-			method: 'GET',
-			headers: {
-				'X-Token': config.public.mono
-			},
-		};
-		// monobank create invoice
-		const { data, isFinished } = await useFetch(`${config.public.monoEnpoint}status?invoiceId=${invoiceId.value}`, headers)
-		if(isFinished.value) {
-			localStorage.setItem("invoiceData", data.value as string)
-			const parsedResponse = JSON.parse(data.value as string)
-			const statusResponce = parsedResponse.status
+	// 	const headers = {
+	// 		method: 'GET',
+	// 		headers: {
+	// 			'X-Token': config.public.mono
+	// 		},
+	// 	};
+	// 	// monobank create invoice
+	// 	const { data, isFinished } = await useFetch(`${config.public.monoEnpoint}status?invoiceId=${invoiceId.value}`, headers)
+	// 	if(isFinished.value) {
+	// 		localStorage.setItem("invoiceData", data.value as string)
+	// 		const parsedResponse = JSON.parse(data.value as string)
+	// 		const statusResponce = parsedResponse.status
 
-			switch (statusResponce) {
-				case "success":
+	// 		switch (statusResponce) {
+	// 			case "success":
 					
 					// status message
 					statusMessage.value = `
@@ -52,7 +52,7 @@ try {
 					`
 					const rawdata = localStorage.getItem('user_data');
 
-					const data: UserData = JSON.parse(rawdata as string);
+					// const data: UserData = JSON.parse(rawdata as string);
 					//data.invoiceId = localStorage.getItem('invoice') as string || '';
 					orderNumber.value = localStorage.getItem('orderNumber') as string || '';
 					
@@ -60,8 +60,9 @@ try {
 					icon.value = 'IconSuccess'
 					
 					// // send form with products sendgrid
-					const emailToFireOn = await useEmailTemplate()
-					console.log("emailToFireOn", emailToFireOn);
+					// const emailToFireOn = await useEmailTemplate()
+					console.log("emailToFireOn");
+					
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 					
 					// send data to crm
@@ -71,21 +72,21 @@ try {
 					// city , warehouse, user data, etc to not fetch it 
 					// but for now we cleaning after ourself
 
-					break
+// 					break
 					
-					case "failure":
+// 					case "failure":
 						
-						 errorMessage(parsedResponse.failureReason)
-						break
+// 						 errorMessage(parsedResponse.failureReason)
+// 						break
 
-					default:
-						break;
-			}
-		}
-	}
+// 					default:
+// 						break;
+// 			}
+// 		}
+// 	}
 
-} catch (error) {
-	console.log(error)
+// } catch (error) {
+// 	console.log(error)
 }
 
 
