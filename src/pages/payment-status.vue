@@ -60,8 +60,8 @@ const { locale, t } = useI18n()
 					icon.value = 'IconSuccess'
 					
 					// // send form with products sendgrid
-					// const emailToFireOn = await useEmailTemplate()
-					console.log("emailToFireOn");
+					const emailToFireOn = await useEmailTemplate()
+					console.log("emailToFireOn", emailToFireOn);
 					
 					// const { response: emailResponse, error: emailError, data: emailData } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, emailToFireOn)
 					
