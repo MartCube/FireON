@@ -84,6 +84,7 @@ onClickOutside(lightbox, (event) => {
 			:src="activeImage" 
 			:width="500" 
 			:height="500"
+      :imageShadow="true"
 			@click="lightboxToggle = true" 
 		/>
 		<div class="icon_full_screen" 
@@ -130,6 +131,8 @@ onClickOutside(lightbox, (event) => {
 		max-height: 450px;
 		object-fit: contain;
 		margin-bottom: 5rem;
+    filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%));
+
 		&:hover {
 			cursor: pointer;
 		}
@@ -184,6 +187,7 @@ onClickOutside(lightbox, (event) => {
 
 		.image {
 			opacity: 0.4;
+      //filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%));
 
 			&.active {
 				opacity: 1;
