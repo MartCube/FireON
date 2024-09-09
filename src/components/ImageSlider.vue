@@ -84,7 +84,6 @@ onClickOutside(lightbox, (event) => {
 			:src="activeImage" 
 			:width="500" 
 			:height="500"
-      :imageShadow="true"
 			@click="lightboxToggle = true" 
 		/>
 		<div class="icon_full_screen" 
@@ -138,7 +137,7 @@ onClickOutside(lightbox, (event) => {
 	}
 
   .active_image_not_lightbox {
-    filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%));
+    filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 75%));
   }
 
 	.icon_full_screen {

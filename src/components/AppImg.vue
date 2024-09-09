@@ -2,7 +2,8 @@
 	<div class="image">
 		<SanityImage :asset-id="src" :w="width" :h="height">
 			<template #default="{ src }">
-				<img v-lazy="src" :width="width" :height="height" :class="{ 'drop-shadow': imageShadow }" />
+<!--				<img v-lazy="src" :width="width" :height="height" :class="{ 'drop-shadow': imageShadow }" />-->
+				<img v-lazy="src" :width="width" :height="height" />
 			</template>
 		</SanityImage>
 	</div>
@@ -13,7 +14,7 @@ defineProps<{
 	src: string,
 	width: number,
 	height: number,
-  imageShadow?: boolean
+  // imageShadow?: boolean
 }>()
 </script>
 
@@ -45,9 +46,9 @@ defineProps<{
 			transition: all 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
 		}
 
-    &.drop-shadow {
-      filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%));
-    }
+    //&.drop-shadow {
+    //  filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%));
+    //}
 	}
 }
 </style>
