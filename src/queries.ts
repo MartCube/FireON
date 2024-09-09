@@ -1,5 +1,6 @@
 export const AppQuery = groq`*[ _type == 'app' && __i18n_lang == $lang][0]{
 	"logo": logo.asset._ref,
+	"productGalleryBg": productGalleryBg.asset._ref,
 	"links": links[] { title, hashtag },
 	"smedias": smedias[] { name, icon, link },
 	content[]{
