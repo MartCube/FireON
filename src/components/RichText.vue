@@ -20,7 +20,7 @@ const serializers = {
 	ul {
 		margin-bottom: 1rem;
 		li {
-			font-size: 12px;
+			font-size: 0.75rem;
 			line-height: 1.25rem;
 			color: $white30;
 			margin: 0 0 0.35rem 1rem;
@@ -31,7 +31,7 @@ const serializers = {
 		margin-bottom: 1rem;
 		color: $white30;
 
-		font-size: 12px;
+		font-size: 0.75rem;
 		line-height: 1.25rem;
 
 

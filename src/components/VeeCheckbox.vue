@@ -41,7 +41,7 @@ const { value } = useField(nameRef)
 		background-color: $white30;
 		border: 2px solid $white30;
 		border-radius: 3px;
-		margin-right: 10px;
+		margin-right: 0.625rem;
 		transition: background-color 0.3s, border-color 0.3s;
 	}
 	input:checked + span{

@@ -10,8 +10,9 @@ defineProps<{ value: string | undefined }>()
 
 <style lang="scss" scoped>
 .AppBtn {
-	width: 200px;
-	height: 50px;
+  max-width: 12.5rem;
+  width: 100%;
+	height: 3.125rem;
 
 	border: none;
 	background: $primary;

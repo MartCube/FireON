@@ -213,7 +213,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 form {
 	width: 100%;
 	@media (min-width: 800px) {
-		max-width: 460px;
+		max-width: 28.75rem;
 	}
 	display: flex;
 	flex-direction: column;
@@ -240,7 +240,7 @@ form {
 	button {
 		align-self: center;
 		width: 70%;
-		height: 50px;
+		height: 3.125rem;
 		margin: 2rem 0;
 		transform: skew(-10deg);
 		border: none;
@@ -260,7 +260,7 @@ form {
 			color: $dark;
 			font-weight: 400;
 			font-size: 1rem;
-			line-height: 27px;
+			line-height: 1.6875rem;
 		}
 
 		&:hover {

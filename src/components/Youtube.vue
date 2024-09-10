@@ -30,7 +30,7 @@ const showFrame = ref(false)
 .youtube {
 	margin-top: 2rem;
 	width: 100%;
-	max-width: 500px;
+	max-width: 31.25rem;
 	height: 280px;
 
 	.image{

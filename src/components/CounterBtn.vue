@@ -17,8 +17,9 @@ defineEmits<{
 
 <style lang="scss" scoped>
 .counter_btn {
-	width: 200px;
-	height: 50px;
+	max-width: 12.5rem;
+  width: 100%;
+	height: 3.125rem;
 	border: 1px solid $white30;
 	transform: skew(-10deg);
 	user-select: none;
