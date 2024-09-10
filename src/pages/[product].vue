@@ -230,6 +230,7 @@ function handleDecrement() {
         .price {
           margin-right: 2rem;
           min-width: fit-content;
+          color: $primary;
         }
 
 				.counter_btn {
