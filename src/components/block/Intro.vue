@@ -64,8 +64,8 @@ defineProps<{
 
 				@media (min-width: 1370px) {
 					h1 {
-						font-size: 49px;
-						line-height: 69px;
+						font-size: 3.0625rem;
+						line-height: 4.3125rem;
 					}
 				}
 			}
@@ -134,7 +134,7 @@ defineProps<{
 				z-index: 3;
 
 				h1 {
-					font-size: 27px;
+					font-size: 1.6875rem;
 					line-height: 1.4;
 				}
 			}
@@ -152,7 +152,7 @@ defineProps<{
 
 			.btn {
 				margin: 3rem 0;
-				min-width: 200px;
+				min-width: 12.5rem;
 				position: relative;
 				z-index: 3;
 				padding: 1rem;

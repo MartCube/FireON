@@ -60,7 +60,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 <style lang="scss" scoped>
 form {
 	width: 100%;
-	max-width: 460px;
+	max-width: 28.75rem;
 
 	display: flex;
 	flex-direction: column;

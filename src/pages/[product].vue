@@ -19,6 +19,7 @@ if (!data.value) throw createError({
 
 const colors = data.value.colorMagazines.map((magazine) => magazine.color)
 const count = ref(1)
+const priceInHtml = ref(data.value.colorMagazines[0].price)
 
 // first colorMagazine is active
 const activeColorMagazine = ref(data.value.colorMagazines[0])
@@ -52,9 +53,19 @@ function AddToBasket() {
 	addProduct(newProduct)
 	// reset counter
 	count.value = 1
+  priceInHtml.value = activeColorMagazine.value.price
 }
 // write metatags
 
+function handleIncrement() {
+  count.value++
+  priceInHtml.value = (activeColorMagazine.value.price * count.value)
+}
+
+function handleDecrement() {
+  count.value--
+  priceInHtml.value = (activeColorMagazine.value.price * count.value)
+}
 </script>
 
 <template>
@@ -72,15 +83,15 @@ function AddToBasket() {
 							<li v-if="data.info.rem">{{ data.info.rem }}</li>
 							<li v-if="data.info.blk">{{ data.info.blk }}</li>
 						</ul>
-						<span class="price">
-							<Icon name="IconMoney" />
-							{{ activeColorMagazine.price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
-						</span>
 					</div>
 					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 
 					<div v-if="activeColorMagazine.isProductActive && color" class="to_basket">
-						<CounterBtn :data="count" @dec="count--" @inc="count++" />
+            	<span class="price">
+							<Icon name="IconMoney" />
+							{{ priceInHtml }} {{ locale === 'ua' ? 'грн' : 'uah' }}
+						</span>
+						<CounterBtn :data="count" @dec="handleDecrement" @inc="handleIncrement" />
 						<AppBtn :value="data.button" @click="AddToBasket()" />
 					</div>
 					<div v-else class="not_available">
@@ -102,15 +113,15 @@ function AddToBasket() {
 					</ul>
 				</div>
 				<ImageSlider :gallery="activeColorMagazine.gallery" />
-				<div class="price">
-					<span>
-						<Icon name="IconMoney" />{{ activeColorMagazine.price }} {{ locale === 'ua' ? 'грн' : 'uah' }}
-					</span>
-				</div>
 				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
 				
 				<div v-if="activeColorMagazine.isProductActive && color" class="to_basket">
-					<CounterBtn :data="count" @dec="count--" @inc="count++" />
+          <div class="price">
+            <span>
+              <Icon name="IconMoney" />{{ priceInHtml }} {{ locale === 'ua' ? 'грн' : 'uah' }}
+            </span>
+          </div>
+					<CounterBtn :data="count" @dec="handleDecrement" @inc="handleIncrement" />
 					<AppBtn :value="data.button" @click="AddToBasket()" />
 				</div>
 				<div v-else class="not_available">
@@ -186,8 +197,8 @@ function AddToBasket() {
 
 					li {
 						text-transform: uppercase;
-						font-size: 16px;
-						line-height: 27px;
+						font-size: 1rem;
+						line-height: 1.6875rem;
 						color: $white50;
 
 
@@ -214,6 +225,12 @@ function AddToBasket() {
 			.to_basket {
 				width: 100%;
 				display: flex;
+        align-items: center;
+
+        .price {
+          margin-right: 2rem;
+          min-width: fit-content;
+        }
 
 				.counter_btn {
 					margin-right: 2rem;
@@ -269,13 +286,13 @@ function AddToBasket() {
 		}
 
 		.price {
-			width: 100%;
+      width: fit-content;
 			position: relative;
 
 			span {
-				position: absolute;
-				top: 2rem;
-				right: 0;
+				//position: absolute;
+				//top: 2rem;
+				//right: 0;
 				color: $primary;
 				font-size: 1rem;
 
@@ -309,12 +326,23 @@ function AddToBasket() {
 	#product {
 		.mobile {
 			display: flex;
+      position: relative;
 		}
 
 		.desktop {
 			display: none;
 		}
 	}
+}
+
+@media screen and (max-width: 768px) {
+  #product {
+
+    .product-gallery-bg {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
 </style>

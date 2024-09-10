@@ -110,8 +110,8 @@ const { locale, t } = useI18n()
 
 <style lang="scss" scoped>
 .btn {
-	max-width: 200px;
-	height: 50px;
+	max-width: 12.5rem;
+	height: 3.125rem;
 
 	background: $primary;
 	transform: skew(-10deg);

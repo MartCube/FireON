@@ -70,8 +70,8 @@ defineProps<{
 			li {
 				margin-left: 0.5rem;
 				text-transform: uppercase;
-				font-size: 12px;
-				line-height: 18px;
+				font-size: 0.75rem;
+				line-height: 1.125rem;
 				letter-spacing: 0.225em;
 				color: $white70;
 
@@ -82,7 +82,7 @@ defineProps<{
 		}
 
 		.btn {
-			max-width: 180px;
+			max-width: 11.25rem;
 		}
 	}
 }
@@ -143,10 +143,10 @@ defineProps<{
 
 			.btn {
 				padding: 0;
-				width: 120px;
+				width: 7.5rem;
 
 				span {
-					font-size: 12px;
+					font-size: 0.75rem;
 				}
 			}
 		}

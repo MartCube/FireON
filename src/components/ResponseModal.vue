@@ -59,7 +59,7 @@ onClickOutside(responseRef, () => toggleResponse(''))
 			text-align: center;
 			text-transform: uppercase;
 			font-size: 28px;
-			line-height: 34px;
+			line-height: 2.125rem;
 		}
 
 		.success {

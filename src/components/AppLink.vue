@@ -18,8 +18,8 @@ const localePath = useLocalePath()
 
 <style lang="scss" scoped>
 .btn {
-	max-width: 200px;
-	height: 50px;
+	max-width: 12.5rem;
+	height: 3.125rem;
 
 	border: 1px solid $primary;
 	background: transparent;

@@ -97,8 +97,8 @@ const emit = defineEmits<{
 
 	label {
 		text-transform: uppercase;
-		font-size: 12px;
-		line-height: 18px;
+		font-size: 0.75rem;
+		line-height: 1.125rem;
 		font-weight: 400;
 		color: $white30;
 	}
@@ -122,7 +122,7 @@ const emit = defineEmits<{
 		border: none;
 		border-bottom: 1px solid $white30;
 		background: transparent;
-		padding: 10px 16px;
+		padding: 0.625rem 1rem;
 
 		color: $white;
 		font-size: 1rem;

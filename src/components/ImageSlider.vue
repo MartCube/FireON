@@ -111,8 +111,8 @@ onClickOutside(lightbox, (event) => {
 <style lang="scss" scoped>
 .image_slider {
 	width: 100%;
-	max-width: 500px;
-	height: 600px;
+	max-width: 31.25rem;
+	height: 37.5rem;
 	position: relative;
 
 	display: flex;
@@ -126,8 +126,8 @@ onClickOutside(lightbox, (event) => {
 	.active_image {
 		width: 100%;
 		height: auto;
-		max-width: 450px;
-		max-height: 450px;
+		max-width: 28.125rem;
+		max-height: 28.125rem;
 		object-fit: contain;
 		margin-bottom: 5rem;
 
@@ -190,6 +190,8 @@ onClickOutside(lightbox, (event) => {
 		.image {
 			opacity: 0.4;
       //filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%));
+      min-width: 4.25rem;
+      min-height: 6.25rem;
 
 			&.active {
 				opacity: 1;
