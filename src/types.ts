@@ -26,6 +26,7 @@ export interface App {
 	smedias: SocialMedia[],
 	content: any[], // block content
 	metaTags: MetaTags,
+	productGalleryBg: string,
 }
 
 // Magazine

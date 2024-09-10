@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { MagazineQuery } from "~~/src/queries"
 import type { Magazine, Product } from "~~/src/types"
+import {storeToRefs} from "pinia";
 
 // fetch data
+const { productGalleryBg } = storeToRefs(useAppStore())
+
 const { locale } = useI18n()
 const { params } = useRoute()
 const { data, pending } = await useSanityQuery<Magazine>(
@@ -56,6 +59,7 @@ function AddToBasket() {
 
 <template>
 	<div id="product">
+    <AppImg v-if="productGalleryBg" class="product-gallery-bg" :src="productGalleryBg" />
 		<template v-if="data && !pending">
 
 			<div class="desktop">
@@ -125,6 +129,15 @@ function AddToBasket() {
 	height: 100%;
 	min-height: 100vh;
 	padding: 2rem 10%;
+  position: relative;
+
+  .product-gallery-bg {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    max-height: 100%;
+  }
 
 	.desktop {
 		width: inherit;

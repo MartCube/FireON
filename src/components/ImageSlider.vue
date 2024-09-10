@@ -80,7 +80,7 @@ onClickOutside(lightbox, (event) => {
 				<div class="lds-ripple"><div></div><div></div></div>
 			</div>
 		</div>
-		<AppImg class="active_image" 
+		<AppImg class="active_image active_image_not_lightbox"
 			:src="activeImage" 
 			:width="500" 
 			:height="500"
@@ -130,10 +130,15 @@ onClickOutside(lightbox, (event) => {
 		max-height: 450px;
 		object-fit: contain;
 		margin-bottom: 5rem;
+
 		&:hover {
 			cursor: pointer;
 		}
 	}
+
+  .active_image_not_lightbox {
+    filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 75%));
+  }
 
 	.icon_full_screen {
 		position: absolute;
@@ -184,6 +189,7 @@ onClickOutside(lightbox, (event) => {
 
 		.image {
 			opacity: 0.4;
+      //filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%));
 
 			&.active {
 				opacity: 1;
