@@ -22,6 +22,12 @@ defineProps<{
 .image {
 	display: flex;
 
+  &.product-image-slider-thumb {
+    img {
+      object-fit: contain;
+    }
+  }
+
 	img {
 		width: 100%;
 		height: inherit;

@@ -97,7 +97,7 @@ onClickOutside(lightbox, (event) => {
 		<div class="slider">
 			<AppImg 
 				v-for="(image, index) in gallery" 
-				:class="{ active: image == activeImage }"
+				:class="[{ active: image == activeImage }, 'product-image-slider-thumb']"
 				:key="image+index"  
 				:src="image"
 				:width="100" 
