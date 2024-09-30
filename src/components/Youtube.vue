@@ -33,6 +33,11 @@ const showFrame = ref(false)
 	max-width: 31.25rem;
 	height: 280px;
 
+  @media (min-width: 2560px) {
+    font-size: 1.6rem;
+    height: 450px;
+  }
+
 	.image{
 		position: relative;
 		img{
