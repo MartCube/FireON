@@ -6,7 +6,7 @@ export const AppQuery = groq`*[ _type == 'app' && __i18n_lang == $lang][0]{
 	content[]{
 		_type == 'intro' => { ..., 'image':image.asset._ref, "bg": bg.asset._ref, "bgMobile": bgMobile.asset._ref},
 		_type == 'features' => { ..., list[]{ title, description, "image":image.asset._ref } },
-		_type == 'magazines' => { ..., list[]->{ name, "svg": svg.asset._ref, info, "image": colorMagazines[0].gallery[0].asset._ref, } },
+		_type == 'magazines' => { ..., list[]->{ name, "svg": svg.asset._ref, info, "image": colorMagazines[0].gallery[0].asset._ref, "home_image": home_image.asset._ref} },
 		_type == 'cta' => { ..., "image": image.asset._ref, "bg": bg.asset._ref, "bgMobile": bgMobile.asset._ref },
 		_type == 'techSpecs' => { ..., list[]{ title, icon, description } },
 		_type == 'about' => { ..., 'image':image.asset._ref },
@@ -39,6 +39,7 @@ export const MagazineQuery = groq`*[ _type == 'magazine' && name == $uid && __i1
 	description[],
 	colorTitle,
 	button,
+	"home_image": home_image.asset._ref,
 }`
 
 export const BasketQuery = groq`*[ _type == 'basket' && __i18n_lang == $lang ][0]{
