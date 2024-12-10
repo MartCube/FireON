@@ -82,7 +82,7 @@ export default defineNuxtConfig({
 		apiVersion: '2023-01-01'
 	},
 
-	ssr: false,
+	// ssr: false,
 
 	nitro: {
 		prerender: {
