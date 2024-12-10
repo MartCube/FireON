@@ -40,6 +40,7 @@ export interface MagazineCard {
 		blk: string,
 	},
 	image: string,
+	home_image: string,
 }
 export interface colorMagazine{
 	color: string,

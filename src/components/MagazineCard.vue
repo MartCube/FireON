@@ -9,7 +9,7 @@ defineProps<{
 <template>
 	<div class="magazine_card">
 		<div class="magazine">
-			<AppImg :src="data.image" :width="320" :height="320" />
+			<AppImg :src="data.home_image ? data.home_image : data.image" :width="1000" :height="1000" />
 		</div>
 		<div class="wrap">
 			<AppImg class="name" :src="data.svg" :width="220" :height="72" />
