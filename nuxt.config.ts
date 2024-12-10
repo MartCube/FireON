@@ -82,6 +82,8 @@ export default defineNuxtConfig({
 		apiVersion: '2023-01-01'
 	},
 
+	ssr: false,
+
 	nitro: {
 		prerender: {
 			crawlLinks: true,
