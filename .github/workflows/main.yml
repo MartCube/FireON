@@ -15,8 +15,11 @@ jobs:
         with:
           node-version: "18"
       # Pick your own package manager and build script
-      - run: pnpm install --legacy-peer-deps
-      - run: npx pnpm run generate
+      - name: Clean and install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install --legacy-peer-deps
+      - run: npx npm run generate
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
