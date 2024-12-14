@@ -15,8 +15,8 @@ jobs:
         with:
           node-version: "18"
       # Pick your own package manager and build script
-      - run: npm install --legacy-peer-deps
-      - run: npx nuxt build --preset github_pages
+      - run: pnpm install --legacy-peer-deps
+      - run: npx pnpm run generate
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
