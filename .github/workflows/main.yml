@@ -30,7 +30,8 @@ jobs:
             REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
       - run: corepack enable
       - run: |
-          ssh -i $REMOTE_KEY -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
+      
+          ssh -i /home/attack/.ssh/ $REMOTE_KEY -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
           export REMOTE_PATH=$REMOTE_PATH
           cd $REMOTE_PATH
           rm -rf node_modules package-lock.json
