@@ -26,5 +26,7 @@ jobs:
       - run: corepack enable
        
       # Pick your own package manager and build script
-      - run: npm install --legacy-per-deps
+      - run: |
+          rm -rf node_modules package-lock.json
+          npm install --legacy-per-deps
       - run: npx nuxt build
