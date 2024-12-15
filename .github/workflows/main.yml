@@ -19,24 +19,15 @@ jobs:
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.REMOTE_KEY }}
           remote_path: ${{ secrets.REMOTE_PATH }}  
-      - name: deploy 
-        uses: actions/setup-node@v4
+      - name: Deploy
         with:
-          node-version: "18"
-        env:
-            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-            REMOTE_USER: ${{ secrets.REMOTE_USER }}
-            REMOTE_KEY: ${{ secrets.REMOTE_KEY }}
-            REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
-      - run: corepack enable
-      - run: |
-      
-          ssh -i ~/home/attack/.ssh/id_rsa $REMOTE_KEY -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
-          export REMOTE_PATH=$REMOTE_PATH
-          cd $REMOTE_PATH
-          rm -rf node_modules package-lock.json
-          npm install --legacy-per-deps
-          npx nuxt build
-          EOF
-
-
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd $REMOTE_PATH
+            rm -rf node_modules package-lock.json
+            npm install --legacy-per-deps
+            npx nuxt build
+     
