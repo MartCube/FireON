@@ -14,11 +14,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "18"
-      # Pick your own package manager and build script
-      - name: Clean and install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
       - name: Deploy with rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
