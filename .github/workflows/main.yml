@@ -19,10 +19,6 @@ jobs:
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.REMOTE_KEY }}
           remote_path: ${{ secrets.REMOTE_PATH }}  
-      - name: Configure SSH Key
-        run: |
-          "${{ secrets.REMOTE_KEY }}" > private_key
-          chmod 600 private_key
       - name: deploy 
         uses: actions/setup-node@v4
         with:
@@ -34,7 +30,7 @@ jobs:
             REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
       - run: corepack enable
       - run: |
-          ssh -i private_key -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          ssh -i $REMOTE_KEY -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
           export REMOTE_PATH=$REMOTE_PATH
           cd $REMOTE_PATH
           rm -rf node_modules package-lock.json
