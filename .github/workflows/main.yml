@@ -19,10 +19,6 @@ jobs:
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.REMOTE_KEY }}
           remote_path: ${{ secrets.REMOTE_PATH }}
-      - name: Run Commands on Remote Server
-        run: |
-          ssh -i ${{ secrets.REMOTE_KEY }} -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-          cd ${{ secrets.REMOTE_PATH }}
-          npm install --legacy-peer-deps
-          npm run build
-          EOF
+          run: |
+            npm install --legacy-peer-deps
+            npm run build
