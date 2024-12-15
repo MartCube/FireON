@@ -20,13 +20,22 @@ jobs:
           remote_key: ${{ secrets.REMOTE_KEY }}
           remote_path: ${{ secrets.REMOTE_PATH }}  
       - name: deploy 
+        env:
+            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+            REMOTE_USER: ${{ secrets.REMOTE_USER }}
+            REMOTE_KEY: ${{ secrets.REMOTE_KEY }}
+            REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
         uses: actions/setup-node@v4
         with:
           node-version: "18"
       - run: corepack enable
-       
-      # Pick your own package manager and build script
       - run: |
+          ssh -i ${{ secrets.REMOTE_KEY }} -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
+          export REMOTE_PATH=$REMOTE_PATH
+          cd $REMOTE_PATH
           rm -rf node_modules package-lock.json
           npm install --legacy-per-deps
-      - run: npx nuxt build
+          npx nuxt build
+          EOF
+
+
