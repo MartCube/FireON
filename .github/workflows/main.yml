@@ -29,6 +29,12 @@ jobs:
             REMOTE_KEY: ${{ secrets.REMOTE_KEY }}
             REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
       - run: corepack enable
+      - name: Debug Secrets
+        run: |
+            echo "REMOTE_HOST=${{ secrets.REMOTE_HOST }}"
+            echo "REMOTE_USER=${{ secrets.REMOTE_USER }}"
+            echo "REMOTE_PATH=${{ secrets.REMOTE_PATH }}"
+
       - run: |
           ssh -i ${{ secrets.REMOTE_KEY }} -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
           export REMOTE_PATH=$REMOTE_PATH
