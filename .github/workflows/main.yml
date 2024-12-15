@@ -27,7 +27,7 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd $REMOTE_PATH
+            cd /home/attack/attack.kiev.ua/fireon/
             rm -rf node_modules package-lock.json
             npm install --legacy-per-deps
             npx nuxt build
