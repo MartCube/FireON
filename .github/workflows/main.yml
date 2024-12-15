@@ -31,7 +31,7 @@ jobs:
       - run: corepack enable
       - run: |
       
-          ssh -i /home/attack/.ssh/ $REMOTE_KEY -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          ssh -i /home/attack/.ssh/id_rsa $REMOTE_KEY -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
           export REMOTE_PATH=$REMOTE_PATH
           cd $REMOTE_PATH
           rm -rf node_modules package-lock.json
