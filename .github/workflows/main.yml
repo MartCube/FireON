@@ -19,7 +19,6 @@ jobs:
         run: |
           rm -rf node_modules package-lock.json
           npm install --legacy-peer-deps
-      - run: npx npm run generate
       - name: Deploy with rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
