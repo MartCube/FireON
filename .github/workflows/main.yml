@@ -29,6 +29,7 @@ jobs:
           script: |
             cd /home/cyclone/fireon.com.ua/www/
             rm -rf node_modules package-lock.json
+            ls
             npm -v
             npm install
             npx nuxt build
