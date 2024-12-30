@@ -1,5 +1,5 @@
 # https://github.com/actions/deploy-pages#usage
-name: Deploy to Ukraina com ua
+name: deploy_to_ukraina_com_ua
 on:
   workflow_dispatch:
   push:
