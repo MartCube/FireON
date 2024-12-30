@@ -2,8 +2,9 @@
 name: deploy_to_ukraina_com_ua
 on:
   workflow_dispatch:
-  repository_dispatch: 
-    target: [deploy_to_ukraina_com_ua]
+  repository_dispatch:
+    types: 
+      - deploy_to_ukraina_com_ua
   push:
     branches:
       - master
