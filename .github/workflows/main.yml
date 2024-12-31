@@ -34,6 +34,7 @@ jobs:
             rm -rf node_modules package-lock.json
             ls
             nvm use 18
+            nvm install-latest-npm
             npm install
             npx nuxt build
      
