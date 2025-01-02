@@ -50,6 +50,7 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           script: |
             cd /home/cyclone/fireon.com.ua/www
+            npm run start
             ls -la  # Просматриваем файлы, чтобы убедиться в загрузке
             echo "Deployment complete!"
           
