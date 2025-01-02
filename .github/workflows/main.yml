@@ -11,9 +11,6 @@ on:
 jobs:
   build_main:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}  # Unique group for each branch
-      cancel-in-progress: true  # Cancel in-progress runs of the same group
 
     steps:
      # Step 1: Установка Node.js версии 18
@@ -30,10 +27,11 @@ jobs:
       - name: Install Dependencies and Build
         run: |
           npm install --legacy-per-deps
-          npm nuxt build  # Сборка проекта
+          npm run build  # Сборка проекта
           
-      - uses: actions/checkout@v4
-      - name: Deploy with rsync
+                
+      # Step 4: Deploy files with rsync
+      - name: Deploy with Rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
           switches: -avzr --delete
@@ -42,6 +40,18 @@ jobs:
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.REMOTE_KEY }}
           remote_path: ${{ secrets.REMOTE_PATH }}  
+
+       # Step 5: Выполнение дополнительных команд на сервере
+      - name: Run Commands on Remote Server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          script: |
+            cd /home/cyclone/fireon.com.ua/www
+            ls -la  # Просматриваем файлы, чтобы убедиться в загрузке
+            echo "Deployment complete!"
           
   
      
