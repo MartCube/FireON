@@ -29,8 +29,9 @@ jobs:
           npm install --legacy-per-deps
           npm run build  # Сборка проекта
           
-      - uses: actions/checkout@v4
-      - name: Deploy with rsync
+                
+      # Step 4: Deploy files with rsync
+      - name: Deploy with Rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
           switches: -avzr --delete
@@ -39,6 +40,18 @@ jobs:
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.REMOTE_KEY }}
           remote_path: ${{ secrets.REMOTE_PATH }}  
+
+       # Step 5: Выполнение дополнительных команд на сервере
+      - name: Run Commands on Remote Server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          script: |
+            cd /home/cyclone/fireon.com.ua/www
+            ls -la  # Просматриваем файлы, чтобы убедиться в загрузке
+            echo "Deployment complete!"
           
   
      
