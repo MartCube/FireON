@@ -30,7 +30,7 @@ jobs:
       - name: Install Dependencies and Build
         run: |
           npm install --legacy-per-deps
-          npm nuxt build  # Сборка проекта
+          npm run build  # Сборка проекта
           
       - uses: actions/checkout@v4
       - name: Deploy with rsync
