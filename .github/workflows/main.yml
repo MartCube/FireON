@@ -13,6 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+       
+       # Step 5: Выполнение дополнительных команд на сервере
+      - name: Run Commands on Remote Server Clean folder 
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          script: |
+            rm -rf /home/cyclone/fireon.com.ua/www/*
      # Step 1: Установка Node.js версии 18
       - name: Set up Node.js 18
         uses: actions/setup-node@v3
@@ -28,23 +38,14 @@ jobs:
         run: |
           npm install --legacy-per-deps
           npm run build  # Сборка проекта
-      
-       # Step 5: Выполнение дополнительных команд на сервере
-      - name: Run Commands on Remote Server Clean folder 
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.REMOTE_KEY }}
-          script: |
-            rm -rf /home/cyclone/fireon.com.ua/www/*
+   
           
                 
       # Step 4: Deploy files with rsync
       - name: Deploy with Rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avzr --dry-run
+          switches: -avzr --delete
           path: .
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_user: ${{ secrets.REMOTE_USER }}
