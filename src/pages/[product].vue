@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { MagazineQuery } from "~~/src/queries"
 import type { Magazine, Product } from "~~/src/types"
+import {storeToRefs} from "pinia";
 
 // fetch data
+const { productGalleryBg } = storeToRefs(useAppStore())
+
 const { locale } = useI18n()
 const { params } = useRoute()
 const { data, pending } = await useSanityQuery<Magazine>(
@@ -16,6 +19,7 @@ if (!data.value) throw createError({
 
 const colors = data.value.colorMagazines.map((magazine) => magazine.color)
 const count = ref(1)
+const priceInHtml = ref(data.value.colorMagazines[0].price)
 
 // first colorMagazine is active
 const activeColorMagazine = ref(data.value.colorMagazines[0])
@@ -49,27 +53,35 @@ function AddToBasket() {
 	addProduct(newProduct)
 	// reset counter
 	count.value = 1
+  priceInHtml.value = activeColorMagazine.value.price
 }
 // write metatags
 
+function handleIncrement() {
+  count.value++
+  priceInHtml.value = (activeColorMagazine.value.price * count.value)
+}
+
+function handleDecrement() {
+  count.value--
+  priceInHtml.value = (activeColorMagazine.value.price * count.value)
+}
 </script>
 
 <template>
 	<div id="product">
+    <AppImg v-if="productGalleryBg" class="product-gallery-bg" :src="productGalleryBg" />
 		<template v-if="data && !pending">
 
 			<div class="desktop">
-				<AppLink class="go_back" to="/" hash="#magazines">
-					<Icon name="IconArrow" />
-				</AppLink>
 				<ImageSlider :gallery="activeColorMagazine.gallery" />
 				<div class="wrap">
 					<div class="details">
 						<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
 						<ul class="info">
 							<li>{{ data.info.size }}</li>
-							<li v-if="data.info.rem">{{ data.info.rem }}REM</li>
-							<li v-if="data.info.blk">{{ data.info.blk }}BLK</li>
+							<li v-if="data.info.rem">{{ data.info.rem }}</li>
+							<li v-if="data.info.blk">{{ data.info.blk }}</li>
 						</ul>
 						<span class="price">
 							<Icon name="IconMoney" />
@@ -77,24 +89,31 @@ function AddToBasket() {
 						</span>
 					</div>
 					<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
-					<RichText class="description" :blocks="data.description" />
+
 					<div v-if="activeColorMagazine.isProductActive && color" class="to_basket">
-						<CounterBtn :data="count" @dec="count--" @inc="count++" />
+            	<span class="price">
+							<Icon name="IconMoney" />
+							{{ priceInHtml }} {{ locale === 'ua' ? 'грн' : 'uah' }}
+						</span>
+						<CounterBtn :data="count" @dec="handleDecrement" @inc="handleIncrement" />
 						<AppBtn :value="data.button" @click="AddToBasket()" />
 					</div>
 					<div v-else class="not_available">
 						<AppBtn value="Niedostępne"/>
 					</div>
+
+					<RichText class="description" :blocks="data.description" />
 				</div>
 			</div>
 
 			<div class="mobile">
+				
 				<div class="details">
 					<AppImg class="name_img" :src="data.svg" :width="420" :height="140" />
 					<ul class="info">
 						<li>{{ data.info.size }}</li>
-						<li>{{ data.info.rem }}REM</li>
-						<li>{{ data.info.blk }}BLK</li>
+						<li>{{ data.info.rem }}</li>
+						<li>{{ data.info.blk }}</li>
 					</ul>
 				</div>
 				<ImageSlider :gallery="activeColorMagazine.gallery" />
@@ -104,14 +123,21 @@ function AddToBasket() {
 					</span>
 				</div>
 				<ColorPanel :title="data.colorTitle" :colors="colors" @color="GetColor" />
-				<RichText class="description" :blocks="data.description" />
+				
 				<div v-if="activeColorMagazine.isProductActive && color" class="to_basket">
-					<CounterBtn :data="count" @dec="count--" @inc="count++" />
+          <div class="price">
+            <span>
+              <Icon name="IconMoney" />{{ priceInHtml }} {{ locale === 'ua' ? 'грн' : 'uah' }}
+            </span>
+          </div>
+					<CounterBtn :data="count" @dec="handleDecrement" @inc="handleIncrement" />
 					<AppBtn :value="data.button" @click="AddToBasket()" />
 				</div>
 				<div v-else class="not_available">
 					<AppBtn value="Niedostępne"/>
 				</div>
+
+				<RichText class="description" :blocks="data.description" />
 			</div>
 		</template>
 	</div>
@@ -123,6 +149,15 @@ function AddToBasket() {
 	height: 100%;
 	min-height: 100vh;
 	padding: 2rem 10%;
+  position: relative;
+
+  .product-gallery-bg {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    max-height: 100%;
+  }
 
 	.desktop {
 		width: inherit;
@@ -131,25 +166,7 @@ function AddToBasket() {
 		align-items: center;
 		position: relative;
 
-		.go_back {
-			z-index: 2;
-			position: absolute;
-			top: 2rem;
-			left: 0;
-
-			.icon {
-				width: 3rem;
-				height: 3rem;
-				stroke: $primary30;
-				fill: none;
-				transform: rotate(180deg);
-			}
-
-			&:hover .icon {
-				stroke: $primary;
-			}
-
-		}
+		
 
 		.wrap {
 			width: 50%;
@@ -158,6 +175,7 @@ function AddToBasket() {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
+			gap: 2rem;
 
 			.details {
 				width: 100%;
@@ -188,8 +206,8 @@ function AddToBasket() {
 
 					li {
 						text-transform: uppercase;
-						font-size: 16px;
-						line-height: 27px;
+						font-size: 1rem;
+						line-height: 1.6875rem;
 						color: $white50;
 
 
@@ -215,8 +233,14 @@ function AddToBasket() {
 
 			.to_basket {
 				width: 100%;
-				margin-top: 2rem;
 				display: flex;
+        align-items: center;
+
+        .price {
+          margin-right: 2rem;
+          min-width: fit-content;
+          color: $primary;
+        }
 
 				.counter_btn {
 					margin-right: 2rem;
@@ -234,10 +258,8 @@ function AddToBasket() {
 		display: none;
 		flex-direction: column;
 		align-items: center;
-
-		.go_back {
-			display: none;
-		}
+		gap: 2rem;
+		
 		.details {
 			width: 100%;
 			display: flex;
@@ -274,13 +296,13 @@ function AddToBasket() {
 		}
 
 		.price {
-			width: 100%;
+      width: fit-content;
 			position: relative;
 
 			span {
-				position: absolute;
-				top: 2rem;
-				right: 0;
+				//position: absolute;
+				//top: 2rem;
+				//right: 0;
 				color: $primary;
 				font-size: 1rem;
 
@@ -314,12 +336,23 @@ function AddToBasket() {
 	#product {
 		.mobile {
 			display: flex;
+      position: relative;
 		}
 
 		.desktop {
 			display: none;
 		}
 	}
+}
+
+@media screen and (max-width: 768px) {
+  #product {
+
+    .product-gallery-bg {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
 </style>

@@ -1,13 +1,16 @@
-import { UserData, ttnDataType } from "../types"
+// import { dataData, ttnDataType } from "../types"
 import { useFetch } from '@vueuse/core'
+import { UserData } from '../types';
 
-export default async function(orderNumber: string) {
+export default async function() {
 	
-	const rawdata = localStorage.getItem('user_data')
+	const rawdata = localStorage.getItem('user_data');
 	
-	const data: UserData = JSON.parse(rawdata as string)
-	const invoice: string = localStorage.getItem('invoice') as string || ''
-	const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
+	const data: UserData = JSON.parse(rawdata as string);
+	// const invoice: string = localStorage.getItem('invoice') as string || '';
+	const orderNumber: string = localStorage.getItem('orderNumber') as string;
+	// const localStTTNdata = JSON.parse(localStorage.getItem('createTTNdata') as string) as ttnDataType
+	console.log('email');
 
 	const config = useRuntimeConfig() 
 
@@ -45,7 +48,13 @@ export default async function(orderNumber: string) {
 			<h4>Comment: </h4><p>${data.comment === undefined || data.comment === null ? '' : data.comment}</p>
 			</div>
 			<div class="info-item">
-			<h4>Invoice: ${invoice}</h4>
+			<h4>Call back: ${data.callme ?? ''}</h4>
+			</div>
+			<div class="info-item">
+			<h4>cash on delivery: ${data.payment ?? ''}</h4>
+			</div>
+			<div class="info-item">
+			<h4>IBAN: ${data.iban ?? ''}</h4>
 			</div>
 			<h4>Products:</h4>
 			<table class="products">
@@ -64,7 +73,6 @@ export default async function(orderNumber: string) {
 	// prepare product email html
 
 	
-	// const fetch = async () => {
 	try {
 		const { response, error, data, isFinished } = await useFetch(`${config.public.domain}.netlify/functions/chekout`, requestEmailOptions)
 		if(isFinished) {
@@ -75,7 +83,4 @@ export default async function(orderNumber: string) {
 		return err
 	}
 		
-	// }
-
-	// return await fetch
 }

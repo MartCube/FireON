@@ -70,8 +70,8 @@ onClickOutside(basketRef, () => toggleModal())
 
 		h2 {
 			text-transform: uppercase;
-			font-size: 20px;
-			line-height: 34px;
+			font-size: 1.25rem;
+			line-height: 2.125rem;
 			margin-bottom: 1rem;
 		}
 
@@ -98,6 +98,10 @@ onClickOutside(basketRef, () => toggleModal())
 						background: $product_coyote;
 					}
 
+          &.Polygrey {
+            background: $product_polygrey;
+          }
+
 					&.Olive {
 						background: $product_olive;
 					}
@@ -112,7 +116,7 @@ onClickOutside(basketRef, () => toggleModal())
 				}
 
 				.image {
-					width: 40px;
+					width: 2.5rem;
 					height: auto;
 					object-fit: contain;
 				}
@@ -123,7 +127,7 @@ onClickOutside(basketRef, () => toggleModal())
 					align-items: center;
 
 					span {
-						font-size: 14px;
+						font-size: 0.875rem;
 						font-weight: 400;
 						line-height: 1.5rem;
 					}
@@ -139,7 +143,7 @@ onClickOutside(basketRef, () => toggleModal())
 				}
 
 				.counter_btn {
-					width: 120px;
+					width: 7.5rem;
 				}
 
 				.price {

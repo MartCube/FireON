@@ -31,7 +31,6 @@ defineExpose({ reset })
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	margin: 2rem 0;
 
 	label {
 		width: fit-content;
@@ -54,8 +53,8 @@ defineExpose({ reset })
 		.name {
 			color: $white50;
 			text-transform: uppercase;
-			font-size: 12px;
-			line-height: 16px;
+			font-size: 0.75em;
+			line-height: 1rem;
 		}
 
 		input[type="radio"] {
@@ -84,6 +83,10 @@ defineExpose({ reset })
 				background: $product_coyote;
 			}
 
+      &.Polygrey {
+				background: $product_polygrey;
+			}
+
 			&.Olive {
 				background: $product_olive;
 			}
@@ -107,7 +110,7 @@ defineExpose({ reset })
 				position: absolute;
 				z-index: 2;
 				background-color: $error;
-				left: 4.7px;
+				left: 0.29375rem;
 				top: 50%;
 				transform: translate(0, -50%);
 				width: 7px;
@@ -122,7 +125,7 @@ defineExpose({ reset })
 				position: absolute;
 				z-index: 2;
 				background-color: $primary;
-				left: 4.7px;
+				left: 0.29375rem;
 				top: 50%;
 				transform: translate(0, -50%);
 				width: 7px;

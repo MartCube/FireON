@@ -58,8 +58,8 @@ const switchLocalePath = useSwitchLocalePath()
 		display: none;
 
 		.locale {
-			font-size: 20px;
-			line-height: 34px;
+			font-size: 1.25rem;
+			line-height: 2.125rem;
 			margin-right: 2rem;
 		}
 

@@ -12,8 +12,8 @@ const { locale } = useI18n()
 
 <style lang="scss" scoped>
 .logo {
-	width: 140px;
-	height: 24px;
+	width: 8.75rem;
+	height: 1.5rem;
 	display: flex;
 	cursor: pointer;
 

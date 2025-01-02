@@ -26,6 +26,7 @@ export interface App {
 	smedias: SocialMedia[],
 	content: any[], // block content
 	metaTags: MetaTags,
+	productGalleryBg: string,
 }
 
 // Magazine
@@ -39,6 +40,7 @@ export interface MagazineCard {
 		blk: string,
 	},
 	image: string,
+	home_image: string,
 }
 export interface colorMagazine{
 	color: string,
@@ -102,6 +104,12 @@ export interface ContactForm {
 	message: TextField,
 	button: string,
 }
+export interface CheckboxField {
+	name: string,
+	label: string,
+	value: boolean
+}
+
 export interface CheckoutForm {
 	title: string,
 	place: TextField,
@@ -113,6 +121,9 @@ export interface CheckoutForm {
 	phone: TextField,
 	comment: TextField,
 	promoCode: TextField,
+	callme: CheckboxField,
+	iban: CheckboxField,
+	payment: CheckboxField,
 	button: string,
 }
 export interface Basket {
@@ -158,7 +169,14 @@ export interface UserData {
 	phone: string,
 	comment: string,
 	products: Product[],
+	callme?: boolean,
+	iban?: boolean,
+	payment?: boolean,
 	// promoCode: {}
+	orderNumber?: string,
+	invoiceId?: string,
+	type?: string,
+	status?: string,
 } 
 
 export interface City {
@@ -329,4 +347,31 @@ export interface ttnDataType {
 	errorCodes: any[],
 	warningCodes: any[],
 	infoCodes: any[]
+}
+
+
+export interface IMonobankResponse {
+	type?: string,
+  invoiceId: string,
+  status: string,
+  payMethod: string,
+  amount: number,
+  ccy: number,
+  finalAmount: number,
+  createdDate: string,
+  modifiedDate: string,
+  reference: string,
+  destination: string,
+  paymentInfo: {
+    rrn: string,
+    approvalCode: string,
+    tranId: string,
+    terminal: string,
+    bank: string,
+    paymentSystem: string,
+    country: string,
+    fee: number,
+    paymentMethod: string,
+    maskedPan: string
+  }
 }

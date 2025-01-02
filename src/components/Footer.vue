@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { useClipboard } from '@vueuse/core'
 
 const { smedias, logo, links } = storeToRefs(useAppStore())
+
+const { t } = useI18n()
+const source = ref('info@fireon.com.ua')
+const { copy, copied } = useClipboard({ source })
 </script>
 
 <template>
@@ -16,12 +21,15 @@ const { smedias, logo, links } = storeToRefs(useAppStore())
 			<a href="tel:+380977620000" class="media">
 				<Icon name="IconPhone" />
 			</a>
-			<a href="mailto:info@fireon.com.ua" class="media">
+			<a @click="copy()" class="media">
 				<Icon name="IconMail" />
 			</a>
 			<NuxtLink class="media" v-for="media in smedias" :to="media.link" external target="_blank" :key="media.name">
 				<Icon :name="media.icon" />
 			</NuxtLink>
+			<div :class="['alert', { show: copied }]">
+				<p>{{ t('emailCopied') }}</p>
+			</div>
 		</div>
 	</footer>
 </template>
@@ -36,7 +44,6 @@ footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	overflow: hidden;
 	position: relative;
 
 	.links {
@@ -47,6 +54,7 @@ footer {
 		.link {
 			padding-right: 1rem;
 			overflow: hidden;
+
 
 			&:last-of-type {
 				padding-right: 0;
@@ -80,9 +88,26 @@ footer {
 	.smedias {
 		width: fit-content;
 		display: flex;
+		position: relative;
 
+		.alert{
+			position: absolute;
+			top: -1.5rem;
+			left: 0;
+			width: 100%;
+
+			color: $primary;
+			font-size: .75rem;
+			text-transform: capitalize;
+			display: none;
+			&.show {
+				display: initial;
+			}
+		}
 		.media {
 			margin-right: 1rem;
+			cursor: pointer;
+
 			&:first-child {
 				svg {
 					width: 20px;

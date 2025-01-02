@@ -1,0 +1,47 @@
+# https://github.com/actions/deploy-pages#usage
+name: deploy_to_ukraina_com_ua_main
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: 
+      - deploy_to_ukraina_com_ua_main
+  push:
+    branches:
+      - master
+jobs:
+  build_main:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}  # Unique group for each branch
+      cancel-in-progress: true  # Cancel in-progress runs of the same group
+
+    steps:
+     # Step 1: Установка Node.js версии 18
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Указываем версию Node.js
+
+      # Step 2: Checkout репозитория
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 3: Установка зависимостей и сборка
+      - name: Install Dependencies and Build
+        run: |
+          npm install --legacy-per-deps
+          npm nuxt build  # Сборка проекта
+          
+      - uses: actions/checkout@v4
+      - name: Deploy with rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete
+          path: .
+          remote_host: ${{ secrets.REMOTE_HOST }}
+          remote_user: ${{ secrets.REMOTE_USER }}
+          remote_key: ${{ secrets.REMOTE_KEY }}
+          remote_path: ${{ secrets.REMOTE_PATH }}  
+          
+  
+     

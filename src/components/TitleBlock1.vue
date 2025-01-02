@@ -36,9 +36,9 @@ const rest = props.src.replace(word, '')
 
 	h1 {
 		text-transform: uppercase;
-		font-size: 29px;
+		font-size: 1.8125rem;
 		font-weight: 400;
-		line-height: 49px;
+		line-height: 3.0625rem;
 		color: $white;
 
 		span {

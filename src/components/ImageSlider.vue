@@ -80,10 +80,10 @@ onClickOutside(lightbox, (event) => {
 				<div class="lds-ripple"><div></div><div></div></div>
 			</div>
 		</div>
-		<AppImg class="active_image" 
+		<AppImg class="active_image active_image_not_lightbox"
 			:src="activeImage" 
-			:width="500" 
-			:height="500"
+			:width="3000"
+			:height="6000"
 			@click="lightboxToggle = true" 
 		/>
 		<div class="icon_full_screen" 
@@ -91,10 +91,13 @@ onClickOutside(lightbox, (event) => {
 		>
 			<Icon name="IconOpenFullScreen" />
 		</div>
+		<AppLink class="go_back" to="/" hash="#magazines">
+			<Icon name="IconArrow" />
+		</AppLink>
 		<div class="slider">
 			<AppImg 
 				v-for="(image, index) in gallery" 
-				:class="{ active: image == activeImage }"
+				:class="[{ active: image == activeImage }, 'product-image-slider-thumb']"
 				:key="image+index"  
 				:src="image"
 				:width="100" 
@@ -108,8 +111,8 @@ onClickOutside(lightbox, (event) => {
 <style lang="scss" scoped>
 .image_slider {
 	width: 100%;
-	max-width: 500px;
-	height: 600px;
+	max-width: 31.25rem;
+	height: 37.5rem;
 	position: relative;
 
 	display: flex;
@@ -118,22 +121,29 @@ onClickOutside(lightbox, (event) => {
 	align-items: center;
 	align-self: start;
 
+	
+
 	.active_image {
 		width: 100%;
 		height: auto;
-		max-width: 450px;
-		max-height: 450px;
+		max-width: 28.125rem;
+		max-height: 28.125rem;
 		object-fit: contain;
 		margin-bottom: 5rem;
+
 		&:hover {
 			cursor: pointer;
 		}
 	}
 
+  .active_image_not_lightbox {
+    //filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 75%));
+  }
+
 	.icon_full_screen {
 		position: absolute;
-		top: 2rem;
-		right: 2rem;
+		top: 2.5rem;
+		right: 2.5rem;
 		opacity: 0;
 		transition: opacity 0.4s linear;
 		svg {
@@ -145,6 +155,25 @@ onClickOutside(lightbox, (event) => {
 		&:hover {
 			cursor: pointer;
 		}
+	}
+	.go_back {
+		z-index: 2;
+		position: absolute;
+		top: 2rem;
+		left: 0;
+
+		.icon {
+			width: 3rem;
+			height: 3rem;
+			stroke: $primary30;
+			fill: none;
+			transform: rotate(180deg);
+		}
+
+		&:hover .icon {
+			stroke: $primary;
+		}
+
 	}
 	.active_image:hover ~ .icon_full_screen {
 		opacity: 1;
@@ -160,6 +189,9 @@ onClickOutside(lightbox, (event) => {
 
 		.image {
 			opacity: 0.4;
+      //filter: drop-shadow(0px 0px 40px rgba(214, 174, 33, 50%));
+      min-width: 4.25rem;
+      min-height: 6.25rem;
 
 			&.active {
 				opacity: 1;
@@ -294,7 +326,6 @@ onClickOutside(lightbox, (event) => {
 	.image_slider {
 		height: auto;
 		.icon_full_screen {
-			right: 1rem;
 			opacity: 1;
 		}
 		.active_image {

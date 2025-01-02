@@ -18,8 +18,7 @@ export default defineStore('AppStore', () => {
 	const smedias = computed(() => data.value?.smedias || null)
 	const content = computed(() => data.value?.content || null)
 	const metaTags = computed(() => data.value?.metaTags || null)
-
-
+	const productGalleryBg = computed(() => data.value?.productGalleryBg || null)
 
 	function refreshApp() {
 		refresh()
@@ -38,6 +37,7 @@ export default defineStore('AppStore', () => {
 		refreshApp,
 		// data getters
 		logo,
+		productGalleryBg,
 		links,
 		smedias,
 		content,

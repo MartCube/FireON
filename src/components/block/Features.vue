@@ -59,7 +59,7 @@ async function SetActiveTab(value: Feature) {
 
 			text-align: center;
 			text-transform: uppercase;
-			font-size: 12px;
+			font-size: 0.75rem;
 			font-weight: 400;
 			color: $white30;
 
@@ -157,16 +157,16 @@ async function SetActiveTab(value: Feature) {
 
 				h3 {
 					text-transform: uppercase;
-					font-size: 20px;
-					line-height: 34px;
+					font-size: 1.25rem;
+					line-height: 2.125rem;
 					font-weight: 400;
 					color: $white70;
 					margin-bottom: 14px;
 				}
 
 				p {
-					font-size: 14px;
-					line-height: 29px;
+					font-size: 0.875rem;
+					line-height: 1.8125rem;
 					font-weight: 400;
 					color: $white50;
 				}

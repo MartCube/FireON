@@ -5,9 +5,10 @@ import { z } from 'zod';
 import type { CheckoutForm, City, UserData, Warehouse, ttnDataType } from "~~/src/types";
 import { storeToRefs } from 'pinia'
 import { promiseTimeout, useFetch, useTimeout } from '@vueuse/core'
-import useCreateNP_TTN from '../composables/useCreateNP_TTN'
+// import useCreateNP_TTN from '../composables/useCreateNP_TTN'
 // 4441 1144 3585 8681
 const config = useRuntimeConfig()
+const { t } = useI18n()
 
 const { orderFormData: data, pending } = storeToRefs(useBasketStore())
 
@@ -57,10 +58,14 @@ const validationSchema = toFormValidator(
 			}, {
         message: "Only numbers please",
       }),
+		
 		// phone: z.number().refine((val) => val.toString().length === 12, {
 		// 	message: "Must have 12 digits"
 		// }),
 		comment: z.string().optional(),
+		callme: z.boolean().optional(),
+		iban: z.boolean().optional(),
+		payment: z.boolean().optional(),
 		// promoCode: z.union([z.string().refine((val) => {
     //   return promoCodes.some(el => el.code === val)
     // }, { message: "Invalid promotion code" }).optional(), z.literal("")]),
@@ -80,14 +85,14 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 	// const { resetStore, toggleResponse, toggleModal } = useBasketStore()
 	const { products } = storeToRefs(useBasketStore())
 	// toggleModal()	// close basket modal
-	console.log(values);
+
 		// order number 
-		const errorMessage = async (text: string) => {
-			statusMessage.value = text
-			await promiseTimeout(4000)
-			statusMessage.value = ''
-			// resetForm() 
-		}
+		// const errorMessage = async (text: string) => {
+		// 	statusMessage.value = text
+		// 	await promiseTimeout(4000)
+		// 	statusMessage.value = ''
+		// 	resetForm() 
+		// }
 		
 		// create data for localStore
 		const UserData: UserData = {
@@ -101,6 +106,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			products: products.value,
 			middlename:  values.middlename ? values.middlename.toString() : '',
 			comment: values.comment ? values.comment.toString() : '',
+			callme: values.callme as unknown as boolean,
+			iban: values.iban as unknown as boolean,
+			payment: values.payment as unknown as boolean
 		}
 		
 	// save email data to localStorage
@@ -123,26 +131,43 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 				
 				
 				try {
-					const paymentRequestOptions = usePaymentOptions(products.value);
-					const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
-					if (isFinished.value) {
-						const parsedValue: {
-							invoiceId: string,
-							pageUrl: string
-						} = JSON.parse(data.value as string)
+					// const paymentRequestOptions = usePaymentOptions(products.value);
+					// const { data, isFinished, error } = await useFetch(`${config.public.monoEnpoint}create`, paymentRequestOptions as object)
+					// if (isFinished.value) {
+					// 	const parsedValue: {
+					// 		invoiceId: string,
+					// 		pageUrl: string
+					// 	} = JSON.parse(data.value as string)
 						// console.log(parsedValue)
 						
 						// store invoice data
-						localStorage.setItem('invoice', parsedValue.invoiceId)
+						// localStorage.setItem('invoice', parsedValue.invoiceId)
 						
-						const orderNumber = crypto.randomUUID().slice(0, 6)
-						useEmailTemplate(orderNumber);
-						localStorage.setItem('orderNumber', orderNumber)
-
+						const orderNumber = crypto.randomUUID().slice(0, 6);
+						localStorage.setItem('orderNumber', orderNumber);
+						// const emailToFireOn = await useEmailTemplate()
+						// console.log("emailToFireOn", emailToFireOn);
 						// redirect user to monobank payment page
 						
-						window.location.href = parsedValue.pageUrl;
-		}
+						window.location.href = `${config.public.domain}payment-status`;
+						// UserData.orderNumber = orderNumber;
+						// UserData.invoiceId = parsedValue.invoiceId;
+						// UserData.type = 'user';
+
+						// const { data: serverData, error } = await useFetch('/api/payment', {
+						// 	method: 'POST',
+						// 	body: JSON.stringify(UserData),
+						// 	headers: {
+						// 		'Content-Type': 'application/json'
+						// 	}
+						// });
+
+						// const anchor = document.createElement('a');
+						// anchor.href = parsedValue.pageUrl;
+						// anchor.target = "_blank";
+						// document.body.appendChild(anchor);
+						// anchor.click();
+		// }
 
 		// show result modal 
 		// there is no result modal anymore we redierect user to payment-status page
@@ -174,6 +199,9 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 			<!-- <NPWarehouseInput v-if="city" :city="city" @selected-warehouse="(e) => warehouse = e"  :data="data.warehouse"  /> -->
 			<VeeInput :data="data.comment" />
 			<!-- <VeeInput :data="data.promoCode" /> -->
+			<VeeCheckbox :data="{name:'callme', label:t('callme') , value: false}" />
+			<VeeCheckbox :data="{name:'iban', label:t('iban') , value: false}" />
+			<VeeCheckbox :data="{name:'payment', label:t('payment') , value: false}" />
 			<button type="submit" :disabled="isSubmitting">
 				<span>{{ data.button }}</span>
 			</button>
@@ -185,7 +213,7 @@ const onSubmit = handleSubmit(async (values, { resetForm }) => {
 form {
 	width: 100%;
 	@media (min-width: 800px) {
-		max-width: 460px;
+		max-width: 28.75rem;
 	}
 	display: flex;
 	flex-direction: column;
@@ -212,7 +240,7 @@ form {
 	button {
 		align-self: center;
 		width: 70%;
-		height: 50px;
+		height: 3.125rem;
 		margin: 2rem 0;
 		transform: skew(-10deg);
 		border: none;
@@ -232,7 +260,7 @@ form {
 			color: $dark;
 			font-weight: 400;
 			font-size: 1rem;
-			line-height: 27px;
+			line-height: 1.6875rem;
 		}
 
 		&:hover {
