@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_KEY }}
           script: |
-            rm -rf /home/cyclone/fireon.com.ua/www/
+            rm -rf /home/cyclone/fireon.com.ua/www/*
           
                 
       # Step 4: Deploy files with rsync
