@@ -87,8 +87,14 @@ export default defineNuxtConfig({
 			crawlLinks: true,
 			routes: ['/sitemap.xml']
 		},
-    preset: 'node-server'
+    preset: 'node-server',
 
+		runtimeConfig: {
+			app: {
+				baseURL: '.output/public',
+				buildAssetsDir: '_nuxt',
+			}
+		},
 	},
 
 	runtimeConfig: {
@@ -119,7 +125,7 @@ export default defineNuxtConfig({
 	experimental: {
 		appManifest: false,
 	},
-
+	target: 'static',
 	// googleAnalytics: {
 	//   id: 'GTM-K49KX72B'
 	// }
