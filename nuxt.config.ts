@@ -91,7 +91,7 @@ export default defineNuxtConfig({
 
 		runtimeConfig: {
 			app: {
-				baseURL: '.output/public',
+				baseURL: './.output/public',
 				buildAssetsDir: '_nuxt',
 			}
 		},
