@@ -113,7 +113,7 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	buildId: "f821a3c1-36b1-497c-9729-024dda51b42b",
+	buildId: 'd1a76e8a-0451-4269-9e67-bf717f397ad7',
 
 	// googleAnalytics: {
 	//   id: 'GTM-K49KX72B'
