@@ -28,6 +28,16 @@ jobs:
         run: |
           npm install --legacy-per-deps
           npm run build  # Сборка проекта
+      
+       # Step 5: Выполнение дополнительных команд на сервере
+      - name: Run Commands on Remote Server Clean folder 
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          script: |
+            rm -rf /home/cyclone/fireon.com.ua/www/
           
                 
       # Step 4: Deploy files with rsync
@@ -42,7 +52,7 @@ jobs:
           remote_path: ${{ secrets.REMOTE_PATH }}  
 
        # Step 5: Выполнение дополнительных команд на сервере
-      - name: Run Commands on Remote Server
+      - name: Run Commands on Remote Server Checking up
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.REMOTE_HOST }}
@@ -50,7 +60,6 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           script: |
             cd /home/cyclone/fireon.com.ua/www
-            npm run start
             ls -la  # Просматриваем файлы, чтобы убедиться в загрузке
             echo "Deployment complete!"
           
