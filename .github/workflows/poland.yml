@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: 
-      - deploy_to_ukraina_com_ua
+      - deploy_to_ukraina_com_ua_poland
   push:
     branches:
       - poland
