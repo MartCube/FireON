@@ -114,6 +114,9 @@ export default defineNuxtConfig({
 		},
 	},
 	buildId: 'd1a76e8a-0451-4269-9e67-bf717f397ad7',
+	experimental: {
+		appManifest: false,
+	},
 
 	// googleAnalytics: {
 	//   id: 'GTM-K49KX72B'
