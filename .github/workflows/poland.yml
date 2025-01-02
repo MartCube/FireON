@@ -7,7 +7,6 @@ on:
       - deploy_to_ukraina_com_ua
   push:
     branches:
-      - master
       - poland
 jobs:      
   build: 
